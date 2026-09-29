@@ -961,27 +961,153 @@ Entity relationships and delete behaviors are configured using **Entity Framewor
 
 MaleFashion uses **SQL Server** as its relational database and **Entity Framework Core** as the primary ORM and data-access technology.
 
-### Database Entities
+## 🐳 Docker
 
-The database contains entities related to:
+MaleFashion is containerized using **Docker** and **Docker Compose** to provide a consistent and reproducible application environment.
 
-- 👤 **Users**
-- 🛡️ **Roles**
-- 🛍️ **Products**
-- 📂 **Categories**
-- 🎨 **Product Variants**
-- 📦 **Inventory**
-- 🛒 **Cart**
-- 🛒 **Cart Items**
-- ❤️ **Wishlist**
-- 🏷️ **Discounts**
-- 📋 **Orders**
-- 📦 **Order Items**
-- 💳 **Payments**
+### Docker Architecture
 
-### Entity Relationships
+The application uses a **multi-stage .NET Docker build**:
 
-Entity relationships and delete behaviors are configured using **Entity Framework Core**.
+```text
+Dockerfile
+    │
+    ├── Restore
+    ├── Build
+    ├── Publish
+    └── Runtime
+```
+
+### Docker Compose
+
+Docker Compose simplifies application startup, configuration, environment variables, port mapping, and persistent volumes.
+
+Start the application with:
+
+```bash
+docker compose up -d --build
+```
+
+The application is available at:
+
+**http://localhost:8000**
+
+### Docker Compose Configuration
+
+```yaml
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Src/MaleFashion.Web/Dockerfile
+
+    image: malefashion.web
+
+    env_file:
+      - Src/MaleFashion.Web/web.env
+
+    environment:
+      ASPNETCORE_URLS: http://+:80
+
+    volumes:
+      - malefashion-data:/app/Logs/
+
+    ports:
+      - "8000:80"
+
+    entrypoint: ["dotnet", "MaleFashion.Web.dll"]
+
+volumes:
+  malefashion-data:
+```
+
+### Dockerfile
+
+The Dockerfile uses a **multi-stage build** to restore, build, publish, and run the ASP.NET Core application.
+
+```dockerfile
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+
+WORKDIR /src
+
+RUN apt update && apt install -y nodejs
+
+COPY ["Src/MaleFashion.Web/MaleFashion.Web.csproj", "MaleFashion.Web/"]
+COPY ["Src/MaleFashion.Domain/MaleFashion.Domain.csproj", "MaleFashion.Domain/"]
+COPY ["Src/MaleFashion.Application/MaleFashion.Application.csproj", "MaleFashion.Application/"]
+COPY ["Src/MaleFashion.Infrastructure/MaleFashion.Infrastructure.csproj", "MaleFashion.Infrastructure/"]
+
+RUN dotnet restore "MaleFashion.Web/MaleFashion.Web.csproj"
+
+COPY ./Src/ .
+
+WORKDIR "/src/MaleFashion.Web"
+
+RUN dotnet build "MaleFashion.Web.csproj" -c Release -o /app
+
+FROM build AS publish
+
+RUN dotnet publish "MaleFashion.Web.csproj" -c Release -o /app
+
+FROM build AS final
+
+WORKDIR /app
+
+COPY --from=publish /app .
+
+EXPOSE 80
+
+ENTRYPOINT ["dotnet", "MaleFashion.Web.dll"]
+```
+
+### 🔄 Docker Build Flow
+
+```text
+Docker Compose
+      │
+      ▼
+   Dockerfile
+      │
+      ▼
+    Restore
+      │
+      ▼
+     Build
+      │
+      ▼
+    Publish
+      │
+      ▼
+  Runtime Image
+      │
+      ▼
+MaleFashion.Web
+      │
+      ▼
+localhost:8000
+```
+
+### 💾 Persistent Logs
+
+The application logs are stored using a Docker named volume:
+
+```yaml
+volumes:
+  - malefashion-data:/app/Logs/
+```
+
+This helps preserve application logs independently of the container lifecycle.
+
+### Benefits
+
+* 🧩 Consistent development environment
+* 🔁 Reproducible application deployment
+* 📦 Isolated runtime environment
+* ⚡ Easier application setup
+* 🔧 Simplified configuration
+* 🚀 Streamlined deployment workflow
+* 💾 Persistent application logs
+
 
 
 
