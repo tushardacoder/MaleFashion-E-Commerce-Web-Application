@@ -241,6 +241,30 @@ Customers can:
   <img src="https://github.com/user-attachments/assets/ff69c840-64a5-4328-ae51-4e7ed89091d4" alt="Screenshot 3">
 </p>
 
+### ❤️ Customer — Wishlist
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/53d25e71-f3c4-4128-aa7b-091f650877fd" alt="Screenshot 1">
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/e0678370-5d48-4025-a058-ba4564436c77" alt="Screenshot 2">
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/1418cb68-e243-439f-9d36-23c471dce151" alt="Screenshot 3">
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/5dbc98d6-58e5-4c5d-958b-241d9eaacf93" alt="Screenshot 4">
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/b99095d8-f17f-47fa-9df6-4962e53130c4" alt="Screenshot 5">
+</p>
+
+
+
+
 
 
 
