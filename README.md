@@ -93,3 +93,44 @@ Customers can:
 - **View Order-Related Information**
 
 ---
+
+## 🏗️ Architecture
+
+MaleFashion follows **Clean Architecture** principles combined with concepts from **Domain-Driven Design (DDD)**.
+
+```text
+                    ┌─────────────────────────┐
+                    │    MaleFashion.Web      │
+                    │                         │
+                    │ Controllers / Areas     │
+                    │ Views / Presentation     │
+                    └────────────┬────────────┘
+                                 │
+                                 ▼
+                    ┌─────────────────────────┐
+                    │ MaleFashion.Application │
+                    │                         │
+                    │ Commands / Queries      │
+                    │ Handlers / DTOs         │
+                    │ Validators / Services   │
+                    └────────────┬────────────┘
+                                 │
+                                 ▼
+                    ┌─────────────────────────┐
+                    │   MaleFashion.Domain    │
+                    │                         │
+                    │ Entities / Aggregates   │
+                    │ Value Objects / Rules   │
+                    │ Domain Contracts        │
+                    └────────────▲────────────┘
+                                 │
+                                 │ Implements
+                                 │
+                    ┌────────────┴────────────┐
+                    │ MaleFashion.Infrastructure │
+                    │                         │
+                    │ EF Core / Repositories  │
+                    │ Unit of Work / Identity │
+                    │ Email Services          │
+                    │ reCAPTCHA / Persistence │
+                    └─────────────────────────┘
