@@ -134,40 +134,48 @@ MaleFashion follows **Clean Architecture** principles combined with concepts fro
                     │ Email Services          │
                     │ reCAPTCHA / Persistence │
                     └─────────────────────────┘
-
 ## 🧱 Layer Responsibilities
 
-| **Layer** | **Responsibility** |
-|---|---|
-| **Domain** | Core business concepts, entities, aggregates, business rules, and abstractions |
-| **Application** | Use cases, CQRS commands/queries, handlers, DTOs, validation, and application services |
-| **Infrastructure** | Database, EF Core, repositories, Identity, email, and external services |
-| **Web** | Controllers, Areas, Views, authentication flow, and presentation |
+MaleFashion follows a **Clean Architecture** approach where each layer has a clearly defined responsibility.
+
+| Layer              | Responsibility                                                                         |
+| ------------------ | -------------------------------------------------------------------------------------- |
+| **Domain**         | Core business concepts, entities, aggregates, business rules, and abstractions         |
+| **Application**    | Use cases, CQRS commands/queries, handlers, DTOs, validation, and application services |
+| **Infrastructure** | Database, EF Core, repositories, Identity, email, and external services                |
+| **Web**            | Controllers, Areas, Views, authentication flow, and presentation                       |
 
 ### 🔄 Dependency Direction
 
-The main dependency direction is:
+The primary dependency direction is:
 
 ```text
-Web
- ↓
-Application
- ↓
-Domain
+        Web
+         │
+         ▼
+    Application
+         │
+         ▼
+       Domain
 
 Infrastructure
- ↓
-Implements Domain/Application Abstractions
+      │
+      └── Implements Domain/Application Abstractions
+```
 
-This keeps the core business logic independent from frameworks, databases, and external services.
+This structure keeps the core business logic independent from frameworks, databases, and external services.
 
-🧠 Domain-Driven Design (DDD)
+---
 
-MaleFashion also follows important Domain-Driven Design (DDD) concepts.
+# 🧠 Domain-Driven Design (DDD)
 
-DDD focuses on modeling the software around the business domain and its rules, rather than allowing database or UI concerns to control the design.
+MaleFashion also incorporates important **Domain-Driven Design (DDD)** concepts.
 
-📐 DDD Concepts Used
+DDD focuses on modeling the application around **real-world business concepts, relationships, and business rules**, rather than allowing database or UI concerns to control the design.
+
+## 📐 DDD Concepts Used
+
+```text
                     E-Commerce Domain
                            │
              ┌─────────────┼─────────────┐
@@ -177,25 +185,39 @@ DDD focuses on modeling the software around the business domain and its rules, r
           Variant       CartItem      OrderItem
              │                           │
          Inventory                     Payment
-🧩 Important Domain Concepts
-Entities
-Aggregate Roots
-Domain Relationships
-Business Rules
-Repository Abstractions
-Domain Contracts
-🏷️ Important Domain Entities
-Product
-ProductVariant
-Inventory
-Cart
-CartItem
-Wishlist
-Discount
-Order
-OrderItem
-Payment
-🛍️ Example Domain Relationship
+```
+
+### 🧩 Important Domain Concepts
+
+* **Entities**
+* **Aggregate Roots**
+* **Domain Relationships**
+* **Business Rules**
+* **Repository Abstractions**
+* **Domain Contracts**
+
+---
+
+## 🏷️ Important Domain Entities
+
+The main e-commerce domain entities include:
+
+* `Product`
+* `ProductVariant`
+* `Inventory`
+* `Cart`
+* `CartItem`
+* `Wishlist`
+* `Discount`
+* `Order`
+* `OrderItem`
+* `Payment`
+
+---
+
+## 🛍️ Example Domain Relationship
+
+```text
 Product
    │
    ├── ProductVariant
@@ -205,25 +227,38 @@ Product
    │
    └── Inventory
           └── Stock
+```
 
-This structure allows the application to represent real-world e-commerce concepts and their relationships directly in the software.
+This structure allows MaleFashion to represent real-world e-commerce concepts and their relationships directly within the application.
 
-💡 Why DDD?
+---
 
-DDD helps MaleFashion model real-world business concepts and rules directly within the application.
+## 💡 Why DDD?
 
-For example, a Product can have multiple ProductVariant objects, where each variant can have its own size, color, SKU, and inventory information.
+DDD helps MaleFashion model real-world business concepts and rules directly in the application.
 
-✅ Benefits of DDD
-Business logic becomes easier to understand
-Domain rules are separated from infrastructure
-Complex business behavior can be modeled explicitly
-Entities represent real business concepts
-Infrastructure changes have less impact on business logic
-Improves maintainability and extensibility
-Provides a strong foundation for future business requirements
+For example, a `Product` can have multiple `ProductVariant` objects. Each variant can have its own:
 
-## 🔄 E-Commerce Workflow
+* Size
+* Color
+* SKU
+* Inventory quantity
+
+This makes it possible to manage different product combinations independently.
+
+### ✅ Benefits of DDD
+
+* Business logic becomes easier to understand
+* Domain rules are separated from infrastructure concerns
+* Complex business behavior can be modeled explicitly
+* Entities represent real-world business concepts
+* Infrastructure changes have less impact on business logic
+* Improves maintainability and extensibility
+* Provides a strong foundation for future business requirements
+
+---
+
+# 🔄 E-Commerce Workflow
 
 The main customer journey in **MaleFashion** is:
 
@@ -235,31 +270,35 @@ Registration / Login
   Product Details
         ↓
  Select Size / Color
-        ↓      ↓
- Add to Cart  Wishlist
         ↓
-       Cart
-        ↓
+   ┌────┴─────┐
+   ↓          ↓
+Add to Cart  Wishlist
+   ↓
+  Cart
+   ↓
 Apply Coupon / Discount
-        ↓
-     Checkout
-        ↓
- Payment Selection
-        ↓
- Payment Simulation
-        ↓
-    Place Order
-        ↓
- Order + Order Items
-        ↓
-      Payment
+   ↓
+ Checkout
+   ↓
+Payment Selection
+   ↓
+Payment Simulation
+   ↓
+ Place Order
+   ↓
+Order + Order Items
+   ↓
+  Payment
+```
 
+---
 
-## 🛒 Product & Inventory Management
+# 🛒 Product & Inventory Management
 
 Products in **MaleFashion** support multiple variants, allowing different combinations of **size, color, and SKU** for the same product.
 
-### 📦 Product Variants
+## 📦 Product Variants
 
 ```text
 Product
@@ -267,9 +306,11 @@ Product
    ├── Size
    ├── Color
    └── SKU
+```
 
-Inventory is maintained at the Product Variant level.
+Inventory is maintained at the **Product Variant** level.
 
+```text
 Product
    ↓
 Product Variant
@@ -277,10 +318,15 @@ Product Variant
 Inventory
    ↓
 Available Stock
-👕 Example
+```
+
+This allows each variant to maintain its own stock quantity.
+
+### 👕 Example
 
 For a T-Shirt, each size and color combination can have its own inventory:
 
+```text
 T-Shirt
 │
 ├── Small / Black   → 10
@@ -288,24 +334,32 @@ T-Shirt
 ├── Large / Black   → 8
 ├── Small / White   → 12
 └── Medium / White  → 20
+```
 
-This approach allows the application to maintain and manage stock independently for each product variant.
+For example, when a customer purchases a **Medium / Black** T-Shirt:
 
-For example, purchasing a Medium / Black T-Shirt decreases only the stock of that specific variant without affecting other sizes or colors.
+```text
+Medium / Black Stock
+        ↓
+      15 → 14
+```
 
+Only the stock of that specific product variant is decreased. Other sizes and colors remain unchanged.
 
-## 💳 Payment Simulation
+---
 
-MaleFashion does not process real financial transactions.
+# 💳 Payment Simulation
+
+MaleFashion does **not process real financial transactions**.
 
 Instead, payment functionality is implemented as a **simulation** for demonstration and project requirements.
 
-### 💰 Supported Payment Methods
+## 💰 Supported Payment Methods
 
-- **Cash on Delivery**
-- **bKash Simulation**
+* **Cash on Delivery**
+* **bKash Simulation**
 
-### 🔄 Payment Workflow
+## 🔄 Payment Workflow
 
 ```text
 Customer
@@ -321,5 +375,9 @@ Validate Information
 Payment Accepted
    ↓
 Create Order
+   ↓
+Save Payment Information
+```
 
-Note: No real money is transferred through the payment simulation. The payment process is implemented only for demonstration and application workflow purposes.
+> **Note:** No real money is transferred through the payment simulation. The payment process is implemented only for demonstration and application workflow purposes.
+
