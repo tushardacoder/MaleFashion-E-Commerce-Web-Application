@@ -957,6 +957,32 @@ The database contains entities related to:
 
 Entity relationships and delete behaviors are configured using **Entity Framework Core**.
 
+## 🗄️ Database
+
+MaleFashion uses **SQL Server** as its relational database and **Entity Framework Core** as the primary ORM and data-access technology.
+
+### Database Entities
+
+The database contains entities related to:
+
+- 👤 **Users**
+- 🛡️ **Roles**
+- 🛍️ **Products**
+- 📂 **Categories**
+- 🎨 **Product Variants**
+- 📦 **Inventory**
+- 🛒 **Cart**
+- 🛒 **Cart Items**
+- ❤️ **Wishlist**
+- 🏷️ **Discounts**
+- 📋 **Orders**
+- 📦 **Order Items**
+- 💳 **Payments**
+
+### Entity Relationships
+
+Entity relationships and delete behaviors are configured using **Entity Framework Core**.
+
 
 
 
