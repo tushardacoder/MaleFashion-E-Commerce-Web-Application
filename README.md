@@ -134,3 +134,91 @@ MaleFashion follows **Clean Architecture** principles combined with concepts fro
                     │ Email Services          │
                     │ reCAPTCHA / Persistence │
                     └─────────────────────────┘
+
+## 🧱 Layer Responsibilities
+
+| **Layer** | **Responsibility** |
+|---|---|
+| **Domain** | Core business concepts, entities, aggregates, business rules, and abstractions |
+| **Application** | Use cases, CQRS commands/queries, handlers, DTOs, validation, and application services |
+| **Infrastructure** | Database, EF Core, repositories, Identity, email, and external services |
+| **Web** | Controllers, Areas, Views, authentication flow, and presentation |
+
+### 🔄 Dependency Direction
+
+The main dependency direction is:
+
+```text
+Web
+ ↓
+Application
+ ↓
+Domain
+
+Infrastructure
+ ↓
+Implements Domain/Application Abstractions
+
+This keeps the core business logic independent from frameworks, databases, and external services.
+
+🧠 Domain-Driven Design (DDD)
+
+MaleFashion also follows important Domain-Driven Design (DDD) concepts.
+
+DDD focuses on modeling the software around the business domain and its rules, rather than allowing database or UI concerns to control the design.
+
+📐 DDD Concepts Used
+                    E-Commerce Domain
+                           │
+             ┌─────────────┼─────────────┐
+             │             │             │
+          Product         Cart          Order
+             │             │             │
+          Variant       CartItem      OrderItem
+             │                           │
+         Inventory                     Payment
+🧩 Important Domain Concepts
+Entities
+Aggregate Roots
+Domain Relationships
+Business Rules
+Repository Abstractions
+Domain Contracts
+🏷️ Important Domain Entities
+Product
+ProductVariant
+Inventory
+Cart
+CartItem
+Wishlist
+Discount
+Order
+OrderItem
+Payment
+🛍️ Example Domain Relationship
+Product
+   │
+   ├── ProductVariant
+   │      ├── Size
+   │      ├── Color
+   │      └── SKU
+   │
+   └── Inventory
+          └── Stock
+
+This structure allows the application to represent real-world e-commerce concepts and their relationships directly in the software.
+
+💡 Why DDD?
+
+DDD helps MaleFashion model real-world business concepts and rules directly within the application.
+
+For example, a Product can have multiple ProductVariant objects, where each variant can have its own size, color, SKU, and inventory information.
+
+✅ Benefits of DDD
+Business logic becomes easier to understand
+Domain rules are separated from infrastructure
+Complex business behavior can be modeled explicitly
+Entities represent real business concepts
+Infrastructure changes have less impact on business logic
+Improves maintainability and extensibility
+Provides a strong foundation for future business requirements
