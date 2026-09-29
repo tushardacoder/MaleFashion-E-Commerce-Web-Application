@@ -208,6 +208,13 @@ Customers can:
 
 ---
 
+## 📸 Application Screenshots
+
+### 🏠 Storefront — Home Page
+
+<img width="1473" height="693" alt="MaleFashion Home Page" src="https://github.com/user-attachments/assets/b8a33d77-9501-4ebe-ac55-e6d87afc680b" />
+
+
 ## 🏗️ Architecture
 
 MaleFashion follows **Clean Architecture** principles combined with concepts from **Domain-Driven Design (DDD)**.
