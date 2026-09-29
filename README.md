@@ -217,11 +217,19 @@ Customers can:
 
 ### 🛍️ Storefront — Shop / Product Listing
 
-![Screenshot 1](https://github.com/user-attachments/assets/abc62a65-3449-4b9e-b3fe-0df562f22059)
+<div align="center">
 
-![Screenshot 2](https://github.com/user-attachments/assets/25446cb5-301b-45cd-8f4f-f477d24c9ba9)
+<img src="https://github.com/user-attachments/assets/abc62a65-3449-4b9e-b3fe-0df562f22059" alt="Screenshot 1" width="900"/>
 
-![Screenshot 3](https://github.com/user-attachments/assets/19e5b67a-9288-40c5-92c0-7a1a23e3c7cf)
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/25446cb5-301b-45cd-8f4f-f477d24c9ba9" alt="Screenshot 2" width="450"/>
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/19e5b67a-9288-40c5-92c0-7a1a23e3c7cf" alt="Screenshot 3" width="450"/>
+
+</div>
 
 
 
