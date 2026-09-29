@@ -253,3 +253,42 @@ Apply Coupon / Discount
  Order + Order Items
         ↓
       Payment
+
+
+## 🛒 Product & Inventory Management
+
+Products in **MaleFashion** support multiple variants, allowing different combinations of **size, color, and SKU** for the same product.
+
+### 📦 Product Variants
+
+```text
+Product
+   │
+   ├── Size
+   ├── Color
+   └── SKU
+
+Inventory is maintained at the Product Variant level.
+
+Product
+   ↓
+Product Variant
+   ↓
+Inventory
+   ↓
+Available Stock
+👕 Example
+
+For a T-Shirt, each size and color combination can have its own inventory:
+
+T-Shirt
+│
+├── Small / Black   → 10
+├── Medium / Black  → 15
+├── Large / Black   → 8
+├── Small / White   → 12
+└── Medium / White  → 20
+
+This approach allows the application to maintain and manage stock independently for each product variant.
+
+For example, purchasing a Medium / Black T-Shirt decreases only the stock of that specific variant without affecting other sizes or colors.
