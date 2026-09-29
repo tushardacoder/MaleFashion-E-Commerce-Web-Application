@@ -1198,4 +1198,155 @@ MaleFashion applies a combination of architectural patterns, design patterns, fr
 
 * **SmartASP.NET**
 
+## 📂 Solution Structure
+
+```text
+MaleFashion
+│
+├── Src/
+│   │
+│   ├── MaleFashion.Domain/
+│   │   ├── Entities/
+│   │   ├── Interfaces/
+│   │   ├── Enums/
+│   │   └── Common/
+│   │
+│   ├── MaleFashion.Application/
+│   │   ├── Features/
+│   │   │   ├── Products/
+│   │   │   ├── Categories/
+│   │   │   ├── Carts/
+│   │   │   ├── Orders/
+│   │   │   ├── Discounts/
+│   │   │   └── Wishlists/
+│   │   ├── DTOs/
+│   │   ├── Interfaces/
+│   │   └── Services/
+│   │
+│   ├── MaleFashion.Infrastructure/
+│   │   ├── Persistence/
+│   │   ├── Repositories/
+│   │   ├── Identity/
+│   │   ├── Services/
+│   │   └── Configurations/
+│   │
+│   └── MaleFashion.Web/
+│       ├── Areas/
+│       │   ├── Admin/
+│       │   └── Customer/
+│       ├── Controllers/
+│       ├── Views/
+│       └── wwwroot/
+│
+├── tests/
+│   └── MaleFashion.Application.UnitTests/
+│
+├── Dockerfile
+└── docker-compose.yml
+```
+
+---
+
+## 🔄 Complete System Overview
+
+```text
+                         MALEFASHION
+                              │
+              ┌───────────────┴───────────────┐
+              │                               │
+            ADMIN                         CUSTOMER
+              │                               │
+              ▼                               ▼
+    Admin Authentication              Registration / Login
+              │                               │
+              ▼                               ▼
+       Admin Dashboard                    Storefront
+              │                               │
+       ┌──────┼──────┐                        ▼
+       │      │      │                    Products
+       ▼      ▼      ▼                        │
+   Products Categories Inventory               ▼
+       │      │      │                  Product Details
+       │      │      │                        │
+       └──────┼──────┘                        ▼
+              │                           Add to Cart
+              │                               │
+              │                               ▼
+              │                             Cart
+              │                               │
+              │                               ▼
+              │                           Checkout
+              │                               │
+              │                         ┌─────┴─────┐
+              │                         │           │
+              │                        COD       bKash
+              │                                  Simulation
+              │                         │           │
+              │                         └─────┬─────┘
+              │                               │
+              │                               ▼
+              │                             Order
+              │                               │
+              └───────────────────────────────┘
+                                              │
+                                              ▼
+                                      Order Management
+```
+
+---
+
+## 🔗 Internal Application Flow
+
+The overall technical request flow follows **ASP.NET Core MVC → Mediator → Application → Domain → Infrastructure**:
+
+```text
+                         Browser
+                            │
+                            ▼
+                ASP.NET Core MVC Controller
+                            │
+                            ▼
+                     Cortex.Mediator
+                            │
+                  ┌─────────┴─────────┐
+                  │                   │
+                  ▼                   ▼
+               Command              Query
+                  │                   │
+                  ▼                   ▼
+          Command Handler       Query Handler
+                  │                   │
+                  └─────────┬─────────┘
+                            ▼
+                   Application Logic
+                            │
+                            ▼
+                   Domain Abstractions
+                            │
+                            ▼
+                     Infrastructure
+                            │
+                 ┌──────────┴──────────┐
+                 │                     │
+                 ▼                     ▼
+             Repository         External Services
+                 │
+                 ▼
+        Entity Framework Core
+                 │
+                 ▼
+             SQL Server
+```
+
+### 🏗️ Architecture Responsibility
+
+| Layer              | Responsibility                                          |
+| ------------------ | ------------------------------------------------------- |
+| **Domain**         | Business entities, enums, and core abstractions         |
+| **Application**    | Use cases, CQRS handlers, DTOs, and application logic   |
+| **Infrastructure** | Database, repositories, Identity, and external services |
+| **Web**            | MVC controllers, Razor views, Areas, and static files   |
+
+This architecture keeps responsibilities separated and makes the application easier to **maintain, test, and extend**.
+
 
