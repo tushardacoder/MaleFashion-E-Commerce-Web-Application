@@ -464,3 +464,250 @@ The server verifies the reCAPTCHA token before continuing with the requested ope
 This provides an additional layer of protection instead of relying only on client-side validation.
 
 
+## 📧 Email Services
+
+Email functionality is abstracted through application-level contracts and implemented in the **Infrastructure** layer.
+
+Typical use cases include:
+
+* Account-related emails
+* Password reset emails
+
+SMTP configuration is supplied through configuration or environment variables rather than being hard-coded.
+
+```text
+Application
+     ↓
+IEmailService
+     ↓
+Infrastructure
+     ↓
+SMTP Provider
+     ↓
+Email
+```
+
+This allows the SMTP provider to be changed without modifying application business logic.
+
+---
+
+## 🔄 CQRS
+
+MaleFashion uses **CQRS (Command Query Responsibility Segregation)** to separate state-changing operations from data retrieval operations.
+
+```text
+                 Application
+                      │
+              ┌───────┴───────┐
+              │               │
+           Command          Query
+              │               │
+        Change State       Read State
+              │               │
+           Handler          Handler
+```
+
+### Commands
+
+Commands perform **state-changing operations**.
+
+Examples:
+
+* `AddToCartCommand`
+* `AddOrderCommand`
+* `CreateProductCommand`
+* `UpdateProductCommand`
+* `DeleteProductCommand`
+
+### Queries
+
+Queries retrieve data **without changing application state**.
+
+Examples:
+
+* `GetCartQuery`
+* `GetProductQuery`
+* `GetCategoriesQuery`
+* `GetOrdersQuery`
+
+### Benefits
+
+* Clear separation between reads and writes
+* Easier testing
+* Better organization of application use cases
+* Reduced controller complexity
+* Easier future optimization of read and write operations
+
+---
+
+## 🧩 Mediator Design Pattern
+
+MaleFashion uses the **Mediator behavioral design pattern**.
+
+The Mediator pattern reduces direct communication between controllers and individual application handlers.
+
+Instead of a controller directly depending on multiple services:
+
+```text
+Controller
+   │
+   ├── ProductService
+   ├── CartService
+   ├── OrderService
+   ├── DiscountService
+   └── EmailService
+```
+
+The controller communicates through a mediator:
+
+```text
+Controller
+    │
+    ▼
+ Mediator
+    │
+    ├── Command Handler
+    └── Query Handler
+```
+
+This reduces coupling between the **presentation layer** and application operations.
+
+---
+
+## 🚀 Cortex.Mediator
+
+The Mediator pattern is implemented using **Cortex.Mediator**.
+
+A controller can send an application request through the mediator:
+
+```csharp
+var result = await _mediator.SendCommandAsync(command);
+```
+
+or:
+
+```csharp
+var result = await _mediator.SendQueryAsync(query);
+```
+
+The mediator locates and executes the appropriate handler.
+
+### Request Flow
+
+```text
+Controller
+    │
+    │ SendCommandAsync()
+    ▼
+Cortex.Mediator
+    │
+    ▼
+Command Handler
+    │
+    ▼
+Repository / Unit of Work
+    │
+    ▼
+Database
+```
+
+### What Cortex.Mediator Achieves
+
+Cortex.Mediator provides the infrastructure required to implement the Mediator pattern and connect:
+
+```text
+Request
+   ↓
+Mediator
+   ↓
+Handler
+```
+
+This allows controllers to focus primarily on **HTTP and presentation concerns** instead of implementing business operations.
+
+### Benefits
+
+* Reduces coupling
+* Keeps controllers thin
+* Centralizes application request handling
+* Works naturally with CQRS
+* Improves testability
+* Makes application use cases easier to locate
+* Supports cleaner separation of responsibilities
+
+---
+
+## 🗺️ AutoMapper
+
+The application uses **AutoMapper** for object-to-object mapping between different application models.
+
+A common mapping flow is:
+
+```text
+Entity
+  ↓
+AutoMapper
+  ↓
+DTO / ViewModel
+```
+
+For example:
+
+```text
+Product Entity
+      ↓
+   Mapping
+      ↓
+ProductDto
+```
+
+Instead of manually assigning every property:
+
+```csharp
+var dto = new ProductDto
+{
+    Id = product.Id,
+    ProductName = product.ProductName,
+    Branding = product.Branding,
+    ProductPrize = product.ProductPrize
+};
+```
+
+mapping configuration can define how objects are transformed.
+
+### What AutoMapper Achieves
+
+AutoMapper reduces repetitive mapping code between:
+
+* Entities
+* DTOs
+* ViewModels
+* Application models
+
+### Benefits
+
+* Reduces boilerplate mapping code
+* Keeps mapping rules centralized
+* Makes handlers and controllers cleaner
+* Separates domain entities from presentation models
+* Reduces accidental exposure of entity objects
+
+### Mapping Flow
+
+```text
+Database Entity
+      │
+      ▼
+Application Mapping
+      │
+      ▼
+     DTO
+      │
+      ▼
+    View
+```
+
+The UI does not need to work directly with database entities, helping maintain a clean separation between the **data access, application, and presentation layers**.
+
+
+
