@@ -381,3 +381,86 @@ Save Payment Information
 
 > **Note:** No real money is transferred through the payment simulation. The payment process is implemented only for demonstration and application workflow purposes.
 
+## 🔐 Authentication & Authorization
+
+MaleFashion uses **ASP.NET Core Identity** for authentication and authorization.
+
+### 👥 User Roles
+
+The application includes the following primary roles:
+
+* **Admin**
+* **Member**
+
+Administrative functionality is protected using **role-based authorization**.
+
+```csharp
+[Authorize(Roles = "Admin")]
+```
+
+This ensures that only users with the **Admin** role can access protected administration features.
+
+### 🔄 Authorization Flow
+
+```text
+User
+  ↓
+Login
+  ↓
+ASP.NET Core Identity
+  ↓
+Authentication
+  ↓
+Role Verification
+  ↓
+Admin / Member
+  ↓
+Access Protected Resource
+```
+
+---
+
+## 🛡️ Google reCAPTCHA v3
+
+**Google reCAPTCHA v3** is integrated to help protect public forms from automated submissions and malicious activity.
+
+### 📋 Protected Forms
+
+reCAPTCHA can be applied to:
+
+* Login
+* Registration
+* Forgot Password
+* Contact Us
+
+### 🔄 reCAPTCHA Flow
+
+```text
+User
+  ↓
+Submit Form
+  ↓
+Generate reCAPTCHA Token
+  ↓
+Send Token to Server
+  ↓
+Server Verification
+  ↓
+Google reCAPTCHA
+  ↓
+Validation Result
+  ↓
+┌───────────────────────┐
+│                       │
+│  Valid                │  Invalid
+│    ↓                  │    ↓
+│ Continue Processing   │ Reject Request
+│                       │
+└───────────────────────┘
+```
+
+The server verifies the reCAPTCHA token before continuing with the requested operation.
+
+This provides an additional layer of protection instead of relying only on client-side validation.
+
+
