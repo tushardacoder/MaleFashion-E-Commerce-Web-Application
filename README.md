@@ -1111,4 +1111,27 @@ This helps preserve application logs independently of the container lifecycle.
 
 
 
+## 📊 Design Patterns & Practices
+
+MaleFashion applies a combination of architectural patterns, design patterns, frameworks, and development practices to improve maintainability, scalability, testability, and separation of responsibilities.
+
+| Pattern / Technology      | What It Achieves                                                       | Main Benefit                       |
+| ------------------------- | ---------------------------------------------------------------------- | ---------------------------------- |
+| **Clean Architecture**    | Separates presentation, application, domain, and infrastructure layers | Maintainability                    |
+| **Domain-Driven Design**  | Models software around business concepts and rules                     | Strong domain modeling             |
+| **CQRS**                  | Separates commands from queries                                        | Clear application responsibilities |
+| **Mediator Pattern**      | Decouples request senders from handlers                                | Loose coupling                     |
+| **Cortex.Mediator**       | Implements mediator-based request handling                             | Cleaner controllers                |
+| **Repository Pattern**    | Abstracts data-access operations                                       | Testability                        |
+| **Unit of Work**          | Coordinates related database operations                                | Consistency                        |
+| **Dependency Injection**  | Provides dependencies through abstractions                             | Loose coupling                     |
+| **AutoMapper**            | Maps entities to DTOs and ViewModels                                   | Less boilerplate                   |
+| **DTOs**                  | Transfers controlled application data                                  | Encapsulation                      |
+| **Stored Procedures**     | Encapsulates selected SQL operations                                   | Centralized database logic         |
+| **ASP.NET Core Identity** | Handles authentication and authorization                               | Secure user management             |
+| **Entity Framework Core** | Provides ORM and database access                                       | Productivity                       |
+| **Unit Testing**          | Validates application behavior                                         | Reliability                        |
+| **Serilog**               | Provides structured application logging                                | Observability                      |
+| **Docker**                | Containerizes the application                                          | Deployment consistency             |
+| **Docker Compose**        | Coordinates container configuration and application setup              | Easier environment setup           |
 
