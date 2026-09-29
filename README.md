@@ -1468,4 +1468,21 @@ Sensitive credentials and application secrets are **not hard-coded** into the so
 This approach helps keep sensitive information separate from the application source code while providing a consistent deployment environment.
 
 
+---
+
+<div align="center">
+
+### 🛍️ MaleFashion
+
+**A Full-Stack ASP.NET Core E-Commerce Application**
+
+<br>
+
+© 2026 **Tushar Basak** · All Rights Reserved.
+
+<sub>Built with ASP.NET Core MVC • C# • Clean Architecture • DDD • CQRS</sub>
+
+</div>
+
+
 
