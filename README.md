@@ -33,6 +33,30 @@ The system covers the complete e-commerce lifecycle, including:
 The project focuses on **separation of concerns, maintainability, scalability, testability, loose coupling, and secure application development**.
 
 ---
+## 🎯 Project Objectives
+
+The main objective of **MaleFashion** is to demonstrate the practical implementation of modern software architecture, design patterns, and e-commerce development practices.
+
+The project focuses on:
+
+* 🏗️ **Clean Architecture**
+* 🎯 **Domain-Driven Design (DDD)**
+* 🔄 **CQRS**
+* 🧩 **Mediator Design Pattern**
+* 🌐 **ASP.NET Core MVC**
+* 🔐 **Authentication & Authorization**
+* 🛒 **E-commerce Business Workflows**
+* 🗃️ **Repository Pattern**
+* 🔄 **Unit of Work Pattern**
+* 🗄️ **Entity Framework Core**
+* 🛢️ **SQL Server**
+* ⚙️ **Stored Procedures**
+* 🗺️ **DTO Mapping with AutoMapper**
+* 🔌 **External Service Integration**
+* 🧪 **Unit Testing**
+* 🐳 **Containerization with Docker**
+* 🚀 **Production Deployment**
+
 
 ## 🎯 Project Overview
 
