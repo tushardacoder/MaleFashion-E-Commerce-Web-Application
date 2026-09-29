@@ -709,5 +709,204 @@ Application Mapping
 
 The UI does not need to work directly with database entities, helping maintain a clean separation between the **data access, application, and presentation layers**.
 
+## 🗄️ Stored Procedures
+
+MaleFashion also uses **SQL Server Stored Procedures** for selected database operations, particularly data retrieval and server-side querying scenarios.
+
+Examples include:
+
+* `GetCategories`
+* `GetPagedCategories`
+* `GetDiscounts`
+* `GetPagedDiscounts`
+
+A stored procedure encapsulates SQL logic inside the database.
+
+```text
+Application
+     ↓
+Repository
+     ↓
+Stored Procedure
+     ↓
+SQL Server
+     ↓
+Result
+```
+
+### Example
+
+A stored procedure can encapsulate a paginated category query:
+
+```sql
+EXEC dbo.GetPagedCategories
+    @PageNumber = 1,
+    @PageSize = 10,
+    @OrderBy = 'CategoryName';
+```
+
+### What Stored Procedures Achieve
+
+Stored procedures allow frequently used or database-intensive operations to be defined and executed on the SQL Server side.
+
+They can encapsulate:
+
+* Filtering
+* Sorting
+* Pagination
+* Joins
+* Aggregations
+* Complex SQL operations
+
+### Benefits
+
+* Centralizes selected SQL logic
+* Can simplify complex database queries
+* Supports server-side pagination
+* Reduces repeated SQL statements
+* Provides a consistent database operation interface
+* Can be useful for database-heavy reporting or querying operations
+
+> **Note:** Stored procedures are used selectively. Entity Framework Core remains the primary ORM and data-access technology.
+
+---
+
+## 🗃️ Repository Pattern
+
+The application uses the **Repository Pattern** to abstract data access.
+
+```text
+Application
+     ↓
+Repository Interface
+     ↓
+Infrastructure Repository
+     ↓
+Entity Framework Core
+     ↓
+SQL Server
+```
+
+For example:
+
+```text
+IProductRepository
+       ↓
+ProductRepository
+       ↓
+ApplicationDbContext
+```
+
+The application layer depends on repository abstractions, while the Infrastructure layer provides their implementations.
+
+### Benefits
+
+* Separates data-access logic
+* Reduces direct database dependencies
+* Improves testability
+* Provides a consistent data-access abstraction
+* Keeps application logic independent from EF Core implementation details
+
+---
+
+## 🔄 Unit of Work
+
+The **Unit of Work** pattern coordinates multiple database operations as a single logical transaction.
+
+For example, placing an order may require multiple related operations:
+
+```text
+Order
+  +
+Order Items
+  +
+Payment
+  +
+Inventory Update
+```
+
+These operations can be coordinated through a Unit of Work.
+
+```text
+                 Unit of Work
+                      │
+          ┌───────────┼───────────┐
+          ▼           ▼           ▼
+       Order      OrderItem    Payment
+          │           │           │
+          └───────────┼───────────┘
+                      ▼
+                    Commit
+```
+
+The Unit of Work provides a central point for coordinating related repository operations and transaction management.
+
+### Benefits
+
+* Coordinates related database changes
+* Helps maintain data consistency
+* Reduces partial database updates
+* Provides a central transaction boundary
+* Simplifies coordination between multiple repositories
+
+---
+
+## 🧪 Unit Testing
+
+The project includes **application-layer unit tests** covering important business operations.
+
+### Test Structure
+
+```text
+tests/
+└── MaleFashion.Application.UnitTests/
+    └── Features/
+        ├── Carts/
+        ├── Categories/
+        ├── ContactMessages/
+        ├── Discounts/
+        ├── Inventories/
+        ├── Orders/
+        ├── Products/
+        └── Wishlists/
+```
+
+### Testing Technologies
+
+The project uses:
+
+* **NUnit** — Testing framework
+* **Moq** — Mocking framework
+* **Shouldly** — Assertion library
+
+The tests focus on application behavior independently from the UI and external infrastructure.
+
+### Testing Approach
+
+```text
+Application Handler
+       │
+       ├── Mock Repository
+       ├── Mock Dependencies
+       │
+       ▼
+   Business Logic
+       │
+       ▼
+     Assert
+```
+
+This allows application logic to be tested without requiring the actual database, web UI, or other external infrastructure.
+
+### Benefits
+
+* Detects regressions
+* Validates business logic
+* Improves confidence during refactoring
+* Makes application behavior easier to verify
+* Supports maintainable development
+* Helps identify defects early
+
+
 
 
