@@ -1,5 +1,95 @@
 # 🛍️ MaleFashion — E-Commerce Web Application
 
+## 📌 Summary
+
+**MaleFashion** is a full-stack **ASP.NET Core e-commerce application** built using **Clean Architecture, Domain-Driven Design (DDD), CQRS, and modern software engineering practices**.
+
+The system provides separate experiences for **Administrators and Customers** and supports the complete e-commerce lifecycle, from product management and inventory to shopping cart, checkout, payment simulation, and order processing.
+
+### 🏗️ Architecture & Technologies
+
+```text
+Clean Architecture
+        +
+Domain-Driven Design (DDD)
+        +
+CQRS
+        +
+Mediator Pattern
+        +
+Cortex.Mediator
+        +
+Repository Pattern
+        +
+Unit of Work
+        +
+AutoMapper
+        +
+Entity Framework Core
+        +
+Stored Procedures
+        +
+ASP.NET Core Identity
+        +
+External Services
+        +
+Unit Testing
+        +
+Docker
+        +
+Deployment
+```
+
+The architecture keeps **business logic independent from infrastructure and presentation concerns**, making the application easier to **maintain, test, extend, and deploy**.
+
+---
+
+## 📚 Key Engineering Principles Demonstrated
+
+### 🔹 Separation of Concerns
+
+Each architectural layer has a clearly defined responsibility, reducing unnecessary dependencies between components.
+
+### 🔹 Single Responsibility
+
+Classes and services are designed around focused responsibilities, making the code easier to understand and maintain.
+
+### 🔹 Dependency Inversion
+
+Higher-level application logic depends on **abstractions and interfaces** rather than concrete infrastructure implementations.
+
+### 🔹 Loose Coupling
+
+**Cortex.Mediator, Dependency Injection, Repository Pattern, and interfaces** help reduce direct dependencies between application components.
+
+### 🔹 Encapsulation
+
+Domain entities, DTOs, commands, and queries control how application data and business behavior are exposed.
+
+### 🔹 Testability
+
+Application logic is separated from presentation and infrastructure concerns, making individual components easier to unit test.
+
+### 🔹 Maintainability
+
+Feature-oriented organization makes individual business capabilities easier to locate, understand, and modify.
+
+### 🔹 Scalability
+
+The separation between **Domain, Application, Infrastructure, and Web** provides a foundation for extending the application as business requirements grow.
+
+---
+
+## 👨‍💻 Project
+
+### **MaleFashion — Full-Stack E-Commerce Web Application**
+
+**Built with:**
+
+`ASP.NET Core` • `C#` • `Clean Architecture` • `DDD` • `CQRS` • `Cortex.Mediator` • `EF Core` • `SQL Server` • `AutoMapper` • `ASP.NET Core Identity` • `Docker`
+
+The project demonstrates how modern architectural patterns and engineering practices can be combined to build a structured, maintainable, and production-oriented e-commerce application.
+
 ## Introduction
 
 **MaleFashion** is a full-stack **e-commerce web application** developed using **ASP.NET Core** and modern software engineering practices. The project follows **Clean Architecture** and **Domain-Driven Design (DDD)** principles to maintain a scalable, maintainable, and loosely coupled codebase.
