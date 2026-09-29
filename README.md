@@ -212,8 +212,8 @@ Customers can:
 
 ### 🏠 Storefront — Home Page
 
-<img width="1473" height="693" alt="MaleFashion Home Page" src="https://github.com/user-attachments/assets/b8a33d77-9501-4ebe-ac55-e6d87afc680b" />
 
+![MaleFashion Screenshot](https://github.com/user-attachments/assets/d273c52d-a754-4920-a992-18bfd5a31f7b)
 
 ## 🏗️ Architecture
 
