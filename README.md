@@ -23,6 +23,7 @@ The system covers the complete e-commerce lifecycle, including:
 - **Order Processing**
 - **Payment Simulation**
 - **Authentication and Authorization**
+- - **User Management**
 - **Email Services**
 - **Google reCAPTCHA**
 - **Unit Testing**
