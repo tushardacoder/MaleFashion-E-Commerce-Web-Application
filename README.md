@@ -1350,3 +1350,32 @@ The overall technical request flow follows **ASP.NET Core MVC → Mediator → A
 This architecture keeps responsibilities separated and makes the application easier to **maintain, test, and extend**.
 
 
+## 🚀 Deployment
+
+MaleFashion is prepared for deployment using a **containerized ASP.NET Core environment**.
+
+### ☁️ Deployment Target
+
+**SmartASP.NET**
+
+### ⚙️ Production Configuration
+
+Production settings are separated from development configuration using **environment-specific configuration** and **environment variables**.
+
+Deployment configuration includes:
+
+* **Production connection strings**
+* **SMTP / Email configuration**
+* **Google reCAPTCHA configuration**
+* **Application secrets**
+* **Logging configuration**
+* **Environment-specific settings**
+
+### 🔐 Security
+
+Sensitive credentials and application secrets are **not hard-coded** into the source code. Production-specific values should be supplied through environment variables or secure configuration mechanisms.
+
+This approach helps keep sensitive information separate from the application source code while providing a consistent deployment environment.
+
+
+
