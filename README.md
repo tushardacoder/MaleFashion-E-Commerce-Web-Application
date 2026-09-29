@@ -216,20 +216,17 @@ Customers can:
 ![MaleFashion Screenshot](https://github.com/user-attachments/assets/d273c52d-a754-4920-a992-18bfd5a31f7b)
 
 ### 🛍️ Storefront — Shop / Product Listing
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/abc62a65-3449-4b9e-b3fe-0df562f22059" alt="Screenshot 1">
+</p>
 
-<div align="center">
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/25446cb5-301b-45cd-8f4f-f477d24c9ba9" alt="Screenshot 2">
+</p>
 
-<img src="https://github.com/user-attachments/assets/abc62a65-3449-4b9e-b3fe-0df562f22059" alt="Screenshot 1" width="900"/>
-
-<br><br>
-
-<img src="https://github.com/user-attachments/assets/25446cb5-301b-45cd-8f4f-f477d24c9ba9" alt="Screenshot 2" width="450"/>
-
-<br><br>
-
-<img src="https://github.com/user-attachments/assets/19e5b67a-9288-40c5-92c0-7a1a23e3c7cf" alt="Screenshot 3" width="450"/>
-
-</div>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/19e5b67a-9288-40c5-92c0-7a1a23e3c7cf" alt="Screenshot 3">
+</p>
 
 
 
