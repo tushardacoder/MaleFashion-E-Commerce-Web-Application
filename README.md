@@ -222,3 +222,34 @@ Entities represent real business concepts
 Infrastructure changes have less impact on business logic
 Improves maintainability and extensibility
 Provides a strong foundation for future business requirements
+
+## 🔄 E-Commerce Workflow
+
+The main customer journey in **MaleFashion** is:
+
+```text
+Registration / Login
+        ↓
+    Browse Shop
+        ↓
+  Product Details
+        ↓
+ Select Size / Color
+        ↓      ↓
+ Add to Cart  Wishlist
+        ↓
+       Cart
+        ↓
+Apply Coupon / Discount
+        ↓
+     Checkout
+        ↓
+ Payment Selection
+        ↓
+ Payment Simulation
+        ↓
+    Place Order
+        ↓
+ Order + Order Items
+        ↓
+      Payment
