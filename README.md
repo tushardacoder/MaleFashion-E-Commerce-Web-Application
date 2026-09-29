@@ -215,6 +215,16 @@ Customers can:
 
 ![MaleFashion Screenshot](https://github.com/user-attachments/assets/d273c52d-a754-4920-a992-18bfd5a31f7b)
 
+### 🛍️ Storefront — Shop / Product Listing
+
+![Screenshot 1](https://github.com/user-attachments/assets/abc62a65-3449-4b9e-b3fe-0df562f22059)
+
+![Screenshot 2](https://github.com/user-attachments/assets/25446cb5-301b-45cd-8f4f-f477d24c9ba9)
+
+![Screenshot 3](https://github.com/user-attachments/assets/19e5b67a-9288-40c5-92c0-7a1a23e3c7cf)
+
+
+
 ## 🏗️ Architecture
 
 MaleFashion follows **Clean Architecture** principles combined with concepts from **Domain-Driven Design (DDD)**.
