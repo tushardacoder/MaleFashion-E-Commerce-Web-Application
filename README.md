@@ -228,6 +228,20 @@ Customers can:
   <img src="https://github.com/user-attachments/assets/19e5b67a-9288-40c5-92c0-7a1a23e3c7cf" alt="Screenshot 3">
 </p>
 
+### 👕 Product — Product Details & Variants
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d6e7ac3b-c699-480a-92c1-9202954e476f" alt="Screenshot 1">
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/43d6490e-9bbb-4ace-a84c-b7ac718550f7" alt="Screenshot 2">
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ff69c840-64a5-4328-ae51-4e7ed89091d4" alt="Screenshot 3">
+</p>
+
+
 
 
 ## 🏗️ Architecture
