@@ -931,30 +931,31 @@ This allows application logic to be tested without requiring the actual database
 * Supports maintainable development
 * Helps identify defects early
 
-🗄️ Database
+## 🗄️ Database
 
-MaleFashion uses SQL Server as its relational database and Entity Framework Core as the primary ORM and data-access technology.
+MaleFashion uses **SQL Server** as its relational database and **Entity Framework Core** as the primary ORM and data-access technology.
 
-Database Entities
+### Database Entities
 
 The database contains entities related to:
 
-👤 Users
-🛡️ Roles
-🛍️ Products
-📂 Categories
-🎨 Product Variants
-📦 Inventory
-🛒 Cart
-🛒 Cart Items
-❤️ Wishlist
-🏷️ Discounts
-📋 Orders
-📦 Order Items
-💳 Payments
-Entity Relationships
+- 👤 **Users**
+- 🛡️ **Roles**
+- 🛍️ **Products**
+- 📂 **Categories**
+- 🎨 **Product Variants**
+- 📦 **Inventory**
+- 🛒 **Cart**
+- 🛒 **Cart Items**
+- ❤️ **Wishlist**
+- 🏷️ **Discounts**
+- 📋 **Orders**
+- 📦 **Order Items**
+- 💳 **Payments**
 
-Entity relationships and delete behaviors are configured using Entity Framework Core.
+### Entity Relationships
+
+Entity relationships and delete behaviors are configured using **Entity Framework Core**.
 
 
 
