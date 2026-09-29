@@ -292,3 +292,34 @@ T-Shirt
 This approach allows the application to maintain and manage stock independently for each product variant.
 
 For example, purchasing a Medium / Black T-Shirt decreases only the stock of that specific variant without affecting other sizes or colors.
+
+
+## 💳 Payment Simulation
+
+MaleFashion does not process real financial transactions.
+
+Instead, payment functionality is implemented as a **simulation** for demonstration and project requirements.
+
+### 💰 Supported Payment Methods
+
+- **Cash on Delivery**
+- **bKash Simulation**
+
+### 🔄 Payment Workflow
+
+```text
+Customer
+   ↓
+Checkout
+   ↓
+Select Payment Method
+   ↓
+Enter Payment Information
+   ↓
+Validate Information
+   ↓
+Payment Accepted
+   ↓
+Create Order
+
+Note: No real money is transferred through the payment simulation. The payment process is implemented only for demonstration and application workflow purposes.
