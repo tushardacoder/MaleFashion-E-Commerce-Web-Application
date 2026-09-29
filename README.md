@@ -23,7 +23,7 @@ The system covers the complete e-commerce lifecycle, including:
 - **Order Processing**
 - **Payment Simulation**
 - **Authentication and Authorization**
-- - **User Management**
+- **User Management**
 - **Email Services**
 - **Google reCAPTCHA**
 - **Unit Testing**
@@ -31,3 +31,65 @@ The system covers the complete e-commerce lifecycle, including:
 - **Production Deployment**
 
 The project focuses on **separation of concerns, maintainability, scalability, testability, loose coupling, and secure application development**.
+
+---
+
+## 🎯 Project Overview
+
+MaleFashion provides two primary user experiences:
+
+### 👨‍💼 Admin Panel
+
+Administrators can manage and maintain the e-commerce platform through a protected **Administration Panel**.
+
+### 🛍️ Customer Storefront
+
+Customers can browse products, select variants, manage their cart and wishlist, apply discounts, checkout, and place orders.
+
+The application uses:
+
+- **MaleFashion Storefront Template** for the customer-facing website
+- **Sneat Admin Template** for the administration panel
+
+---
+
+## ✨ Key Features
+
+### 👨‍💼 Admin Features
+
+Administrators can manage:
+
+- **Dashboard**
+- **Products**
+- **Categories**
+- **Product Variants**
+- **Inventory**
+- **Discounts**
+- **Coupons**
+- **Orders**
+- **Users and Roles**
+- **Protected Administration Functionality**
+
+---
+
+### 🛍️ Customer Features
+
+Customers can:
+
+- **Register and Login**
+- **Browse Products**
+- **Search Products**
+- **View Product Details**
+- **Select Size and Color**
+- **Add Products to Wishlist**
+- **Add Products to Cart**
+- **Update Cart Quantities**
+- **Remove Cart Items**
+- **Apply Coupon Codes**
+- **Checkout**
+- **Select Payment Methods**
+- **Perform Simulated Payments**
+- **Place Orders**
+- **View Order-Related Information**
+
+---
