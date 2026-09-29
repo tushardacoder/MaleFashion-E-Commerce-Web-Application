@@ -1,0 +1,47 @@
+﻿@model MaleFashion.Web.Models.Account.RegisterConfirmationViewModel
+
+
+@{
+    ViewData["Title"] = "Register Confirmation";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+
+            <div class="card">
+                <div class="card-body text-center">
+
+                    <h4 class="mb-3">
+                        Registration Successful
+                    </h4>
+
+                    @if (Model.DisplayConfirmAccountLink)
+                    {
+                        <p class="text-muted">
+                            Please confirm your email address.
+                        </p>
+
+                        <p>
+                            <strong>@Model.Email</strong>
+                        </p>
+
+                        <a id="confirm-link"
+                           href="@Model.EmailConfirmationUrl"
+                           class="btn btn-primary">
+                            Confirm Email
+                        </a>
+                    }
+                    else
+                    {
+                        <p class="text-muted">
+                            Please check your email to confirm your account.
+                        </p>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

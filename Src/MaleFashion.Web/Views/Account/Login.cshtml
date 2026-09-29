@@ -1,0 +1,554 @@
+﻿@using MaleFashion.Web.Models.Account
+@using Microsoft.Extensions.Configuration
+
+@inject IConfiguration Configuration
+
+@{
+    var recaptchaSiteKey =
+        Configuration["GoogleReCaptcha:SiteKey"];
+}
+
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Male Fashion | Log In</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/font-awesome.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/style.css">
+
+    <!-- Google reCAPTCHA v3 -->
+    <script src="https://www.google.com/recaptcha/api.js?render=@recaptchaSiteKey"></script>
+
+    <style>
+
+            body {
+                background: #f5f5f5;
+                font-family: "Nunito Sans", sans-serif;
+            }
+
+            .login-section {
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 40px 15px;
+            }
+
+            .login-box {
+                background: #fff;
+                width: min(100%, 550px);
+                padding: clamp(25px, 5vw, 45px);
+                box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+            }
+
+            .login-logo {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+                .login-logo img {
+                    max-width: 180px;
+                }
+
+            .login-title {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+                .login-title h2 {
+                    font-size: clamp(22px, 5vw, 28px);
+                    font-weight: 700;
+                    margin-bottom: 8px;
+                }
+
+                .login-title p {
+                    color: #777;
+                    font-size: clamp(13px, 2vw, 16px);
+                    margin-bottom: 0;
+                }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+                .form-group label {
+                    display: block;
+                    font-weight: 600;
+                    margin-bottom: 8px;
+                }
+
+            .form-control {
+                width: 100%;
+                height: 50px;
+                border: 1px solid #ddd;
+                border-radius: 0;
+                padding: 0 15px;
+            }
+
+                .form-control:focus {
+                    border-color: #111;
+                    box-shadow: none;
+                }
+
+            .remember-me {
+                margin-bottom: 20px;
+            }
+
+                .remember-me label {
+                    font-weight: 400;
+                    cursor: pointer;
+                }
+
+                .remember-me input {
+                    margin-right: 6px;
+                }
+
+            .login-btn {
+                width: 100%;
+                height: 50px;
+                border: none;
+                background: #111;
+                color: #fff;
+                font-weight: 700;
+                text-transform: uppercase;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+                .login-btn:hover {
+                    background: #333;
+                }
+
+                .login-btn:disabled {
+                    opacity: 0.7;
+                    cursor: not-allowed;
+                }
+
+            .validation-error {
+                display: block;
+                margin-top: 6px;
+                color: #dc3545;
+                font-size: 13px;
+            }
+
+            .validation-summary {
+                margin-bottom: 20px;
+                color: #dc3545;
+                font-size: 14px;
+            }
+
+            .login-links {
+                text-align: center;
+                margin-top: 25px;
+            }
+
+                .login-links p {
+                    margin-bottom: 10px;
+                }
+
+                .login-links a {
+                    color: #111;
+                    font-weight: 600;
+                    text-decoration: none;
+                }
+
+                    .login-links a:hover {
+                        text-decoration: underline;
+                    }
+
+            .external-login {
+                margin-top: 30px;
+                padding-top: 25px;
+                border-top: 1px solid #eee;
+                text-align: center;
+            }
+
+                .external-login h4 {
+                    font-size: 16px;
+                    font-weight: 700;
+                    margin-bottom: 15px;
+                }
+
+                .external-login p {
+                    color: #777;
+                    font-size: 14px;
+                    line-height: 1.6;
+                }
+
+                .external-login .btn {
+                    border-radius: 0;
+                    margin: 5px;
+                    padding: 10px 20px;
+                    background: #111;
+                    border: none;
+                }
+
+                    .external-login .btn:hover {
+                        background: #333;
+                    }
+
+            .home-link {
+                text-align: center;
+                margin-top: 20px;
+            }
+
+                .home-link a {
+                    color: #555;
+                    font-size: 14px;
+                    font-weight: 600;
+                    text-decoration: none;
+                }
+
+                    .home-link a:hover {
+                        color: #111;
+                        text-decoration: underline;
+                    }
+
+    </style>
+
+</head>
+
+<body>
+
+    <section class="login-section">
+
+        <div class="login-box">
+
+            <!-- Logo -->
+            <div class="login-logo">
+
+                <a asp-area=""
+                   asp-controller="Home"
+                   asp-action="Index1">
+
+                    <img src="~/Malefashon/Assets/img/logo.png"
+                         alt="Male Fashion">
+
+                </a>
+
+            </div>
+
+
+            <!-- Title -->
+            <div class="login-title">
+
+                <h2>Welcome Back</h2>
+
+                <p>
+                    Sign in to your Male Fashion account
+                </p>
+
+            </div>
+
+
+            <!-- Login Form -->
+            <form id="loginForm"
+                  method="post"
+                  asp-area=""
+                  asp-controller="Account"
+                  asp-action="Login"
+                  asp-route-returnUrl="@Model.ReturnUrl">
+
+                @Html.AntiForgeryToken()
+
+                <!-- reCAPTCHA Token -->
+                <input type="hidden"
+                       id="recaptchaToken"
+                       name="recaptchaToken" />
+
+
+                <!-- Validation Summary -->
+                <div asp-validation-summary="ModelOnly"
+                     class="validation-summary"
+                     role="alert">
+                </div>
+
+
+                <!-- Email -->
+                <div class="form-group">
+
+                    <label asp-for="Email">
+                        Email Address
+                    </label>
+
+                    <input asp-for="Email"
+                           class="form-control"
+                           autocomplete="username"
+                           aria-required="true"
+                           placeholder="Enter your email">
+
+                    <span asp-validation-for="Email"
+                          class="validation-error">
+                    </span>
+
+                </div>
+
+
+                <!-- Password -->
+                <div class="form-group">
+
+                    <label asp-for="Password">
+                        Password
+                    </label>
+
+                    <input asp-for="Password"
+                           class="form-control"
+                           autocomplete="current-password"
+                           aria-required="true"
+                           placeholder="Enter your password">
+
+                    <span asp-validation-for="Password"
+                          class="validation-error">
+                    </span>
+
+                </div>
+
+
+                <!-- Change Password -->
+                <div class="login-links">
+
+                    <p>
+
+                        @* <a id="change-password"
+                           asp-area=""
+                           asp-action="ResetPassword"
+                           asp-controller="Account">
+
+                            Change Password
+
+                        </a> *@
+
+                    </p>
+
+                </div>
+
+
+                <!-- Login Button -->
+                <button id="loginSubmit"
+                        type="submit"
+                        class="login-btn">
+
+                    Log In
+
+                </button>
+
+
+                <!-- Links -->
+                <div class="login-links">
+
+                    <p>
+
+                        <a id="forgot-password"
+                           asp-area=""
+                           asp-action="ForgotPassword"
+                           asp-controller="Account">
+
+                            Forgot your password?
+
+                        </a>
+
+                    </p>
+
+
+                    <p>
+
+                        Don't have an account?
+
+                        <a asp-area=""
+                           asp-action="Register"
+                           asp-controller="Account"
+                           asp-route-returnUrl="@Model.ReturnUrl">
+
+                            Create Account
+
+                        </a>
+
+                    </p>
+
+
+                  @*   <div class="login-links">
+
+                        <p>
+
+                            <a id="admin-login"
+                               asp-area="Admin"
+                               asp-action="Index"
+                               asp-controller="Home">
+
+                                Sign In to Admin panel
+
+                            </a>
+
+                        </p>
+
+                    </div> *@
+
+                </div>
+
+            </form>
+
+
+            <!-- External Login -->
+            <div class="external-login">
+
+                @*
+                @{
+                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                    {
+                        <p>
+                            No external authentication services are currently configured.
+                        </p>
+                    }
+                    else
+                    {
+                        <form id="external-account"
+                              asp-area=""
+                              asp-controller="Account"
+                              asp-action="ExternalLogin"
+                              asp-route-returnUrl="@Model.ReturnUrl"
+                              method="post">
+
+                            @foreach (var provider in Model.ExternalLogins!)
+                            {
+                                <button type="submit"
+                                        class="btn btn-dark"
+                                        name="provider"
+                                        value="@provider.Name"
+                                        title="Log in using your @provider.DisplayName account">
+
+                                    @provider.DisplayName
+
+                                </button>
+                            }
+
+                        </form>
+                    }
+                }
+                *@
+
+            </div>
+
+
+            <!-- Home -->
+            <div class="home-link">
+
+                <a asp-area=""
+                   asp-controller="Home"
+                   asp-action="Index1">
+
+                    <i class="fa fa-arrow-left"></i>
+
+                    Back to Home
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Scripts -->
+
+    <script src="~/Malefashon/Assets/js/jquery-3.3.1.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/bootstrap.min.js"></script>
+
+
+    <!-- Validation -->
+    <partial name="_ValidationScriptsPartial" />
+
+
+    <!-- Google reCAPTCHA v3 -->
+    <script>
+
+            const loginForm =
+                document.getElementById("loginForm");
+
+            const loginButton =
+                document.getElementById("loginSubmit");
+
+            loginForm.addEventListener("submit", function(event) {
+
+                // If token already exists, allow normal form submission
+                const token =
+                    document.getElementById("recaptchaToken").value;
+
+                if (token) {
+                    return;
+                }
+
+                // Stop form submission until token is generated
+                event.preventDefault();
+
+                // Prevent multiple clicks
+                loginButton.disabled = true;
+
+                grecaptcha.ready(function() {
+
+                    grecaptcha.execute(
+                        '@recaptchaSiteKey',
+                        {
+                            action: 'login'
+                        }
+                    )
+                        .then(function(token) {
+
+                            document
+                                .getElementById("recaptchaToken")
+                                .value = token;
+
+                            // Submit the form normally
+                            loginForm.submit();
+
+                        })
+                        .catch(function(error) {
+
+                            console.error(error);
+
+                            loginButton.disabled = false;
+
+                            alert(
+                                "Security verification failed. Please try again."
+                            );
+
+                        });
+
+                });
+
+            });
+
+    </script>
+
+</body>
+
+</html>

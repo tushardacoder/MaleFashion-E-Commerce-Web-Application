@@ -1,0 +1,140 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Email Confirmed";
+}
+
+<style>
+    .email-confirmation-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f5f7ff 0%, #eef1f8 100%);
+        padding: 30px 15px;
+    }
+
+    .confirmation-card {
+        width: 100%;
+        max-width: 500px;
+        border: 0;
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0 15px 45px rgba(67, 89, 113, 0.12);
+        overflow: hidden;
+    }
+
+    .confirmation-body {
+        padding: 50px 40px;
+        text-align: center;
+    }
+
+    .success-icon-wrapper {
+        width: 90px;
+        height: 90px;
+        margin: 0 auto 25px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(113, 221, 55, 0.12);
+    }
+
+        .success-icon-wrapper i {
+            font-size: 55px;
+            color: #71dd37;
+        }
+
+    .confirmation-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #566a7f;
+        margin-bottom: 15px;
+    }
+
+    .confirmation-text {
+        color: #8592a3;
+        font-size: 15px;
+        line-height: 1.7;
+        margin-bottom: 30px;
+    }
+
+    .login-btn {
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(105, 108, 255, 0.25);
+        }
+
+    .confirmation-footer {
+        margin-top: 25px;
+        font-size: 13px;
+        color: #a1acb8;
+    }
+
+    @@media (max-width: 576px) {
+        .confirmation-body {
+            padding: 40px 25px;
+        }
+
+        .confirmation-title {
+            font-size: 24px;
+        }
+
+        .success-icon-wrapper {
+            width: 75px;
+            height: 75px;
+        }
+
+            .success-icon-wrapper i {
+                font-size: 45px;
+            }
+    }
+</style>
+
+<div class="email-confirmation-page">
+
+    <div class="confirmation-card">
+
+        <div class="confirmation-body">
+
+            <!-- Success Icon -->
+            <div class="success-icon-wrapper">
+                <i class="bx bx-check-circle"></i>
+            </div>
+
+            <!-- Title -->
+            <h3 class="confirmation-title">
+                Email Confirmed!
+            </h3>
+
+            <!-- Message -->
+            <p class="confirmation-text">
+                Your email address has been successfully verified.
+                Your account is now active and ready to use.
+            </p>
+
+            <!-- Login Button -->
+            <a asp-controller="Account"
+               asp-action="Login"
+               class="btn btn-primary login-btn">
+
+                <i class="bx bx-log-in me-1"></i>
+                Continue to Login
+
+            </a>
+
+            <!-- Footer -->
+            <div class="confirmation-footer">
+                Thank you for verifying your email address.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

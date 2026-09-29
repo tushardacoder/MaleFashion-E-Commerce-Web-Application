@@ -1,0 +1,197 @@
+﻿@{
+    Layout = "_Layout1";
+
+    ViewData["Title"] = "Orders";
+}
+
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css" />
+}
+
+
+<div class="container-fluid">
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h4 class="mb-0">
+                Orders
+            </h4>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table id="ordersTable"
+                       class="table table-bordered table-hover">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Order ID
+                            </th>
+
+                            <th>
+                                Customer
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                Phone
+                            </th>
+
+                            <th>
+                                Subtotal
+                            </th>
+
+                            <th>
+                                Discount
+                            </th>
+
+                            <th>
+                                Total
+                            </th>
+
+                            <th>
+                                Created At
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+
+
+    <script>
+
+        $(document).ready(function() {
+
+            $('#ordersTable').DataTable({
+
+                processing: true,
+
+                serverSide: true,
+
+                searching: false,
+
+                ordering: true,
+
+
+                ajax: {
+
+                    url:
+                        '@Url.Action(
+                                                                                                                            "GetPagedOrders",
+                                                                                                                            "Order",
+                                                                                                                    new { area = "Admin" })',
+
+                            type: 'POST',
+
+                contentType:
+                'application/json',
+
+                data: function(d) {
+
+                    return JSON.stringify(d);
+
+                }
+
+                        },
+
+
+            columns: [
+
+            {
+                data: 0
+            },
+
+            {
+                data: 1
+            },
+
+            {
+                data: 2
+            },
+
+            {
+                data: 3
+            },
+
+            {
+                data: 4
+            },
+
+            {
+                data: 5
+            },
+
+            {
+                data: 6
+            },
+
+            {
+                data: 7
+            },
+
+            {
+                data: 8,
+
+                orderable: false,
+
+                searchable: false,
+
+                render: function(data) {
+
+                    return `
+                                <a
+                                    href="/Admin/Order/Details/${data}"
+                                            class="btn btn-sm btn-primary">
+
+                                    Details
+
+                                        </a>
+                            `;
+                }
+            }
+
+        ]
+
+                    });
+
+                });
+
+    </script>
+}

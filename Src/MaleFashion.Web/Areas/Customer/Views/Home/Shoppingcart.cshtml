@@ -1,0 +1,2147 @@
+﻿
+@model MaleFashion.Application.Features.Carts.Query.CartViewModel
+
+
+
+@{
+ViewData["Title"] = "Shopping Cart";
+
+
+var cartItems =
+    Model?.Items
+            ?? new List<MaleFashion.Application.Features.Carts.Query.CartItemViewModel>();
+
+var cartQuantity = cartItems.Sum(x => x.Quantity);
+
+var cartTotal = Model?.Total ?? 0;
+var cartSubtotal = Model?.Subtotal ?? 0;
+var cartDiscount = Model?.Discount ?? 0;
+
+
+}
+
+<!DOCTYPE html>
+
+<html lang="zxx">
+
+<head>
+
+
+<meta charset="UTF-8">
+
+<meta name="description"
+      content="Male Fashion Shopping Cart">
+
+<meta name="keywords"
+      content="Male_Fashion, Shopping Cart, Male Fashion">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<meta http-equiv="X-UA-Compatible"
+      content="ie=edge">
+
+<title>Male-Fashion | Shopping Cart</title>
+
+<!-- GOOGLE FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+      rel="stylesheet">
+
+<!-- CSS -->
+<link rel="stylesheet"
+      href="~/Malefashon/Assets/css/bootstrap.min.css"
+      type="text/css">
+
+<link rel="stylesheet"
+      href="~/Malefashon/Assets/css/font-awesome.min.css"
+      type="text/css">
+
+<link rel="stylesheet"
+      href="~/Malefashon/Assets/css/elegant-icons.css"
+      type="text/css">
+
+<link rel="stylesheet"
+      href="~/Malefashon/Assets/css/magnific-popup.css"
+      type="text/css">
+
+<link rel="stylesheet"
+      href="~/Malefashon/Assets/css/nice-select.css"
+      type="text/css">
+
+<link rel="stylesheet"
+      href="~/Malefashon/Assets/css/owl.carousel.min.css"
+      type="text/css">
+
+<link rel="stylesheet"
+      href="~/Malefashon/Assets/css/slicknav.min.css"
+      type="text/css">
+
+<link rel="stylesheet"
+      href="~/Malefashon/Assets/css/style.css"
+      type="text/css">
+
+<style>
+
+    .shopping-cart {
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+
+    .cart-product-image {
+        width: 90px;
+        height: 110px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: #f8f8f8;
+    }
+
+    .cart-product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .cart-table table {
+        width: 100%;
+    }
+
+    .cart-table th {
+        font-weight: 700;
+        padding: 15px;
+    }
+
+    .cart-table td {
+        padding: 15px;
+        vertical-align: middle;
+    }
+
+    .cart-item {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .cart-item-details h6 {
+        margin-bottom: 5px;
+        font-weight: 700;
+    }
+
+    .cart-item-details span {
+        display: block;
+        font-size: 13px;
+        color: #777;
+    }
+
+    .quantity-control {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .quantity-btn {
+        width: 30px;
+        height: 30px;
+        border: 1px solid #ddd;
+        background: #fff;
+        cursor: pointer;
+    }
+
+    .quantity-btn:hover {
+        background: #f5f5f5;
+    }
+
+    .quantity-btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .quantity-number {
+        width: 40px;
+        height: 30px;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .remove-btn {
+        border: none;
+        background: transparent;
+        color: #111;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .remove-btn:hover {
+        color: red;
+    }
+
+    .cart-summary {
+        padding: 30px;
+        background: #f7f7f7;
+    }
+
+    .cart-summary ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .cart-summary li {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .cart-summary li.total {
+        border-top: 1px solid #ddd;
+        padding-top: 15px;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .empty-cart {
+        text-align: center;
+        padding: 80px 20px;
+    }
+
+    .empty-cart h4 {
+        margin-bottom: 15px;
+    }
+
+    .cart-variant-id {
+        font-size: 11px;
+        color: #aaa;
+    }
+
+    .header-cart-total {
+        margin-left: 12px;
+    }
+
+    /* AJAX LOADING */
+
+    .cart-loading {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    .ajax-spinner {
+        display: none;
+        margin-left: 5px;
+    }
+
+    .ajax-spinner.active {
+        display: inline-block;
+    }
+
+    /* Toast */
+
+    .cart-toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 99999;
+        display: none;
+        padding: 14px 22px;
+        color: #fff;
+        background: #111;
+        border-radius: 4px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    .cart-toast.success {
+        background: #28a745;
+    }
+
+    .cart-toast.error {
+        background: #dc3545;
+    }
+
+</style>
+
+
+</head>
+
+<body>
+
+
+<!-- PRELOADER -->
+
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- OFFCANVAS -->
+
+<div class="offcanvas-menu-overlay"></div>
+
+<div class="offcanvas-menu-wrapper">
+
+    <div class="offcanvas__option">
+
+        <div class="offcanvas__links">
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <span>
+                    Hello, @User.Identity?.Name
+                </span>
+
+                <form asp-area=""
+                      asp-controller="Account"
+                      asp-action="Logout"
+                      asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "Customer" })"
+                      method="post"
+                      style="display:inline-block; margin-left:15px;">
+
+                    <button type="submit"
+                            class="btn btn-link p-0"
+                            style="color:#fff; text-decoration:none;">
+
+                        Logout
+
+                    </button>
+
+                </form>
+            }
+            else
+            {
+                <a asp-area=""
+                   asp-controller="Account"
+                   asp-action="Register">
+
+                    Sign in
+
+                </a>
+
+                <a asp-area=""
+                   asp-controller="Home"
+                   asp-action="Faq">
+
+                    FAQs
+
+                </a>
+            }
+
+        </div>
+
+        @if (User.Identity?.IsAuthenticated == false)
+        {
+            <div class="offcanvas__top__hover">
+
+                <span>
+                    Usd
+                    <i class="arrow_carrot-down"></i>
+                </span>
+
+                <ul>
+                    <li>USD</li>
+                    <li>EUR</li>
+                    <li>USD</li>
+                </ul>
+
+            </div>
+        }
+
+    </div>
+
+    <div class="offcanvas__nav__option">
+
+        <!-- WISHLIST -->
+
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <a asp-area="Customer"
+               asp-controller="Home"
+               asp-action="Wishlist"
+               class="wishlist-button"
+               title="My Wishlist">
+
+                <img src="~/Malefashon/Assets/img/icon/heart.png"
+                     alt="Wishlist">
+
+                <span>
+                    @await Component.InvokeAsync("WishlistCount")
+                </span>
+
+            </a>
+        }
+
+        <!-- CART -->
+
+        @* <a asp-area="Customer"
+           asp-controller="Home"
+           asp-action="Shoppingcart">
+
+            <img src="~/Malefashon/Assets/img/icon/cart.png"
+                 alt="Cart">
+
+            <span id="offcanvasCartQuantity">
+                @cartQuantity
+            </span>
+
+        </a>
+
+        <div class="price"
+             id="offcanvasCartTotal">
+
+            ৳@cartTotal.ToString("N2")
+
+
+        </div> *@
+
+            @await Component.InvokeAsync("CartSummary")
+
+    </div>
+
+    <div id="mobile-menu-wrap"></div>
+
+    <div class="offcanvas__text">
+
+        <p>
+            Free shipping, 30-day return or refund guarantee.
+        </p>
+
+    </div>
+
+</div>
+
+<!-- HEADER -->
+
+<header class="header">
+
+    <!-- HEADER TOP -->
+
+    <div class="header__top">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-lg-6 col-md-7">
+
+                    <div class="header__top__left">
+
+                        <p>
+                            Free shipping, 30-day return or refund guarantee.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-6 col-md-5">
+
+                    <div class="header__top__right">
+
+                        <div class="header__top__links">
+
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <div style="
+                                    display:flex;
+                                    align-items:center;
+                                    gap:15px;
+                                    margin-right:30px;">
+
+                                    <span style="
+                                        color:#fff;
+                                        background:#000;
+                                        padding:8px 15px;
+                                        border-radius:4px;
+                                        font-weight:600;
+                                        white-space:nowrap;">
+
+                                        Hello, @User.Identity?.Name
+
+                                    </span>
+
+                                    <a asp-area="Customer"
+                                       asp-controller="Account"
+                                       asp-action="ChangePassword"
+                                       style="
+                                        color:#fff;
+                                        text-decoration:none;
+                                        font-weight:600;
+                                        white-space:nowrap;">
+
+                                        Change Password
+
+                                    </a>
+
+                                    <form asp-area=""
+                                          asp-controller="Account"
+                                          asp-action="Logout"
+                                          asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "Customer" })"
+                                          method="post"
+                                          style="margin:0;">
+
+                                        <button type="submit"
+                                                class="btn btn-link p-0"
+                                                style="
+                                                color:#fff;
+                                                text-decoration:none;
+                                                font-weight:600;
+                                                border:none;
+                                                background:transparent;">
+
+                                            Logout
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="offcanvas__links">
+
+                                    <a asp-area=""
+                                       asp-controller="Account"
+                                       asp-action="Register">
+
+                                        Sign in
+
+                                    </a>
+
+                                    <a asp-area=""
+                                       asp-controller="Home"
+                                       asp-action="Faq">
+
+                                        FAQs
+
+                                    </a>
+
+                                    <div class="header__top__hover">
+
+                                        <span>
+                                            Usd
+                                            <i class="arrow_carrot-down"></i>
+                                        </span>
+
+                                        <ul>
+                                            <li>USD</li>
+                                            <li>EUR</li>
+                                            <li>USD</li>
+                                        </ul>
+
+                                    </div>
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MAIN HEADER -->
+
+    <div class="container">
+
+        <div class="row">
+
+            <!-- LOGO -->
+
+            <div class="col-lg-3 col-md-3">
+
+                <div class="header__logo">
+
+                    <a asp-area="Customer"
+                       asp-controller="Home"
+                       asp-action="Index">
+
+                        <img src="~/Malefashon/Assets/img/logo.png"
+                             alt="Male Fashion">
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- NAVIGATION -->
+
+            <div class="col-lg-6 col-md-6">
+
+                <nav class="header__menu mobile-menu">
+
+                    <ul>
+
+                        <li>
+
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                Home
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Shop">
+
+                                Shop
+
+                            </a>
+
+                        </li>
+
+                        <li class="active">
+
+                            <a href="#">
+                                My Shopping
+                            </a>
+
+                            <ul class="dropdown">
+
+                                @if (User.Identity?.IsAuthenticated == false)
+                                {
+                                    <li>
+
+                                        <a asp-area="Customer"
+                                           asp-controller="Home"
+                                           asp-action="About">
+
+                                            About Us
+
+                                        </a>
+
+                                    </li>
+                                }
+
+                                <li>
+
+                                    <a asp-area="Customer"
+                                       asp-controller="Home"
+                                       asp-action="ShopDetails">
+
+                                        Shop Details
+
+                                    </a>
+
+                                </li>
+
+                                <li class="active">
+
+                                    <a asp-area="Customer"
+                                       asp-controller="Home"
+                                       asp-action="Shoppingcart">
+
+                                        Shopping Cart
+
+                                    </a>
+
+                                </li>
+
+                                <li>
+
+                                    <a asp-area="Customer"
+                                       asp-controller="Home"
+                                       asp-action="Checkout">
+
+                                        Check Out
+
+                                    </a>
+
+                                </li>
+
+                                
+                                    <li>
+
+                                        
+                                        <a asp-area="Customer"
+                                           asp-controller="Home"
+                                           asp-action="OrderHistory">
+                                            Order History
+                                        </a>
+
+                                    </li>
+                                
+
+                            </ul>
+
+                        </li>
+
+                        @if (User.Identity?.IsAuthenticated == false)
+                        {
+                            <li>
+
+                                <a asp-area="Customer"
+                                   asp-controller="Home"
+                                   asp-action="Blog">
+
+                                    Blog
+
+                                </a>
+
+                            </li>
+
+                            <li>
+
+                                <a asp-area="Customer"
+                                   asp-controller="ContactUs"
+                                   asp-action="Contact">
+
+                                    Contacts
+
+                                </a>
+
+                            </li>
+                        }
+
+                    </ul>
+
+                </nav>
+
+            </div>
+
+            <!-- HEADER ICONS -->
+
+            <div class="col-lg-3 col-md-3">
+
+                <div class="header__nav__option">
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a asp-area="Customer"
+                           asp-controller="Home"
+                           asp-action="Wishlist"
+                           class="wishlist-button"
+                           title="My Wishlist">
+
+                            <img src="~/Malefashon/Assets/img/icon/heart.png"
+                                 alt="Wishlist">
+
+                            <span style="
+                                font-size:14px;
+                                color:#111;
+                                font-weight:normal;">
+
+                                @await Component.InvokeAsync("WishlistCount")
+
+                            </span>
+
+                        </a>
+                    }
+
+                    <!-- CART -->
+
+                    <a asp-area="Customer"
+                       asp-controller="Home"
+                       asp-action="Shoppingcart"
+                       title="Shopping Cart">
+
+                        <img src="~/Malefashon/Assets/img/icon/cart.png"
+                             alt="Cart">
+
+                        <span id="headerCartQuantity">
+
+                            @cartQuantity
+
+                        </span>
+
+                    </a>
+
+                    <!-- CART TOTAL -->
+
+                    <div class="price"
+                         id="headerCartTotal">
+
+                        ৳@cartTotal.ToString("N2")
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="canvas__open">
+
+            <i class="fa fa-bars"></i>
+
+        </div>
+
+    </div>
+
+</header>
+
+<!-- BREADCRUMB -->
+
+<section class="breadcrumb-option">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-12">
+
+                <div class="breadcrumb__text">
+
+                    <h4>
+                        Shopping Cart
+                    </h4>
+
+                    <div class="breadcrumb__links">
+
+                        <a asp-area="Customer"
+                           asp-controller="Home"
+                           asp-action="Index">
+
+                            Home
+
+                        </a>
+
+                        <span>
+                            Shopping Cart
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- SHOPPING CART -->
+
+<section class="shopping-cart">
+
+    <div class="container">
+
+        <!-- AJAX TOAST -->
+
+        <div id="cartToast"
+             class="cart-toast">
+        </div>
+
+        <div id="cartContainer">
+
+            @if (cartItems.Any())
+            {
+                <div class="row">
+
+                    <!-- CART ITEMS -->
+
+                    <div class="col-lg-8">
+
+                        <div class="cart-table">
+
+                            <table>
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Product
+                                        </th>
+
+                                        <th>
+                                            Price
+                                        </th>
+
+                                        <th>
+                                            Quantity
+                                        </th>
+
+                                        <th>
+                                            Total
+                                        </th>
+
+                                        <th>
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var item in cartItems)
+                                    {
+                                        <tr class="cart-row"
+                                            data-variant-id="@item.ProductVariantId">
+
+                                            <!-- PRODUCT -->
+
+                                            <td>
+
+                                                <div class="cart-item">
+
+                                                    <div class="cart-product-image">
+
+                                                        @if (!string.IsNullOrWhiteSpace(item.ImageName))
+                                                        {
+                                                            <img src="@Url.Content("~/uploads/products/" + item.ImageName)"
+                                                                 alt="@item.ProductName">
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>
+                                                                No Image
+                                                            </span>
+                                                        }
+
+                                                    </div>
+
+                                                    <div class="cart-item-details">
+
+                                                        <h6>
+                                                            @item.ProductName
+                                                        </h6>
+
+                                                        @if (!string.IsNullOrEmpty(item.Branding))
+                                                        {
+                                                            <span>
+                                                                Brand:
+                                                                @item.Branding
+                                                            </span>
+                                                        }
+
+                                                        @if (!string.IsNullOrEmpty(item.Size))
+                                                        {
+                                                            <span>
+                                                                Size:
+                                                                @item.Size
+                                                            </span>
+                                                        }
+
+                                                        @if (!string.IsNullOrEmpty(item.Color))
+                                                        {
+                                                            <span>
+                                                                Color:
+                                                                @item.Color
+                                                            </span>
+                                                        }
+
+                                                        @if (!string.IsNullOrEmpty(item.Sku))
+                                                        {
+                                                            <span>
+                                                                SKU:
+                                                                @item.Sku
+                                                            </span>
+                                                        }
+
+                                                        <span class="cart-variant-id">
+
+                                                            Variant ID:
+                                                            @item.ProductVariantId
+
+                                                        </span>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </td>
+
+                                            <!-- PRICE -->
+
+                                            <td>
+
+                                                <span class="unit-price">
+
+                                                    ৳@item.UnitPrice.ToString("N2")
+
+                                                </span>
+
+                                            </td>
+
+                                            <!-- QUANTITY -->
+
+                                            <td>
+
+                                                <div class="quantity-control">
+
+                                                    <!-- MINUS -->
+
+                                                    <button type="button"
+                                                            class="quantity-btn quantity-minus"
+                                                            data-variant-id="@item.ProductVariantId"
+                                                            data-quantity="@item.Quantity">
+
+                                                        -
+
+                                                    </button>
+
+                                                    <!-- CURRENT -->
+
+                                                    <span class="quantity-number quantity-value">
+
+                                                        @item.Quantity
+
+                                                    </span>
+
+                                                    <!-- PLUS -->
+
+                                                    <button type="button"
+                                                            class="quantity-btn quantity-plus"
+                                                            data-variant-id="@item.ProductVariantId"
+                                                            data-quantity="@item.Quantity">
+
+                                                        +
+
+                                                    </button>
+
+                                                    <span class="ajax-spinner">
+                                                        <i class="fa fa-spinner fa-spin"></i>
+                                                    </span>
+
+                                                </div>
+
+                                            </td>
+
+                                            <!-- ITEM TOTAL -->
+
+                                            <td>
+
+                                                <strong class="item-total">
+
+                                                    ৳@item.Total.ToString("N2")
+
+                                                </strong>
+
+                                            </td>
+
+                                            <!-- REMOVE -->
+
+                                            <td>
+
+                                                <button type="button"
+                                                        class="remove-btn ajax-remove"
+                                                        data-variant-id="@item.ProductVariantId"
+                                                        title="Remove">
+
+                                                    <i class="fa fa-close"></i>
+
+                                                </button>
+
+                                            </td>
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <!-- CONTINUE SHOPPING -->
+
+                        <div style="margin-top:30px;">
+
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Shop"
+                               class="primary-btn">
+
+                                CONTINUE SHOPPING
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    <!-- SUMMARY -->
+
+                    <div class="col-lg-4">
+
+                        <div class="cart-summary">
+
+                            <h6 class="checkout__title">
+                                Cart Summary
+                            </h6>
+
+                            <ul>
+
+                                <li>
+
+                                    <span>
+                                        Subtotal
+                                    </span>
+
+                                    <span id="cartSubtotal">
+
+                                        ৳@cartSubtotal.ToString("N2")
+
+                                    </span>
+
+                                </li>
+
+                                @* <li>
+
+                                    <span>
+                                        Discount
+                                    </span>
+
+                                    <span id="cartDiscount">
+
+                                        ৳@cartDiscount.ToString("N2")
+
+                                    </span>
+
+                                </li> *@
+
+                                <li class="total">
+
+                                    <span>
+                                        Total
+                                    </span>
+
+                                    <span id="cartTotal">
+
+                                        ৳@cartTotal.ToString("N2")
+
+                                    </span>
+
+                                </li>
+
+                            </ul>
+
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Checkout"
+                               class="primary-btn"
+                               style="
+                                width:100%;
+                                text-align:center;
+                                margin-top:20px;">
+
+                                PROCEED TO CHECKOUT
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+            else
+            {
+                <div class="empty-cart">
+
+                    <h4>
+                        Your shopping cart is empty.
+                    </h4>
+
+                    <p>
+                        Add some products to your cart
+                        to continue shopping.
+                    </p>
+
+                    <a asp-area="Customer"
+                       asp-controller="Home"
+                       asp-action="Shop"
+                       class="primary-btn">
+
+                        START SHOPPING
+
+                    </a>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-3 col-md-6 col-sm-6">
+
+                <div class="footer__about">
+
+                    <div class="footer__logo">
+
+                        <a asp-area="Customer"
+                           asp-controller="Home"
+                           asp-action="Index">
+
+                            <img src="~/Malefashon/Assets/img/footer-logo.png"
+                                 alt="Male Fashion">
+
+                        </a>
+
+                    </div>
+
+                    <p>
+
+                        The customer is at the heart
+                        of our unique business model,
+                        which includes design.
+
+                    </p>
+
+                    <a href="#">
+
+                        <img src="~/Malefashon/Assets/img/payment.png"
+                             alt="Payment Methods">
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+
+                <div class="footer__widget">
+
+                    <h6>
+                        Shopping
+                    </h6>
+
+                    <ul>
+
+                        <li>
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Shop">
+                                Clothing Store
+                            </a>
+                        </li>
+
+                        <li>
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Shop">
+                                Trending Shoes
+                            </a>
+                        </li>
+
+                        <li>
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Shop">
+                                Accessories
+                            </a>
+                        </li>
+
+                        <li>
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Shop">
+                                Sale
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-2 col-md-3 col-sm-6">
+
+                <div class="footer__widget">
+
+                    <h6>
+                        Customer Service
+                    </h6>
+
+                    <ul>
+
+                        <li>
+
+                            <a asp-area="Customer"
+                               asp-controller="ContactUs"
+                               asp-action="Contact">
+
+                                Contact Us
+
+                            </a>
+
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                Payment Methods
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                Delivery
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                Return & Exchanges
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+
+                <div class="footer__widget">
+
+                    <h6>
+                        NewLetter
+                    </h6>
+
+                    <div class="footer__newslatter">
+
+                        <p>
+
+                            Be the first to know
+                            about new arrivals,
+                            look books, sales & promos!
+
+                        </p>
+
+                        <form action="#">
+
+                            <input type="text"
+                                   placeholder="Your email">
+
+                            <button type="submit">
+
+                                <span class="icon_mail_alt"></span>
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-12 text-center">
+
+                <div class="footer__copyright__text">
+
+                    <p>
+
+                        Copyright ©
+
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script>
+
+                        All rights reserved |
+
+                        This template is made with
+
+                        <i class="fa fa-heart-o"
+                           aria-hidden="true"></i>
+
+                        by
+
+                        <a href="https://colorlib.com"
+                           target="_blank">
+
+                            Colorlib
+
+                        </a>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+<!-- SEARCH -->
+
+<div class="search-model">
+
+    <div class="h-100 d-flex align-items-center justify-content-center">
+
+        <div class="search-close-switch">
+            +
+        </div>
+
+        <form class="search-model-form">
+
+            <input type="text"
+                   id="search-input"
+                   placeholder="Search here.....">
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- JAVASCRIPT -->
+
+<script src="~/Malefashon/Assets/js/jquery-3.3.1.min.js"></script>
+
+<script src="~/Malefashon/Assets/js/bootstrap.min.js"></script>
+
+<script src="~/Malefashon/Assets/js/jquery.nice-select.min.js"></script>
+
+<script src="~/Malefashon/Assets/js/jquery.nicescroll.min.js"></script>
+
+<script src="~/Malefashon/Assets/js/jquery.magnific-popup.min.js"></script>
+
+<script src="~/Malefashon/Assets/js/jquery.countdown.min.js"></script>
+
+<script src="~/Malefashon/Assets/js/jquery.slicknav.js"></script>
+
+<script src="~/Malefashon/Assets/js/mixitup.min.js"></script>
+
+<script src="~/Malefashon/Assets/js/owl.carousel.min.js"></script>
+
+<script src="~/Malefashon/Assets/js/main.js"></script>
+
+
+<!-- ========================================================= -->
+<!-- AJAX CART -->
+<!-- ========================================================= -->
+
+<script>
+
+    /*
+     * =========================================================
+     * CART AJAX URLS
+     * =========================================================
+     */
+
+    const updateCartUrl =
+        '@Url.Action("UpdateCartQuantity", "Home", new { area = "Customer" })';
+
+    const removeCartUrl =
+        '@Url.Action("RemoveFromCart", "Home", new { area = "Customer" })';
+
+
+    /*
+     * =========================================================
+     * ANTI FORGERY TOKEN
+     * =========================================================
+     */
+
+    const antiForgeryToken =
+        document.querySelector(
+            'input[name="__RequestVerificationToken"]'
+        )?.value;
+
+
+    /*
+     * =========================================================
+     * TOAST
+     * =========================================================
+     */
+
+    function showCartToast(message, type = "success")
+    {
+        const toast =
+            document.getElementById("cartToast");
+
+        toast.textContent = message;
+
+        toast.className =
+            "cart-toast " + type;
+
+        toast.style.display = "block";
+
+        setTimeout(function ()
+        {
+            toast.style.display = "none";
+
+        }, 2500);
+    }
+
+
+    /*
+     * =========================================================
+     * FORMAT MONEY
+     * =========================================================
+     */
+
+    function formatMoney(value)
+    {
+        return "৳" +
+            Number(value).toLocaleString(
+                "en-US",
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
+            );
+    }
+
+
+    /*
+     * =========================================================
+     * UPDATE HEADER
+     * =========================================================
+     */
+
+    function updateHeader(cart)
+    {
+        const headerQuantity =
+            document.getElementById("headerCartQuantity");
+
+        const headerTotal =
+            document.getElementById("headerCartTotal");
+
+        const offcanvasQuantity =
+            document.getElementById("offcanvasCartQuantity");
+
+        const offcanvasTotal =
+            document.getElementById("offcanvasCartTotal");
+
+
+        if (headerQuantity)
+        {
+            headerQuantity.textContent =
+                cart.quantity;
+        }
+
+
+        if (headerTotal)
+        {
+            headerTotal.textContent =
+                formatMoney(cart.total);
+        }
+
+
+        if (offcanvasQuantity)
+        {
+            offcanvasQuantity.textContent =
+                cart.quantity;
+        }
+
+
+        if (offcanvasTotal)
+        {
+            offcanvasTotal.textContent =
+                formatMoney(cart.total);
+        }
+    }
+
+
+    /*
+     * =========================================================
+     * UPDATE SUMMARY
+     * =========================================================
+     */
+
+    function updateSummary(cart)
+    {
+        const subtotal =
+            document.getElementById("cartSubtotal");
+
+        const discount =
+            document.getElementById("cartDiscount");
+
+        const total =
+            document.getElementById("cartTotal");
+
+
+        if (subtotal)
+        {
+            subtotal.textContent =
+                formatMoney(cart.subtotal);
+        }
+
+
+        if (discount)
+        {
+            discount.textContent =
+                formatMoney(cart.discount);
+        }
+
+
+        if (total)
+        {
+            total.textContent =
+                formatMoney(cart.total);
+        }
+    }
+
+
+    /*
+     * =========================================================
+     * UPDATE CART FROM SERVER
+     * =========================================================
+     */
+
+    async function refreshCart()
+    {
+        const response =
+            await fetch(
+                '@Url.Action("Shoppingcart", "Home", new { area = "Customer" })',
+                {
+                    method: "GET",
+                    headers:
+                    {
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                }
+            );
+
+
+        if (!response.ok)
+        {
+            throw new Error(
+                "Unable to refresh cart."
+            );
+        }
+
+
+        const html =
+            await response.text();
+
+
+        const parser =
+            new DOMParser();
+
+
+        const doc =
+            parser.parseFromString(
+                html,
+                "text/html"
+            );
+
+
+        const newCartContainer =
+            doc.querySelector("#cartContainer");
+
+
+        const currentCartContainer =
+            document.querySelector("#cartContainer");
+
+
+        if (newCartContainer &&
+            currentCartContainer)
+        {
+            currentCartContainer.innerHTML =
+                newCartContainer.innerHTML;
+        }
+
+
+        /*
+         * Read updated header values
+         */
+
+        const newHeaderQuantity =
+            doc.querySelector("#headerCartQuantity");
+
+        const newHeaderTotal =
+            doc.querySelector("#headerCartTotal");
+
+
+        const currentHeaderQuantity =
+            document.querySelector("#headerCartQuantity");
+
+        const currentHeaderTotal =
+            document.querySelector("#headerCartTotal");
+
+
+        if (newHeaderQuantity &&
+            currentHeaderQuantity)
+        {
+            currentHeaderQuantity.textContent =
+                newHeaderQuantity.textContent.trim();
+        }
+
+
+        if (newHeaderTotal &&
+            currentHeaderTotal)
+        {
+            currentHeaderTotal.textContent =
+                newHeaderTotal.textContent.trim();
+        }
+
+
+        /*
+         * Re-read offcanvas values
+         */
+
+        const newOffcanvasQuantity =
+            doc.querySelector(
+                "#offcanvasCartQuantity"
+            );
+
+        const newOffcanvasTotal =
+            doc.querySelector(
+                "#offcanvasCartTotal"
+            );
+
+
+        const currentOffcanvasQuantity =
+            document.querySelector(
+                "#offcanvasCartQuantity"
+            );
+
+        const currentOffcanvasTotal =
+            document.querySelector(
+                "#offcanvasCartTotal"
+            );
+
+
+        if (newOffcanvasQuantity &&
+            currentOffcanvasQuantity)
+        {
+            currentOffcanvasQuantity.textContent =
+                newOffcanvasQuantity.textContent.trim();
+        }
+
+
+        if (newOffcanvasTotal &&
+            currentOffcanvasTotal)
+        {
+            currentOffcanvasTotal.textContent =
+                newOffcanvasTotal.textContent.trim();
+        }
+    }
+
+
+    /*
+     * =========================================================
+     * UPDATE QUANTITY
+     * =========================================================
+     */
+
+    async function updateQuantity(
+        productVariantId,
+        quantity,
+        row)
+    {
+        if (quantity < 1)
+        {
+            return;
+        }
+
+
+        if (row.classList.contains("cart-loading"))
+        {
+            return;
+        }
+
+
+        row.classList.add("cart-loading");
+
+
+        const spinner =
+            row.querySelector(".ajax-spinner");
+
+
+        if (spinner)
+        {
+            spinner.classList.add("active");
+        }
+
+
+        try
+        {
+            const formData =
+                new FormData();
+
+
+            formData.append(
+                "productVariantId",
+                productVariantId
+            );
+
+
+            formData.append(
+                "quantity",
+                quantity
+            );
+
+
+            formData.append(
+                "__RequestVerificationToken",
+                antiForgeryToken
+            );
+
+
+            const response =
+                await fetch(
+                    updateCartUrl,
+                    {
+                        method: "POST",
+                        body: formData,
+                        headers:
+                        {
+                            "X-Requested-With":
+                                "XMLHttpRequest"
+                        }
+                    }
+                );
+
+
+            if (!response.ok)
+            {
+                throw new Error(
+                    "Server error."
+                );
+            }
+
+
+            const result =
+                await response.json();
+
+
+            if (!result.success)
+            {
+                showCartToast(
+                    result.message ||
+                    "Unable to update cart.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /*
+             * Reload only cart HTML.
+             *
+             * The browser page itself does NOT reload.
+             */
+
+            await refreshCart();
+
+
+            showCartToast(
+                "Cart updated successfully.",
+                "success"
+            );
+        }
+        catch (error)
+        {
+            console.error(error);
+
+            showCartToast(
+                "Something went wrong while updating the cart.",
+                "error"
+            );
+        }
+        finally
+        {
+            row.classList.remove(
+                "cart-loading"
+            );
+
+            if (spinner)
+            {
+                spinner.classList.remove(
+                    "active"
+                );
+            }
+        }
+    }
+
+
+    /*
+     * =========================================================
+     * REMOVE ITEM
+     * =========================================================
+     */
+
+    async function removeCartItem(
+        productVariantId,
+        row)
+    {
+        if (row.classList.contains("cart-loading"))
+        {
+            return;
+        }
+
+
+        row.classList.add(
+            "cart-loading"
+        );
+
+
+        try
+        {
+            const formData =
+                new FormData();
+
+
+            formData.append(
+                "productVariantId",
+                productVariantId
+            );
+
+
+            formData.append(
+                "__RequestVerificationToken",
+                antiForgeryToken
+            );
+
+
+            const response =
+                await fetch(
+                    removeCartUrl,
+                    {
+                        method: "POST",
+                        body: formData,
+                        headers:
+                        {
+                            "X-Requested-With":
+                                "XMLHttpRequest"
+                        }
+                    }
+                );
+
+
+            if (!response.ok)
+            {
+                throw new Error(
+                    "Server error."
+                );
+            }
+
+
+            const result =
+                await response.json();
+
+
+            if (!result.success)
+            {
+                showCartToast(
+                    result.message ||
+                    "Unable to remove item.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /*
+             * Remove row immediately
+             */
+
+            row.remove();
+
+
+            /*
+             * Refresh complete cart section
+             *
+             * This also handles the empty cart.
+             */
+
+            await refreshCart();
+
+
+            showCartToast(
+                "Item removed from cart.",
+                "success"
+            );
+        }
+        catch (error)
+        {
+            console.error(error);
+
+            showCartToast(
+                "Something went wrong while removing the item.",
+                "error"
+            );
+        }
+        finally
+        {
+            row.classList.remove(
+                "cart-loading"
+            );
+        }
+    }
+
+
+    /*
+     * =========================================================
+     * EVENT DELEGATION
+     * =========================================================
+     *
+     * Important:
+     *
+     * refreshCart() replaces #cartContainer HTML.
+     *
+     * Therefore we use event delegation on document.
+     *
+     * This means the new +, -, and remove buttons
+     * automatically continue working.
+     */
+
+    document.addEventListener(
+        "click",
+        function (event)
+        {
+            /*
+             * PLUS
+             */
+
+            const plusButton =
+                event.target.closest(
+                    ".quantity-plus"
+                );
+
+
+            if (plusButton)
+            {
+                event.preventDefault();
+
+
+                const row =
+                    plusButton.closest(
+                        ".cart-row"
+                    );
+
+
+                const variantId =
+                    plusButton.dataset.variantId;
+
+
+                const currentQuantity =
+                    parseInt(
+                        plusButton.dataset.quantity
+                    );
+
+
+                updateQuantity(
+                    variantId,
+                    currentQuantity + 1,
+                    row
+                );
+
+                return;
+            }
+
+
+            /*
+             * MINUS
+             */
+
+            const minusButton =
+                event.target.closest(
+                    ".quantity-minus"
+                );
+
+
+            if (minusButton)
+            {
+                event.preventDefault();
+
+
+                const row =
+                    minusButton.closest(
+                        ".cart-row"
+                    );
+
+
+                const variantId =
+                    minusButton.dataset.variantId;
+
+
+                const currentQuantity =
+                    parseInt(
+                        minusButton.dataset.quantity
+                    );
+
+
+                if (currentQuantity <= 1)
+                {
+                    return;
+                }
+
+
+                updateQuantity(
+                    variantId,
+                    currentQuantity - 1,
+                    row
+                );
+
+                return;
+            }
+
+
+            /*
+             * REMOVE
+             */
+
+            const removeButton =
+                event.target.closest(
+                    ".ajax-remove"
+                );
+
+
+            if (removeButton)
+            {
+                event.preventDefault();
+
+
+                const row =
+                    removeButton.closest(
+                        ".cart-row"
+                    );
+
+
+                const variantId =
+                    removeButton.dataset.variantId;
+
+
+                removeCartItem(
+                    variantId,
+                    row
+                );
+
+                return;
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

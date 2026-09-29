@@ -1,0 +1,551 @@
+﻿@model MaleFashion.Domain.Entities.Product
+
+@{
+    Layout = "_Layout1";
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+
+    <div class="row mb-6 gy-6">
+
+        <div class="col-xl">
+
+            <div class="card">
+
+                <!-- =====================================================
+                     HEADER
+                ====================================================== -->
+
+                <div class="card-header
+                    d-flex
+                    justify-content-between
+                    align-items-center">
+
+                    <div>
+
+                        <h5 class="mb-1">
+                            Product Details
+                        </h5>
+
+                        <small class="text-body">
+                            View product information, variants and images
+                        </small>
+
+                    </div>
+
+
+                    <a asp-area="Admin"
+                       asp-controller="Product"
+                       asp-action="Update"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-primary">
+
+                        <i class="bx bx-edit me-1"></i>
+
+                        Edit Product
+
+                    </a>
+
+                </div>
+
+
+                <!-- =====================================================
+                     BODY
+                ====================================================== -->
+
+                <div class="card-body">
+
+
+                    <!-- =================================================
+                         PRODUCT INFORMATION
+                    ================================================== -->
+
+                    <h5 class="mb-3">
+                        Product Information
+                    </h5>
+
+
+                    <div class="row">
+
+
+                        <!-- Product Name -->
+
+                        <div class="col-md-6 mb-4">
+
+                            <small class="text-muted d-block mb-1">
+                                Product Name
+                            </small>
+
+                            <strong>
+                                @Model.ProductName
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Branding -->
+
+                        <div class="col-md-6 mb-4">
+
+                            <small class="text-muted d-block mb-1">
+                                Branding
+                            </small>
+
+                            <strong>
+                                @Model.Branding
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Category -->
+
+                        <div class="col-md-6 mb-4">
+
+                            <small class="text-muted d-block mb-1">
+                                Category
+                            </small>
+
+                            <strong>
+                                @Model.Category?.CategoryName
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Price -->
+
+                        <div class="col-md-6 mb-4">
+
+                            <small class="text-muted d-block mb-1">
+                                Price
+                            </small>
+
+                            <strong class="text-primary">
+                                @Model.ProductPrize.ToString("N2")
+                            </strong>
+
+                            @* If you want currency symbol:
+                            <strong class="text-primary">
+                                ৳ @Model.ProductPrize.ToString("N2")
+                            </strong>
+                            *@
+
+                        </div>
+
+
+                        <!-- Tags -->
+
+                        <div class="col-md-12 mb-4">
+
+                            <small class="text-muted d-block mb-2">
+                                Tags
+                            </small>
+
+                            @if (Model.Tags != null && Model.Tags.Any())
+                            {
+                                foreach (var tag in Model.Tags)
+                                {
+                                    <span class="badge bg-secondary me-1">
+                                        @tag
+                                    </span>
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    No tags available
+                                </span>
+                            }
+
+                        </div>
+
+
+                        <!-- Description -->
+
+                        <div class="col-md-12 mb-4">
+
+                            <small class="text-muted d-block mb-1">
+                                Description
+                            </small>
+
+                            <div>
+                                @Model.Description
+                            </div>
+
+                        </div>
+
+
+                        <!-- Customer Preview -->
+
+                        <div class="col-md-12 mb-4">
+
+                            <small class="text-muted d-block mb-1">
+                                Customer Preview
+                            </small>
+
+                            <div>
+                                @Model.CustomerPreview
+                            </div>
+
+                        </div>
+
+
+                        <!-- Additional Information -->
+
+                        <div class="col-md-12 mb-4">
+
+                            <small class="text-muted d-block mb-1">
+                                Additional Information
+                            </small>
+
+                            <div>
+                                @Model.AdditionalInfo
+                            </div>
+
+                        </div>
+
+
+                        <!-- Status -->
+
+                        <div class="col-md-12 mb-2">
+
+                            <small class="text-muted d-block mb-2">
+                                Status
+                            </small>
+
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge bg-success">
+                                    <i class="bx bx-check me-1"></i>
+                                    Active
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">
+                                    <i class="bx bx-x me-1"></i>
+                                    Inactive
+                                </span>
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <hr class="my-4" />
+
+
+                    <!-- =================================================
+                         PRODUCT VARIANTS
+                    ================================================== -->
+
+                    <div class="d-flex
+                        justify-content-between
+                        align-items-center
+                        mb-3">
+
+                        <div>
+
+                            <h5 class="mb-1">
+                                Product Variants
+                            </h5>
+
+                            <small class="text-muted">
+                                Sizes, colors, SKUs and product images
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    @if (Model.Variants != null && Model.Variants.Any())
+                    {
+
+                        @foreach (var variant
+                                 in Model.Variants.OrderBy(x => x.Sku))
+                        {
+
+                            <!-- =========================================
+                                 VARIANT CARD
+                            ========================================== -->
+
+                            <div class="card border mb-4">
+
+
+                                <!-- Variant Header -->
+
+                                <div class="card-header
+                                    d-flex
+                                    justify-content-between
+                                    align-items-center">
+
+                                    <div>
+
+                                        <h6 class="mb-1">
+
+                                            <i class="bx bx-package me-1"></i>
+
+                                            @variant.Sku
+
+                                        </h6>
+
+                                        <small class="text-muted">
+                                            Product Variant
+                                        </small>
+
+                                    </div>
+
+
+                                    @if (variant.IsActive)
+                                    {
+                                        <span class="badge bg-success">
+                                            Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">
+                                            Inactive
+                                        </span>
+                                    }
+
+                                </div>
+
+
+                                <!-- Variant Body -->
+
+                                <div class="card-body">
+
+
+                                    <!-- =================================
+                                         VARIANT INFORMATION
+                                    ================================== -->
+
+                                    <div class="row">
+
+
+                                        <!-- SKU -->
+
+                                        <div class="col-md-4 mb-3">
+
+                                            <small class="text-muted d-block mb-1">
+                                                SKU
+                                            </small>
+
+                                            <strong>
+                                                @variant.Sku
+                                            </strong>
+
+                                        </div>
+
+
+                                        <!-- Size -->
+
+                                        <div class="col-md-4 mb-3">
+
+                                            <small class="text-muted d-block mb-1">
+                                                Size
+                                            </small>
+
+                                            <strong>
+                                                @variant.Size
+                                            </strong>
+
+                                        </div>
+
+
+                                        <!-- Color -->
+
+                                        <div class="col-md-4 mb-3">
+
+                                            <small class="text-muted d-block mb-1">
+                                                Color
+                                            </small>
+
+                                            <strong>
+                                                @variant.Color
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <hr class="my-4" />
+
+
+                                    <!-- =================================
+                                         IMAGES HEADER
+                                    ================================== -->
+
+                                    <div class="mb-3">
+
+                                        <h6 class="mb-1">
+                                            Product Images
+                                        </h6>
+
+                                        <small class="text-muted">
+                                            Images associated with this variant
+                                        </small>
+
+                                    </div>
+
+
+                                    <!-- =================================
+                                         IMAGES
+                                    ================================== -->
+                                    @if (variant.Images != null &&
+                                                           variant.Images.Any())
+                                    {
+
+                                        <div class="row">
+
+                                            @foreach (var image
+                                                     in variant.Images
+                                                         .OrderBy(x => x.DisplayOrder))
+                                            {
+
+                                                <div class="col-md-3 col-sm-6 mb-4">
+
+                                                    <div class="card border h-100">
+
+
+                                                        <!-- Image -->
+
+                                                        <img src="~/uploads/products/@image.ImageName"
+                                                             class="card-img-top"
+                                                             alt="@variant.Sku"
+                                                             style="height:200px;
+                                                        object-fit:cover;" />
+
+
+                                                        <!-- Image Information -->
+
+                                                        <div class="card-body">
+
+
+                                                            <div class="mb-2">
+
+                                                                <small class="text-muted">
+                                                                    Display Order
+                                                                </small>
+
+                                                                <div>
+                                                                    <strong>
+                                                                        @image.DisplayOrder
+                                                                    </strong>
+                                                                </div>
+
+                                                            </div>
+
+
+                                                            @if (image.IsPrimary)
+                                                            {
+                                                                <span class="badge bg-primary">
+
+                                                                    <i class="bx bx-star me-1"></i>
+
+                                                                    Primary
+
+                                                                </span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="badge bg-secondary">
+
+                                                                    Secondary
+
+                                                                </span>
+                                                            }
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                            }
+
+                                        </div>
+
+                                    }
+                                    else
+                                    {
+
+                                        <div class="alert alert-light border">
+
+                                            <i class="bx bx-image me-1"></i>
+
+                                            No images available for this variant.
+
+                                        </div>
+
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        }
+
+                    }
+                    else
+                    {
+
+                        <div class="alert alert-light border">
+
+                            <i class="bx bx-package me-1"></i>
+
+                            No variants available for this product.
+
+                        </div>
+
+                    }
+
+
+                    <!-- =================================================
+                         FOOTER BUTTONS
+                    ================================================== -->
+
+                    <div class="d-flex gap-2 mt-4">
+
+
+                        <a asp-area="Admin"
+                           asp-controller="Product"
+                           asp-action="Update"
+                           asp-route-id="@Model.Id"
+                           class="btn btn-primary">
+
+                            <i class="bx bx-edit me-1"></i>
+
+                            Edit Product
+
+                        </a>
+
+
+                        <a asp-area="Admin"
+                           asp-controller="Product"
+                           asp-action="Index"
+                           class="btn btn-secondary">
+
+                            <i class="bx bx-arrow-back me-1"></i>
+
+                            Back
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

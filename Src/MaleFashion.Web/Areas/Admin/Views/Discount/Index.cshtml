@@ -1,0 +1,1299 @@
+﻿@{
+    Layout = "_Layout1";
+    ViewData["Title"] = "Discounts";
+}
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/buttons/3.1.2/css/buttons.bootstrap5.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css">
+
+    <link rel="stylesheet"
+          href="~/sneat/assets/css/custom-datatables.css">
+
+
+    <style>
+
+        #discounts th {
+            white-space: nowrap;
+        }
+
+        .discount-code {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .discount-amount {
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .action-buttons {
+            white-space: nowrap;
+        }
+
+    </style>
+}
+
+
+<br />
+<br />
+
+
+<!-- =======================================================
+     ADMIN MENU
+======================================================== -->
+
+<div class="container-fluid px-2">
+
+    <div class="row g-3 justify-content-center align-items-center">
+
+
+        <!-- =================================================
+             HOME
+        ================================================== -->
+
+        <div class="col-6 col-md-4 col-xl-2">
+
+            <a class="admin-menu-item home h-100"
+               asp-area="Admin"
+               asp-controller="Home"
+               asp-action="Index">
+
+                <i class="bx bx-home-alt"></i>
+
+                <span>Home</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             CATEGORY
+        ================================================== -->
+
+        <div class="col-6 col-md-4 col-xl-2">
+
+            <a class="admin-menu-item category h-100
+                @(ViewContext.RouteData.Values["controller"]?.ToString() == "Category"
+                   ? "active"
+                   : "")"
+               asp-area="Admin"
+               asp-controller="Category"
+               asp-action="Index">
+
+                <i class="bx bx-category-alt"></i>
+
+                <span>Category</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             PRODUCT
+        ================================================== -->
+
+        <div class="col-6 col-md-4 col-xl-2">
+
+            <a class="admin-menu-item product h-100
+                @(ViewContext.RouteData.Values["controller"]?.ToString() == "Product"
+                   ? "active"
+                   : "")"
+               asp-area="Admin"
+               asp-controller="Product"
+               asp-action="Index">
+
+                <i class="bx bx-box"></i>
+
+                <span>Product</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             INVENTORY
+        ================================================== -->
+
+        <div class="col-6 col-md-4 col-xl-2">
+
+            <a class="admin-menu-item inventory h-100
+                @(ViewContext.RouteData.Values["controller"]?.ToString() == "Inventory"
+                   ? "active"
+                   : "")"
+               asp-area="Admin"
+               asp-controller="Inventory"
+               asp-action="Index">
+
+                <i class="bx bx-archive-in"></i>
+
+                <span>Inventory</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             ORDER
+        ================================================== -->
+
+        <div class="col-6 col-md-4 col-xl-2">
+
+            <a class="admin-menu-item order h-100
+                @(ViewContext.RouteData.Values["controller"]?.ToString() == "Order"
+                   ? "active"
+                   : "")"
+               asp-area="Admin"
+               asp-controller="Order"
+               asp-action="Index">
+
+                <i class="bx bx-cart"></i>
+
+                <span>Order</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             CONTACT
+        ================================================== -->
+
+        <div class="col-6 col-md-4 col-xl-2">
+
+            <a class="admin-menu-item contact h-100
+                @(ViewContext.RouteData.Values["controller"]?.ToString() == "Contact"
+                   ? "active"
+                   : "")"
+               asp-area="Admin"
+               asp-controller="Contact"
+               asp-action="Index">
+
+                <i class="bx bx-message-dots"></i>
+
+                <span>Contact Messages</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             DISCOUNT
+        ================================================== -->
+
+        <div class="col-6 col-md-4 col-xl-2">
+
+            <a class="admin-menu-item discount h-100
+                @(ViewContext.RouteData.Values["controller"]?.ToString() == "Discount"
+                   ? "active"
+                   : "")"
+               asp-area="Admin"
+               asp-controller="Discount"
+               asp-action="Index">
+
+                <i class="bx bx-purchase-tag"></i>
+
+                <span>Discount Management</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             USER
+        ================================================== -->
+
+        <div class="col-6 col-md-4 col-xl-2">
+
+            <a class="admin-menu-item user h-100
+                @(ViewContext.RouteData.Values["controller"]?.ToString() == "User"
+                   ? "active"
+                   : "")"
+               asp-area="Admin"
+               asp-controller="User"
+               asp-action="Index">
+
+                <i class="bx bx-group"></i>
+
+                <span>Users</span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<br />
+
+
+<!-- =======================================================
+     DISCOUNT TABLE
+======================================================== -->
+
+<div class="container-xxl flex-grow-1 container-p-y">
+
+    <div class="row">
+
+        <div class="col-12">
+
+
+            <!-- =================================================
+                 RESPONSE
+            ================================================== -->
+
+            <partial name="_ResponsePartial" />
+
+
+            <div class="card">
+
+
+                <!-- =================================================
+                     HEADER
+                ================================================== -->
+
+                <div class="card-header border-bottom
+                    d-flex justify-content-between
+                    align-items-center">
+
+                    <h5 class="card-title mb-0">
+
+                        View Discounts
+
+                    </h5>
+
+
+                    <a asp-area="Admin"
+                       asp-controller="Discount"
+                       asp-action="Create"
+                       class="btn btn-primary btn-sm">
+
+                        Add Discount
+
+                    </a>
+
+                </div>
+
+
+                <!-- =================================================
+                     SEARCH
+                ================================================== -->
+
+                <div class="card-body pb-0">
+
+                    <div class="row g-3 mb-3">
+
+
+                        <!-- =========================================
+                             GLOBAL SEARCH
+                        ========================================== -->
+
+                        <div class="col-md-8">
+
+                            <label for="searchText"
+                                   class="form-label">
+
+                                Search
+
+                            </label>
+
+                            <input type="text"
+                                   id="searchText"
+                                   class="form-control"
+                                   placeholder="Search discount name or code..." />
+
+                        </div>
+
+
+                        <!-- =========================================
+                             BUTTONS
+                        ========================================== -->
+
+                        <div class="col-md-4 d-flex
+                            align-items-end">
+
+                            <div class="d-flex gap-2">
+
+                                <button id="searchButton"
+                                        type="button"
+                                        class="btn btn-primary">
+
+                                    <i class="bx bx-search me-1"></i>
+
+                                    Search
+
+                                </button>
+
+
+                                <button id="resetButton"
+                                        type="button"
+                                        class="btn btn-outline-secondary">
+
+                                    <i class="bx bx-reset me-1"></i>
+
+                                    Reset
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     TABLE
+                ================================================== -->
+                <!-- ===================================================
+                     RESPONSE MESSAGE
+                ==================================================== -->
+                @{
+                    var response =
+                        TempData.Get<ResponseModel>(
+                            Constants.ResponseTempKey);
+                }
+
+                @if (response != null)
+                {
+                    <div class="alert
+                        alert-@(response.Type == ResponseTypes.Success
+                                     ? "success"
+                                    : "danger")
+                        alert-dismissible
+                        fade show"
+                         role="alert">
+
+                        @response.Message
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert">
+                        </button>
+
+                    </div>
+                }
+
+                <div class="card-body table-responsive pt-0">
+
+
+                    <!-- DELETE MODAL -->
+
+                    <partial name="_ModalPartial" />
+
+
+                    <table id="discounts"
+                           class="table table-bordered
+                        table-hover w-100">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Discount Name
+                                </th>
+
+                                <th>
+                                    Code
+                                </th>
+
+                                <th>
+                                    Discount Percentage
+                                </th>
+
+                                <th>
+                                    Start At
+                                </th>
+
+                                <th>
+                                    End At
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+
+    <!-- =======================================================
+         DATATABLES
+    ========================================================= -->
+
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
+
+
+    <!-- =======================================================
+         BUTTONS
+    ========================================================= -->
+
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/dataTables.buttons.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.bootstrap5.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.html5.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.print.min.js"></script>
+
+
+    <!-- =======================================================
+         EXCEL
+    ========================================================= -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+
+    <!-- =======================================================
+         PDF
+    ========================================================= -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+
+    <!-- =======================================================
+         SELECT2
+    ========================================================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+    <script>
+
+        $(document).ready(function() {
+
+
+            // =====================================================
+            // DATATABLE
+            // =====================================================
+
+            const table =
+                $("#discounts").DataTable({
+
+                    processing: true,
+
+                    serverSide: true,
+
+                    responsive: true,
+
+                    searching: false,
+
+                    ordering: true,
+
+                    autoWidth: false,
+
+                    pageLength: 10,
+
+                    lengthMenu: [
+                        [10, 25, 50, 100],
+                        [10, 25, 50, 100]
+                    ],
+
+                    pagingType: "simple_numbers",
+
+
+                    // =================================================
+                    // AJAX
+                    // =================================================
+
+                    ajax: {
+
+                        url:
+                            "/Admin/Discount/GetPagedDiscounts",
+
+                        type:
+                            "POST",
+
+                        contentType:
+                            "application/json; charset=utf-8",
+
+                        dataType:
+                            "json",
+
+
+                        // =============================================
+                        // SEND DATA
+                        // =============================================
+
+                        data: function(d) {
+
+
+                            // =========================================
+                            // SEARCH TEXT
+                            // =========================================
+
+                            const searchText =
+                                $("#searchText")
+                                    .val()
+                                    .trim();
+
+
+                            // =========================================
+                            // CREATE REQUEST
+                            // =========================================
+
+                            const request = {
+
+                                // DataTables
+                                draw:
+                                    d.draw,
+
+                                start:
+                                    d.start,
+
+                                length:
+                                    d.length,
+
+
+                                // =====================================
+                                // IMPORTANT
+                                // =====================================
+                                // Controller reads:
+                                //
+                                // model.Search.Value
+                                //
+                                // Therefore send:
+                                //
+                                // search.value
+                                // =====================================
+
+                                search: {
+
+                                    value:
+                                        searchText || "",
+
+                                    regex:
+                                        false
+
+                                },
+
+
+                                // =====================================
+                                // SORTING
+                                // =====================================
+
+                                order:
+                                    d.order,
+
+
+                                // =====================================
+                                // COLUMNS
+                                // =====================================
+
+                                columns:
+                                    d.columns
+
+                            };
+
+
+                            // =========================================
+                            // DEBUG
+                            // =========================================
+
+                            console.log(
+                                "Sending Discount Request:",
+                                request
+                            );
+
+
+                            console.log(
+                                "Discount JSON:",
+                                JSON.stringify(request)
+                            );
+
+
+                            return JSON.stringify(
+                                request
+                            );
+
+                        },
+
+
+                        // =================================================
+                        // RESPONSE
+                        // =================================================
+
+                        dataSrc: function(json) {
+
+
+                            console.log(
+                                "Discount Server Response:",
+                                json
+                            );
+
+
+                            // =============================================
+                            // NULL RESPONSE
+                            // =============================================
+
+                            if (!json) {
+
+                                console.error(
+                                    "Server returned empty response."
+                                );
+
+                                return [];
+
+                            }
+
+
+                            // =============================================
+                            // DATA VALIDATION
+                            // =============================================
+
+                            if (!Array.isArray(json.data)) {
+
+                                console.error(
+                                    "json.data is not an array.",
+                                    json
+                                );
+
+                                return [];
+
+                            }
+
+
+                            // =============================================
+                            // DEBUG
+                            // =============================================
+
+                            console.log(
+                                "Rows:",
+                                json.data.length
+                            );
+
+
+                            console.log(
+                                "Total:",
+                                json.recordsTotal
+                            );
+
+
+                            console.log(
+                                "Filtered:",
+                                json.recordsFiltered
+                            );
+
+
+                            return json.data;
+
+                        },
+
+
+                        // =================================================
+                        // ERROR
+                        // =================================================
+
+                        error: function(
+                            xhr,
+                            error,
+                            thrown
+                        ) {
+
+
+                            console.error(
+                                "Discount AJAX Error"
+                            );
+
+
+                            console.error(
+                                "Status:",
+                                xhr.status
+                            );
+
+
+                            console.error(
+                                "Error:",
+                                error
+                            );
+
+
+                            console.error(
+                                "Thrown:",
+                                thrown
+                            );
+
+
+                            console.error(
+                                "Response:",
+                                xhr.responseText
+                            );
+
+                        }
+
+                    },
+
+
+                    // =====================================================
+                    // COLUMNS
+                    // =====================================================
+
+                    columns: [
+
+
+                        // =============================================
+                        // DISCOUNT NAME
+                        // =============================================
+
+                        {
+
+                            data:
+                                "discountName",
+
+                            name:
+                                "DiscountName",
+
+                            defaultContent:
+                                "",
+
+                            orderable:
+                                true
+
+                        },
+
+
+                        // =============================================
+                        // CODE
+                        // =============================================
+
+                        {
+
+                            data:
+                                "code",
+
+                            name:
+                                "Code",
+
+                            defaultContent:
+                                "",
+
+                            orderable:
+                                true,
+
+
+                            render: function(data) {
+
+
+                                if (!data) {
+
+                                    return "";
+
+                                }
+
+
+                                return `
+                                            <span class="badge bg-label-primary discount-code">
+                                                ${data}
+                                            </span>
+                                        `;
+
+                            }
+
+                        },
+
+
+                        // =============================================
+                        // DISCOUNT AMOUNT
+                        // =============================================
+
+                        {
+
+                            // data:
+                            //     "discountPercentage",
+
+                            // name:
+                            //     "DiscountPercentage",
+
+                            // defaultContent:
+                            //     "",
+
+                            // orderable:
+                            //     true,
+
+
+                            // render: function(data) {
+
+
+                            //     if (
+                            //         data === null ||
+                            //         data === undefined
+                            //     ) {
+
+                            //         return "";
+
+                            //     }
+
+
+                            //     return `
+                            //                 <span class="discount-amount">
+                            //                     ${Number(data).toFixed(2)}
+                            //                 </span>
+                            //             `;
+
+                            
+                            data: "discountAmount",
+    name: "DiscountPercentage",
+    defaultContent: "",
+    orderable: true,
+
+    render: function (data) {
+
+        if (data === null || data === undefined) {
+            return "";
+        }
+
+        return `
+            <span class="discount-amount">
+                ${Number(data).toFixed(2)}%
+            </span>
+        `;
+    }
+                            
+
+                        },
+
+
+                        // =============================================
+                        // START AT
+                        // =============================================
+
+                        {
+
+                            data:
+                                "startAt",
+
+                            name:
+                                "StartAt",
+
+                            defaultContent:
+                                "",
+
+                            orderable:
+                                true
+
+                        },
+
+
+                        // =============================================
+                        // END AT
+                        // =============================================
+
+                        {
+
+                            data:
+                                "endAt",
+
+                            name:
+                                "EndAt",
+
+                            defaultContent:
+                                "",
+
+                            orderable:
+                                true
+
+                        },
+
+
+                        // =============================================
+                        // STATUS
+                        // =============================================
+
+                        {
+
+                            data:
+                                "isActive",
+
+                            name:
+                                "IsActive",
+
+                            defaultContent:
+                                false,
+
+                            orderable:
+                                true,
+
+
+                            render: function(data) {
+
+
+                                if (data === true) {
+
+                                    return `
+                                                <span class="badge bg-success">
+                                                    Active
+                                                </span>
+                                            `;
+
+                                }
+
+
+                                return `
+                                            <span class="badge bg-danger">
+                                                Inactive
+                                            </span>
+                                        `;
+
+                            }
+
+                        },
+
+
+                        // =============================================
+                        // ACTION
+                        // =============================================
+
+                        {
+
+                            data:
+                                "id",
+
+                            name:
+                                "Id",
+
+                            orderable:
+                                false,
+
+                            searchable:
+                                false,
+
+
+                            render: function(data) {
+
+
+                                return `
+                                            <div class="dropdown">
+
+                                                <button
+                                                    class="btn btn-sm
+                                                           btn-outline-primary
+                                                           dropdown-toggle"
+                                                    type="button"
+                                                    data-bs-toggle="dropdown">
+
+                                                    Actions
+
+                                                </button>
+
+
+                                                <ul class="dropdown-menu">
+
+
+                                                    <!-- EDIT -->
+
+                                                    <li>
+
+                                                        <a
+                                                            class="dropdown-item
+                                                                   text-warning"
+                                                            href="/Admin/Discount/Update/${data}">
+
+                                                            <i class="bx bx-edit me-1"></i>
+
+                                                            Edit
+
+                                                        </a>
+
+                                                    </li>
+
+
+                                                    <!-- DELETE -->
+
+                                                    <li>
+
+                                                        <button
+                                                            type="button"
+                                                            class="dropdown-item
+                                                                   text-danger
+                                                                   show-bs-modal"
+                                                            data-id="${data}">
+
+                                                            <i class="bx bx-trash me-1"></i>
+
+                                                            Delete
+
+                                                        </button>
+
+                                                    </li>
+
+                                                </ul>
+
+                                            </div>
+                                        `;
+
+                            }
+
+                        }
+
+                    ],
+
+
+                    // =====================================================
+                    // COLUMN DEFINITIONS
+                    // =====================================================
+
+                    columnDefs: [
+
+
+                        {
+                            targets: 0,
+                            orderable: true
+                        },
+
+
+                        {
+                            targets: 1,
+                            orderable: true
+                        },
+
+
+                        {
+                            targets: 2,
+                            orderable: true
+                        },
+
+
+                        {
+                            targets: 3,
+                            orderable: true
+                        },
+
+
+                        {
+                            targets: 4,
+                            orderable: true
+                        },
+
+
+                        {
+                            targets: 5,
+                            orderable: true
+                        },
+
+
+                        {
+                            targets: 6,
+                            orderable: false,
+                            searchable: false
+                        }
+
+                    ],
+
+
+                    // =====================================================
+                    // DEFAULT SORT
+                    // =====================================================
+
+                    order: [
+                        [0, "asc"]
+                    ]
+
+                });
+
+
+            // =====================================================
+            // SEARCH BUTTON
+            // =====================================================
+
+            $("#searchButton").on(
+                "click",
+                function() {
+
+
+                    table
+                        .page("first")
+                        .draw("page");
+
+                }
+            );
+
+
+            // =====================================================
+            // ENTER KEY SEARCH
+            // =====================================================
+
+            $("#searchText").on(
+                "keydown",
+                function(e) {
+
+
+                    if (e.key === "Enter") {
+
+                        e.preventDefault();
+
+
+                        table
+                            .page("first")
+                            .draw("page");
+
+                    }
+
+                }
+            );
+
+
+            // =====================================================
+            // RESET
+            // =====================================================
+
+            $("#resetButton").on(
+                "click",
+                function() {
+
+
+                    $("#searchText")
+                        .val("");
+
+
+                    table
+                        .page("first")
+                        .draw("page");
+
+                }
+            );
+
+
+            // =====================================================
+            // DELETE MODAL
+            // =====================================================
+
+            $("#discounts").on(
+                "click",
+                ".show-bs-modal",
+                function() {
+
+
+                    // =============================================
+                    // GET ID
+                    // =============================================
+
+                    const id =
+                        $(this).data("id");
+
+
+                    // =============================================
+                    // MODAL
+                    // =============================================
+
+                    const deleteModal =
+                        $("#delete-modal");
+
+
+                    // =============================================
+                    // TITLE
+                    // =============================================
+
+                    deleteModal
+                        .find("#modelLabel")
+                        .text("Delete Discount");
+
+
+                    // =============================================
+                    // MESSAGE
+                    // =============================================
+
+                    deleteModal
+                        .find(".modal-body p")
+                        .html(
+                            "Are you sure you want to delete this discount?"
+                        );
+
+
+                    // =============================================
+                    // HIDDEN ID
+                    // =============================================
+
+                    $("#delete-id")
+                        .val(id);
+
+
+                    // =============================================
+                    // DELETE URL
+                    // =============================================
+
+                    $("#delete-form")
+                        .attr(
+                            "action",
+                            "/Admin/Discount/Delete"
+                        );
+
+
+                    // =============================================
+                    // SHOW MODAL
+                    // =============================================
+
+                    deleteModal.modal("show");
+
+                }
+            );
+
+
+            // =====================================================
+            // DELETE BUTTON
+            // =====================================================
+
+            $("#delete-btn").on(
+                "click",
+                function() {
+
+
+                    $("#delete-form")
+                        .submit();
+
+                }
+            );
+
+        });
+
+    </script>
+}

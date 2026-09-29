@@ -1,0 +1,1125 @@
+﻿
+@using MaleFashion.Web.Areas.Admin.Models
+
+@model ProductModel
+
+@{
+    Layout = "_Layout1";
+    ViewData["Title"] = "Update Product";
+}
+
+
+<div class="container-xxl flex-grow-1 container-p-y">
+
+    <div class="row mb-6 gy-6">
+
+        <div class="col-xl">
+
+            <div class="card">
+
+
+                <!-- =====================================================
+                     HEADER
+                ====================================================== -->
+
+                <div class="card-header
+                    d-flex
+                    justify-content-between
+                    align-items-center">
+
+                    <h5 class="mb-0">
+                        Edit Product
+                    </h5>
+
+                    <small class="text-body">
+                        Change product information
+                    </small>
+
+                </div>
+
+
+                <!-- =====================================================
+                     RESPONSE
+                ====================================================== -->
+
+                <partial name="_ResponsePartial" />
+
+
+                <!-- =====================================================
+                     BODY
+                ====================================================== -->
+
+                <div class="card-body">
+
+                    <form asp-area="Admin"
+                          asp-controller="Product"
+                          asp-action="Update"
+                          method="post"
+                          enctype="multipart/form-data">
+
+                        @Html.AntiForgeryToken()
+
+
+                        <!-- =================================================
+                             HIDDEN PRODUCT ID
+                        ================================================== -->
+
+                        <input asp-for="Id"
+                               type="hidden" />
+
+
+                        <!-- =================================================
+                             VALIDATION
+                        ================================================== -->
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+
+                        <!-- =================================================
+                             PRODUCT INFORMATION
+                        ================================================== -->
+
+                        <h5 class="mb-3">
+                            Product Information
+                        </h5>
+
+
+                        <div class="row">
+
+
+                            <!-- Product Name -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label asp-for="ProductName"
+                                       class="form-label">
+
+                                    Product Name
+
+                                </label>
+
+                                <input asp-for="ProductName"
+                                       class="form-control"
+                                       placeholder="Enter product name" />
+
+                                <span asp-validation-for="ProductName"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+
+                            <!-- Branding -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label asp-for="Branding"
+                                       class="form-label">
+
+                                    Brand
+
+                                </label>
+
+                                <input asp-for="Branding"
+                                       class="form-control"
+                                       placeholder="Enter brand" />
+
+                                <span asp-validation-for="Branding"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+
+                            <!-- Category -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label asp-for="CategoryId"
+                                       class="form-label">
+
+                                    Category
+
+                                </label>
+
+                                <select asp-for="CategoryId"
+                                        asp-items="Model.Categories"
+                                        class="form-select">
+
+                                    <option value="">
+                                        -- Select Category --
+                                    </option>
+
+                                </select>
+
+                                <span asp-validation-for="CategoryId"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+
+                            <!-- Price -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label asp-for="ProductPrize"
+                                       class="form-label">
+
+                                    Price
+
+                                </label>
+
+                                <input asp-for="ProductPrize"
+                                       class="form-control"
+                                       type="number"
+                                       step="0.01"
+                                       placeholder="Enter product price" />
+
+                                <span asp-validation-for="ProductPrize"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+
+                            <!-- Tags -->
+
+                            <div class="col-md-12 mb-3">
+
+                                <label asp-for="TagsText"
+                                       class="form-label">
+
+                                    Tags
+
+                                </label>
+
+                                <input asp-for="TagsText"
+                                       class="form-control"
+                                       placeholder="men, shirt, cotton, summer" />
+
+                                <small class="text-muted">
+                                    Separate multiple tags using commas.
+                                </small>
+
+                                <span asp-validation-for="TagsText"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+
+                            <!-- Description -->
+
+                            <div class="col-md-12 mb-3">
+
+                                <label asp-for="Description"
+                                       class="form-label">
+
+                                    Description
+
+                                </label>
+
+                                <textarea asp-for="Description"
+                                          class="form-control"
+                                          rows="4"
+                                          placeholder="Enter product description"></textarea>
+
+                                <span asp-validation-for="Description"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+
+                            <!-- Customer Preview -->
+
+                            <div class="col-md-12 mb-3">
+
+                                <label asp-for="CustomerPreview"
+                                       class="form-label">
+
+                                    Customer Preview
+
+                                </label>
+
+                                <textarea asp-for="CustomerPreview"
+                                          class="form-control"
+                                          rows="3"
+                                          placeholder="Enter customer preview"></textarea>
+
+                                <span asp-validation-for="CustomerPreview"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+
+                            <!-- Additional Information -->
+
+                            <div class="col-md-12 mb-3">
+
+                                <label asp-for="AdditionalInfo"
+                                       class="form-label">
+
+                                    Additional Information
+
+                                </label>
+
+                                <textarea asp-for="AdditionalInfo"
+                                          class="form-control"
+                                          rows="3"
+                                          placeholder="Enter additional information"></textarea>
+
+                                <span asp-validation-for="AdditionalInfo"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+
+                            <!-- Is Active -->
+
+                            <div class="col-md-12 mb-4">
+
+                                <div class="form-check">
+
+                                    <input asp-for="IsActive"
+                                           class="form-check-input"
+                                           type="checkbox" />
+
+                                    <label asp-for="IsActive"
+                                           class="form-check-label">
+
+                                        Active
+
+                                    </label>
+
+                                </div>
+
+                                <small class="text-muted">
+                                    Active products can be displayed to customers.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <hr class="my-4" />
+
+
+                        <!-- =================================================
+                             PRODUCT VARIANTS HEADER
+                        ================================================== -->
+
+                        @* <div class="d-flex
+                            justify-content-between
+                            align-items-center
+                            mb-3">
+
+                            <div>
+
+                                <h5 class="mb-1">
+                                    Product Variants
+                                </h5>
+
+                                <small class="text-muted">
+                                    Change sizes, colors, SKUs and images.
+                                </small>
+
+                            </div>
+
+
+                            <button type="button"
+                                    id="addVariant"
+                                    class="btn btn-success">
+
+                                <i class="bx bx-plus me-1"></i>
+
+                                Add Variant
+
+                            </button>
+
+                        </div> *@
+
+
+                        <!-- =================================================
+                             VARIANTS
+                        ================================================== -->
+
+                        <div id="variantsContainer">
+
+                            @for (int i = 0;
+                                  i < Model.Variants.Count;
+                                  i++)
+                            {
+                                var variant = Model.Variants[i];
+
+
+                                <div class="card border mb-4 variant-card"
+                                     data-index="@i">
+
+
+                                    <!-- Variant ID -->
+
+                                    <input type="hidden"
+                                           name="Variants[@i].Id"
+                                           value="@variant.Id" />
+
+
+                                    <!-- =================================================
+                                         VARIANT HEADER
+                                    ================================================== -->
+
+                                    <div class="card-header
+                                        d-flex
+                                        justify-content-between
+                                        align-items-center">
+
+                                        <strong>
+
+                                            <i class="bx bx-package me-1"></i>
+
+                                            Variant @(i + 1)
+
+                                        </strong>
+
+
+                                        <button type="button"
+                                                class="btn btn-sm btn-danger remove-variant">
+
+                                            <i class="bx bx-trash me-1"></i>
+
+                                            Remove Variant
+
+                                        </button>
+
+                                    </div>
+
+
+                                    <!-- =================================================
+                                         VARIANT BODY
+                                    ================================================== -->
+
+                                    <div class="card-body">
+
+
+                                        <div class="row">
+
+
+                                            <!-- SKU -->
+
+                                            <div class="col-md-4 mb-3">
+
+                                                <label class="form-label">
+                                                    SKU
+                                                </label>
+
+                                                <input type="text"
+                                                       name="Variants[@i].Sku"
+                                                       value="@variant.Sku"
+                                                       class="form-control"
+                                                       placeholder="Enter SKU"
+                                                       required />
+
+                                            </div>
+
+
+                                            <!-- Size -->
+
+                                            <div class="col-md-4 mb-3">
+
+                                                <label class="form-label">
+                                                    Size
+                                                </label>
+
+                                                <input type="text"
+                                                       name="Variants[@i].Size"
+                                                       value="@variant.Size"
+                                                       class="form-control"
+                                                       placeholder="e.g. M, L, XL"
+                                                       required />
+
+                                            </div>
+
+
+                                            <!-- Color -->
+
+                                            <div class="col-md-4 mb-3">
+
+                                                <label class="form-label">
+                                                    Color
+                                                </label>
+
+                                                <input type="text"
+                                                       name="Variants[@i].Color"
+                                                       value="@variant.Color"
+                                                       class="form-control"
+                                                       placeholder="e.g. Black"
+                                                       required />
+
+                                            </div>
+
+
+                                            <!-- Active -->
+
+                                            <div class="col-md-12 mb-3">
+
+                                                <div class="form-check">
+
+                                                    <input type="checkbox"
+                                                           name="Variants[@i].IsActive"
+                                                           value="true"
+                                                           class="form-check-input"
+                                                    @(variant.IsActive
+                                                        ? "checked"
+                                                        : "") />
+
+                                                    <label class="form-check-label">
+                                                        Active
+                                                    </label>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <hr />
+
+
+                                        <!-- =================================================
+                                             IMAGES HEADER
+                                        ================================================== -->
+
+                                        @* <div class="d-flex
+                                            justify-content-between
+                                            align-items-center
+                                            mb-3">
+
+                                            <div>
+
+                                                <h6 class="mb-1">
+                                                    Product Images
+                                                </h6>
+
+                                                <small class="text-muted">
+                                                    Replace existing images or add new images.
+                                                </small>
+
+                                            </div>
+
+
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-primary add-image">
+
+                                                <i class="bx bx-plus me-1"></i>
+
+                                                Add Image
+
+                                            </button>
+
+                                        </div> *@
+
+
+                                        <!-- =================================================
+                                             IMAGES
+                                        ================================================== -->
+
+                                        <div class="images-container">
+
+                                            @for (int j = 0;
+                                                  j < variant.Images.Count;
+                                                  j++)
+                                            {
+                                                var image = variant.Images[j];
+
+
+                                                <div class="row image-row
+                                                    border rounded
+                                                    p-3 mb-2">
+
+
+                                                    <!-- Image ID -->
+
+                                                    <input type="hidden"
+                                                           name="Variants[@i].Images[@j].Id"
+                                                           value="@image.Id" />
+
+
+                                                    <!-- Existing Image Name -->
+
+                                                    <input type="hidden"
+                                                           name="Variants[@i].Images[@j].ImageName"
+                                                           value="@image.ImageName" />
+
+
+                                                    <!-- Existing Image -->
+
+                                                    <div class="col-md-3">
+
+                                                        <label class="form-label">
+                                                            Current Image
+                                                        </label>
+
+                                                        <br />
+
+                                                        <img src="~/uploads/products/@image.ImageName"
+                                                             class="img-thumbnail"
+                                                             style="width:120px;
+                                                        height:120px;
+                                                        object-fit:cover;" />
+
+                                                    </div>
+
+
+                                                    <!-- Replace Image -->
+
+                                                    <div class="col-md-4">
+
+                                                        <label class="form-label">
+                                                            Replace Image
+                                                        </label>
+
+                                                        <input type="file"
+                                                               name="Variants[@i].Images[@j].Image"
+                                                               class="form-control"
+                                                               accept=".jpg,.jpeg,.png,.webp" />
+
+                                                    </div>
+
+
+                                                    <!-- Display Order -->
+
+                                                    <div class="col-md-2">
+
+                                                        <label class="form-label">
+                                                            Display Order
+                                                        </label>
+
+                                                        <input type="number"
+                                                               name="Variants[@i].Images[@j].DisplayOrder"
+                                                               value="@image.DisplayOrder"
+                                                               min="1"
+                                                               class="form-control" />
+
+                                                    </div>
+
+
+                                                    <!-- Primary -->
+
+                                                    <div class="col-md-2">
+
+                                                        <div class="form-check mt-4">
+
+                                                            <input type="checkbox"
+                                                                   name="Variants[@i].Images[@j].IsPrimary"
+                                                                   value="true"
+                                                                   class="form-check-input"
+                                                            @(image.IsPrimary
+                                                                ? "checked"
+                                                                : "") />
+
+                                                            <label class="form-check-label">
+                                                                Primary
+                                                            </label>
+
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <!-- Remove -->
+
+                                                    <div class="col-md-1">
+
+                                                        <button type="button"
+                                                                class="btn btn-danger remove-image mt-4">
+
+                                                            <i class="bx bx-trash"></i>
+                                                            Remove
+                                                        </button>
+
+                                                    </div>
+
+                                                </div>
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            }
+
+                        </div>
+
+
+                        <!-- =================================================
+                             BUTTONS
+                        ================================================== -->
+
+                        <div class="d-flex gap-2 mt-4">
+
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+
+                                <i class="bx bx-save me-1"></i>
+
+                                Update
+
+                            </button>
+
+
+                            <a asp-area="Admin"
+                               asp-controller="Product"
+                               asp-action="Index"
+                               class="btn btn-secondary">
+
+                                <i class="bx bx-arrow-back me-1"></i>
+
+                                Cancel
+
+                            </a>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+
+
+    <script>
+
+        // =========================================================
+        // INITIAL VARIANT INDEX
+        // =========================================================
+
+        let variantIndex =
+                    @Model.Variants.Count;
+
+
+        // =========================================================
+        // ADD VARIANT
+        // =========================================================
+
+        $("#addVariant").on("click", function() {
+
+            const index =
+                variantIndex++;
+
+
+            const html = `
+                        <div class="card border mb-4 variant-card"
+                             data-index="${index}">
+
+                            <div class="card-header
+                                        d-flex
+                                        justify-content-between
+                                        align-items-center">
+
+                                <strong>
+
+                                    <i class="bx bx-package me-1"></i>
+
+                                    New Variant
+
+                                </strong>
+
+
+                                <button type="button"
+                                        class="btn btn-sm btn-danger remove-variant">
+
+                                    <i class="bx bx-trash me-1"></i>
+
+                                    Remove Variant
+
+                                </button>
+
+                            </div>
+
+
+                            <div class="card-body">
+
+                                <div class="row">
+
+                                    <div class="col-md-4 mb-3">
+
+                                        <label class="form-label">
+                                            SKU
+                                        </label>
+
+                                        <input type="text"
+                                               name="Variants[${index}].Sku"
+                                               class="form-control"
+                                               placeholder="Enter SKU"
+                                               required />
+
+                                    </div>
+
+
+                                    <div class="col-md-4 mb-3">
+
+                                        <label class="form-label">
+                                            Size
+                                        </label>
+
+                                        <input type="text"
+                                               name="Variants[${index}].Size"
+                                               class="form-control"
+                                               placeholder="e.g. M, L, XL"
+                                               required />
+
+                                    </div>
+
+
+                                    <div class="col-md-4 mb-3">
+
+                                        <label class="form-label">
+                                            Color
+                                        </label>
+
+                                        <input type="text"
+                                               name="Variants[${index}].Color"
+                                               class="form-control"
+                                               placeholder="e.g. Black"
+                                               required />
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-check mb-3">
+
+                                    <input type="checkbox"
+                                           name="Variants[${index}].IsActive"
+                                           value="true"
+                                           checked
+                                           class="form-check-input" />
+
+                                    <label class="form-check-label">
+                                        Active
+                                    </label>
+
+                                </div>
+
+
+                                <hr />
+
+
+                                <div class="d-flex
+                                            justify-content-between
+                                            align-items-center
+                                            mb-3">
+
+                                    <div>
+
+                                        <h6 class="mb-1">
+                                            Product Images
+                                        </h6>
+
+                                        <small class="text-muted">
+                                            Upload images for this variant.
+                                        </small>
+
+                                    </div>
+
+
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-primary add-image">
+
+                                        <i class="bx bx-plus me-1"></i>
+
+                                        Add Image
+
+                                    </button>
+
+                                </div>
+
+
+                                <div class="images-container">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    `;
+
+
+            $("#variantsContainer")
+                .append(html);
+
+        });
+
+
+        // =========================================================
+        // ADD IMAGE
+        // =========================================================
+
+        $(document).on(
+            "click",
+            ".add-image",
+            function() {
+
+                const card =
+                    $(this)
+                        .closest(".variant-card");
+
+
+                const vIndex =
+                    card.attr("data-index");
+
+
+                const iIndex =
+                    card.find(".image-row").length;
+
+
+                const html = `
+                            <div class="row image-row
+                                        border rounded
+                                        p-3 mb-2">
+
+                                <div class="col-md-5">
+
+                                    <label class="form-label">
+                                        Image
+                                    </label>
+
+                                    <input type="file"
+                                           name="Variants[${vIndex}].Images[${iIndex}].Image"
+                                           class="form-control"
+                                           accept=".jpg,.jpeg,.png,.webp" />
+
+                                </div>
+
+
+                                <div class="col-md-3">
+
+                                    <label class="form-label">
+                                        Display Order
+                                    </label>
+
+                                    <input type="number"
+                                           name="Variants[${vIndex}].Images[${iIndex}].DisplayOrder"
+                                           value="${iIndex + 1}"
+                                           min="1"
+                                           class="form-control" />
+
+                                </div>
+
+
+                                <div class="col-md-2">
+
+                                    <div class="form-check mt-4">
+
+                                        <input type="checkbox"
+                                               name="Variants[${vIndex}].Images[${iIndex}].IsPrimary"
+                                               value="true"
+                                               class="form-check-input" />
+
+                                        <label class="form-check-label">
+                                            Primary
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-md-2">
+
+                                    <button type="button"
+                                            class="btn btn-danger remove-image mt-4">
+
+                                        <i class="bx bx-trash me-1"></i>
+
+                                        Remove
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+                        `;
+
+
+                card.find(".images-container")
+                    .append(html);
+
+            }
+        );
+
+
+        // =========================================================
+        // REMOVE VARIANT
+        // =========================================================
+
+        $(document).on(
+            "click",
+            ".remove-variant",
+            function() {
+
+                $(this)
+                    .closest(".variant-card")
+                    .remove();
+
+
+                reindex();
+
+            }
+        );
+
+
+        // =========================================================
+        // REMOVE IMAGE
+        // =========================================================
+
+        $(document).on(
+            "click",
+            ".remove-image",
+            function() {
+
+                $(this)
+                    .closest(".image-row")
+                    .remove();
+
+
+                reindex();
+
+            }
+        );
+
+
+        // =========================================================
+        // REINDEX
+        // =========================================================
+
+        function reindex() {
+
+            $("#variantsContainer")
+                .children(".variant-card")
+                .each(function(vIndex) {
+
+                    const card =
+                        $(this);
+
+
+                    // ---------------------------------------------
+                    // UPDATE DATA INDEX
+                    // ---------------------------------------------
+
+                    card.attr(
+                        "data-index",
+                        vIndex
+                    );
+
+
+                    // ---------------------------------------------
+                    // UPDATE VARIANT INDEX
+                    // ---------------------------------------------
+
+                    card.find("[name]")
+                        .each(function() {
+
+                            let name =
+                                $(this)
+                                    .attr("name");
+
+
+                            if (!name) {
+                                return;
+                            }
+
+
+                            name =
+                                name.replace(
+                                    /Variants\[\d+\]/,
+                                    `Variants[${vIndex}]`
+                                );
+
+
+                            $(this)
+                                .attr(
+                                    "name",
+                                    name
+                                );
+
+                        });
+
+
+                    // ---------------------------------------------
+                    // UPDATE IMAGE INDEX
+                    // ---------------------------------------------
+
+                    card.find(".image-row")
+                        .each(function(iIndex) {
+
+                            $(this)
+                                .find("[name]")
+                                .each(function() {
+
+                                    let name =
+                                        $(this)
+                                            .attr("name");
+
+
+                                    if (!name) {
+                                        return;
+                                    }
+
+
+                                    name =
+                                        name.replace(
+                                            /Images\[\d+\]/,
+                                            `Images[${iIndex}]`
+                                        );
+
+
+                                    $(this)
+                                        .attr(
+                                            "name",
+                                            name
+                                        );
+
+                                });
+
+                        });
+
+                });
+
+
+            // ---------------------------------------------
+            // UPDATE NEXT VARIANT INDEX
+            // ---------------------------------------------
+
+            variantIndex =
+                $("#variantsContainer")
+                    .children(".variant-card")
+                    .length;
+
+        }
+
+    </script>
+}
+

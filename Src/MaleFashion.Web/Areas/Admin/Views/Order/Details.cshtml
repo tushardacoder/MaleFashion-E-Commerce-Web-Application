@@ -1,0 +1,591 @@
+﻿@model MaleFashion.Application.Features.Orders.Query.OrderDetailsAdminViewModel
+
+@{
+    Layout = "_Layout1";
+
+    ViewData["Title"] = "Order Details";
+}
+
+
+<div class="container-fluid">
+
+
+    <!-- ==========================================
+         HEADER
+         ========================================== -->
+
+    <div class="d-flex justify-content-between
+        align-items-center mb-4">
+
+        <div>
+
+            <h4 class="mb-1">
+                Order Details
+            </h4>
+
+            <p class="text-muted mb-0">
+
+                Order #@Model.Id
+
+            </p>
+
+        </div>
+
+
+        <a asp-area="Admin"
+           asp-controller="Order"
+           asp-action="Index"
+           class="btn btn-secondary">
+
+            Back to Orders
+
+        </a>
+
+    </div>
+
+
+
+    <!-- ==========================================
+         CUSTOMER + ORDER
+         ========================================== -->
+
+    <div class="row g-4">
+
+
+        <!-- CUSTOMER -->
+
+        <div class="col-md-6">
+
+            <div class="card h-100">
+
+                <div class="card-header">
+
+                    <h5 class="mb-0">
+                        Customer Information
+                    </h5>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    <p>
+                        <strong>Name:</strong>
+                        @Model.FirstName
+                        @Model.LastName
+                    </p>
+
+
+                    <p>
+                        <strong>Email:</strong>
+                        @Model.Email
+                    </p>
+
+
+                    <p>
+                        <strong>Phone:</strong>
+                        @Model.Phone
+                    </p>
+
+
+                    <p class="mb-0">
+
+                        <strong>User ID:</strong>
+
+                        @Model.UserId
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ORDER -->
+
+        <div class="col-md-6">
+
+            <div class="card h-100">
+
+                <div class="card-header">
+
+                    <h5 class="mb-0">
+                        Order Information
+                    </h5>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    <p>
+
+                        <strong>
+                            Order ID:
+                        </strong>
+
+                        @Model.Id
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Created:
+                        </strong>
+
+                        @Model.CreatedAt.AddHours(6).ToString("dd-MM-yyyy hh:mm tt")
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Items:
+                        </strong>
+
+                        @Model.OrderItems.Count
+
+                    </p>
+
+
+                    <p class="mb-0">
+
+                        <strong>
+                            Total:
+                        </strong>
+
+                        ৳@Model.Total.ToString("N2")
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==========================================
+         SHIPPING
+         ========================================== -->
+
+    <div class="card mt-4">
+
+        <div class="card-header">
+
+            <h5 class="mb-0">
+                Shipping Information
+            </h5>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <p>
+
+                        <strong>
+                            Address:
+                        </strong>
+
+                        @Model.Address
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Town / City:
+                        </strong>
+
+                        @Model.TownCity
+
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <p>
+
+                        <strong>
+                            State:
+                        </strong>
+
+                        @Model.CountryState
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Postcode:
+                        </strong>
+
+                        @Model.PostcodeZip
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            @if (!string.IsNullOrWhiteSpace(
+                Model.OrderNotes))
+            {
+                <hr />
+
+                <p class="mb-0">
+
+                    <strong>
+                        Order Notes:
+                    </strong>
+
+                    @Model.OrderNotes
+
+                </p>
+            }
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==========================================
+         ORDER ITEMS
+         ========================================== -->
+
+    <div class="card mt-4">
+
+        <div class="card-header">
+
+            <h5 class="mb-0">
+                Order Items
+            </h5>
+
+        </div>
+
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered
+                    table-hover mb-0">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Product
+                            </th>
+
+                            <th>
+                                SKU
+                            </th>
+
+                            <th>
+                                Color
+                            </th>
+
+                            <th>
+                                Size
+                            </th>
+
+                            <th>
+                                Unit Price
+                            </th>
+
+                            <th>
+                                Quantity
+                            </th>
+
+                            <th>
+                                Total
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @foreach (
+                            var item
+                            in Model.OrderItems)
+                        {
+                            <tr>
+
+                                <td>
+                                    @item.ProductName
+                                </td>
+
+                                <td>
+                                    @item.Sku
+                                </td>
+
+                                <td>
+                                    @item.Color
+                                </td>
+
+                                <td>
+                                    @item.Size
+                                </td>
+
+                                <td>
+                                    ৳@item.UnitPrice.ToString("N2")
+                                </td>
+
+                                <td>
+                                    @item.Quantity
+                                </td>
+
+                                <td>
+
+                                    <strong>
+                                        ৳@item.TotalPrice.ToString("N2")
+                                    </strong>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==========================================
+         PAYMENT + SUMMARY
+         ========================================== -->
+
+    <div class="row g-4 mt-1">
+
+
+        <!-- PAYMENT -->
+
+        <div class="col-md-6">
+
+            <div class="card h-100">
+
+                <div class="card-header">
+
+                    <h5 class="mb-0">
+                        Payment Information
+                    </h5>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    @if (Model.Payment != null)
+                    {
+                        <p>
+
+                            <strong>
+                                Payment Type:
+                            </strong>
+
+                            @Model.Payment.PaymentType
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>
+                                Amount:
+                            </strong>
+
+                            ৳@Model.Payment.Amount.ToString("N2")
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>
+                                Status:
+                            </strong>
+
+                            @Model.Payment.Status
+
+                        </p>
+
+
+                        @if (!string.IsNullOrWhiteSpace(
+                            Model.Payment.MobileNumber))
+                        {
+                            <p>
+
+                                <strong>
+                                    Mobile Number:
+                                </strong>
+
+                                @Model.Payment.MobileNumber
+
+                            </p>
+                        }
+
+
+                        @if (!string.IsNullOrWhiteSpace(
+                            Model.Payment.TransactionId))
+                        {
+                            <p>
+
+                                <strong>
+                                    Transaction ID:
+                                </strong>
+
+                                @Model.Payment.TransactionId
+
+                            </p>
+                        }
+
+
+                        <p>
+
+                            <strong>
+                                Created:
+                            </strong>
+
+                            @Model.Payment.CreatedAt.AddHours(6).ToString("dd-MM-yyyy hh:mm tt")
+
+                        </p>
+
+
+                        @if (Model.Payment.PaidAt
+                            .HasValue)
+                        {
+                            <p class="mb-0">
+
+                                <strong>
+                                    Paid At:
+                                </strong>
+
+                                @Model.Payment.PaidAt.Value.AddHours(6).ToString("dd-MM-yyyy hh:mm tt")
+
+                            </p>
+                        }
+
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">
+
+                            Payment information
+                            is not available.
+
+                        </p>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SUMMARY -->
+
+        <div class="col-md-6">
+
+            <div class="card h-100">
+
+                <div class="card-header">
+
+                    <h5 class="mb-0">
+                        Order Summary
+                    </h5>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    <div class="d-flex
+                        justify-content-between
+                        mb-3">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <strong>
+                            ৳@Model.Subtotal.ToString("N2")
+                        </strong>
+
+                    </div>
+
+
+                    <div class="d-flex
+                        justify-content-between
+                        mb-3">
+
+                        <span>
+                            Discount
+                        </span>
+
+                        <strong>
+                            - ৳@Model.DiscountAmount.ToString("N2")
+                        </strong>
+
+                    </div>
+
+
+                    <hr />
+
+
+                    <div class="d-flex
+                        justify-content-between">
+
+                        <span class="fw-bold">
+                            Total
+                        </span>
+
+                        <strong class="fs-5">
+
+                            ৳@Model.Total.ToString("N2")
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

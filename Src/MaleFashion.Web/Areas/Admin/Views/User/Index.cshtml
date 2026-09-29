@@ -1,0 +1,1227 @@
+﻿@{
+    Layout = "_Layout1";
+    ViewData["Title"] = "Users";
+}
+
+@Html.AntiForgeryToken()
+
+@section Styles
+{
+    <!-- DataTables -->
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.bootstrap5.min.css">
+
+    <!-- Custom DataTables -->
+    <link rel="stylesheet"
+          href="~/sneat/assets/css/custom-datatables.css">
+
+    <style>
+
+        /* =====================================================
+                                   TEMP DATA ALERT
+                ===================================================== */
+
+        .tempdata-container {
+            margin-bottom: 20px;
+        }
+
+        .custom-alert {
+            border: none;
+            border-radius: 12px;
+            padding: 14px 18px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            animation: slideDown 0.35s ease;
+        }
+
+            .custom-alert i {
+                font-size: 22px;
+                margin-right: 10px;
+            }
+
+
+        /* =====================================================
+                                   USER CARD
+                ===================================================== */
+
+        .users-card {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+            .users-card .card-header {
+                background: #ffffff;
+                padding: 20px 24px;
+            }
+
+        .users-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #566a7f;
+        }
+
+        .users-subtitle {
+            font-size: 13px;
+            color: #a1acb8;
+            margin-top: 3px;
+        }
+
+
+        /* =====================================================
+                                   SEARCH AREA
+                ===================================================== */
+
+        .search-area {
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            padding: 20px 24px;
+        }
+
+            .search-area label {
+                font-weight: 600;
+                color: #566a7f;
+                margin-bottom: 7px;
+            }
+
+        #userSearch {
+            height: 45px;
+            border-radius: 9px;
+            border: 1px solid #d9dee3;
+            padding-left: 15px;
+        }
+
+            #userSearch:focus {
+                border-color: #696cff;
+                box-shadow: 0 0 0 3px rgba(105, 108, 255, 0.12);
+            }
+
+
+        /* =====================================================
+                                   BUTTONS
+                ===================================================== */
+
+        .search-buttons .btn {
+            height: 43px;
+            border-radius: 8px;
+            font-weight: 600;
+            padding-left: 18px;
+            padding-right: 18px;
+        }
+
+        .search-buttons .btn-primary {
+            background: #696cff;
+            border-color: #696cff;
+        }
+
+            .search-buttons .btn-primary:hover {
+                background: #5f61e6;
+                border-color: #5f61e6;
+            }
+
+
+        /* =====================================================
+                                   TABLE
+                ===================================================== */
+
+        .table-area {
+            padding: 20px 24px 25px;
+        }
+
+        #users {
+            margin-top: 5px !important;
+        }
+
+            #users thead th {
+                background: #f5f5f9;
+                color: #566a7f;
+                font-weight: 700;
+                font-size: 13px;
+                text-transform: uppercase;
+                letter-spacing: 0.3px;
+                padding: 14px 12px;
+                border-bottom: 1px solid #e9ecef;
+            }
+
+            #users tbody td {
+                vertical-align: middle;
+                padding: 13px 12px;
+                color: #566a7f;
+                font-size: 14px;
+            }
+
+            #users tbody tr {
+                transition: background 0.2s ease;
+            }
+
+                #users tbody tr:hover {
+                    background: #f8f8ff;
+                }
+
+
+        /* =====================================================
+                                   STATUS BADGES
+                ===================================================== */
+
+        .status-badge {
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+                                   ACTION BUTTON
+                ===================================================== */
+
+        .user-action-btn {
+            min-width: 95px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+                                   MODAL
+                ===================================================== */
+
+        #block-modal .modal-content {
+            border: none;
+            border-radius: 14px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        #block-modal .modal-header {
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        #block-modal .modal-footer {
+            border-top: 1px solid #e9ecef;
+        }
+
+        #block-modal .modal-body p {
+            margin-bottom: 0;
+            color: #566a7f;
+            font-size: 15px;
+        }
+
+    </style>
+}
+
+
+<div class="container-fluid px-3">
+
+    <!-- =====================================================
+         ADMIN MENU
+    ====================================================== -->
+
+    <div class="admin-menu-wrapper">
+
+        <div class="row g-3">
+
+            <!-- HOME -->
+
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+
+                <a class="admin-menu-item home h-100
+                    @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home"
+                   ? "active"
+                   : "")"
+                   asp-area="Admin"
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    <i class="bx bx-home-alt"></i>
+
+                    <span>Home</span>
+
+                </a>
+
+            </div>
+
+
+            <!-- CATEGORY -->
+
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+
+                <a class="admin-menu-item category h-100
+                    @(ViewContext.RouteData.Values["controller"]?.ToString() == "Category"
+                   ? "active"
+                   : "")"
+                   asp-area="Admin"
+                   asp-controller="Category"
+                   asp-action="Index">
+
+                    <i class="bx bx-category-alt"></i>
+
+                    <span>Category</span>
+
+                </a>
+
+            </div>
+
+
+            <!-- PRODUCT -->
+
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+
+                <a class="admin-menu-item product h-100
+                    @(ViewContext.RouteData.Values["controller"]?.ToString() == "Product"
+                   ? "active"
+                   : "")"
+                   asp-area="Admin"
+                   asp-controller="Product"
+                   asp-action="Index">
+
+                    <i class="bx bx-box"></i>
+
+                    <span>Product</span>
+
+                </a>
+
+            </div>
+
+
+            <!-- INVENTORY -->
+
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+
+                <a class="admin-menu-item inventory h-100
+                    @(ViewContext.RouteData.Values["controller"]?.ToString() == "Inventory"
+                   ? "active"
+                   : "")"
+                   asp-area="Admin"
+                   asp-controller="Inventory"
+                   asp-action="Index">
+
+                    <i class="bx bx-archive-in"></i>
+
+                    <span>Inventory</span>
+
+                </a>
+
+            </div>
+
+
+            <!-- ORDER -->
+
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+
+                <a class="admin-menu-item order h-100
+                    @(ViewContext.RouteData.Values["controller"]?.ToString() == "Order"
+                   ? "active"
+                   : "")"
+                   asp-area="Admin"
+                   asp-controller="Order"
+                   asp-action="Index">
+
+                    <i class="bx bx-cart"></i>
+
+                    <span>Order</span>
+
+                </a>
+
+            </div>
+
+
+            <!-- CONTACT -->
+
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+
+                <a class="admin-menu-item contact h-100
+                    @(ViewContext.RouteData.Values["controller"]?.ToString() == "Contact"
+                   ? "active"
+                   : "")"
+                   asp-area="Admin"
+                   asp-controller="Contact"
+                   asp-action="Index">
+
+                    <i class="bx bx-message-dots"></i>
+
+                    <span>Contact Messages</span>
+
+                </a>
+
+            </div>
+
+
+            <!-- Discount -->
+            <div class="col-6 col-md-4 col-xl-2">
+
+                <a class="admin-menu-item user h-100"
+                   asp-area="Admin"
+                   asp-controller="Discount"
+                   asp-action="Index">
+
+                    <i class="bx bx-group"></i>
+
+                    <span>Discount Management</span>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- USER -->
+
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+
+                <a class="admin-menu-item user h-100
+                    @(ViewContext.RouteData.Values["controller"]?.ToString() == "User"
+                   ? "active"
+                   : "")"
+                   asp-area="Admin"
+                   asp-controller="User"
+                   asp-action="Index">
+
+                    <i class="bx bx-group"></i>
+
+                    <span>Users</span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TEMP DATA MESSAGE
+    ====================================================== -->
+    @{
+        var response =
+            TempData.Get<ResponseModel>(Constants.ResponseTempKey);
+    }
+
+    @if (response != null)
+    {
+        var isSuccess =
+            response.Type == ResponseTypes.Success;
+
+        <div class="tempdata-container">
+
+            <div class="alert
+                @(isSuccess ? "alert-success" : "alert-danger")
+                alert-dismissible
+                fade
+                show
+                custom-alert"
+                 role="alert">
+
+                <i class="bx
+                    @(isSuccess
+                     ? "bx-check-circle"
+                     : "bx-error-circle")">
+                </i>
+
+                <span>
+                    @response.Message
+                </span>
+
+                <button type="button"
+                        class="btn-close ms-auto"
+                        data-bs-dismiss="alert">
+                </button>
+
+            </div>
+
+        </div>
+    }
+
+
+    <!-- =====================================================
+         USER TABLE CARD
+    ====================================================== -->
+
+    <div class="container-xxl flex-grow-1 container-p-y px-0">
+
+        <div class="card users-card">
+
+            <!-- HEADER -->
+
+            <div class="card-header">
+
+                <div>
+
+                    <div class="users-title">
+                        View Users
+                    </div>
+
+                    <div class="users-subtitle">
+                        Manage registered users and account access
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <div class="search-area">
+
+                <div class="row g-3 align-items-end">
+
+                    <div class="col-md-7 col-lg-6">
+
+                        <label class="form-label">
+                            Search Users
+                        </label>
+
+                        <input type="text"
+                               id="userSearch"
+                               class="form-control"
+                               placeholder="Search by name or email..." />
+
+                    </div>
+
+
+                    <div class="col-md-5 col-lg-6">
+
+                        <div class="d-flex justify-content-end gap-2 search-buttons">
+
+                            <button id="searchButton"
+                                    type="button"
+                                    class="btn btn-primary">
+
+                                <i class="bx bx-search me-1"></i>
+
+                                Search
+
+                            </button>
+
+
+                            <button id="resetButton"
+                                    type="button"
+                                    class="btn btn-outline-secondary">
+
+                                <i class="bx bx-reset me-1"></i>
+
+                                Reset
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- TABLE -->
+
+            <div class="table-area table-responsive">
+
+                <table id="users"
+                       class="table table-bordered table-hover w-100">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>First Name</th>
+
+                            <th>Last Name</th>
+
+                            <th>Email</th>
+
+                            <th>Email Status</th>
+
+                            <th>Block Status</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     BLOCK USER MODAL
+====================================================== -->
+
+<div class="modal fade"
+     id="block-modal"
+     tabindex="-1"
+     aria-labelledby="modelLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title"
+                    id="modelLabel">
+                    Block User
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <p>
+                    Are you sure you want to block this user?
+                </p>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+
+                <form id="block-form"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden"
+                           id="block-id"
+                           name="id" />
+
+                    <button type="submit"
+                            class="btn btn-danger">
+
+                        <i class="bx bx-block me-1"></i>
+
+                        Block
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     UnBLOCK USER MODAL
+====================================================== -->
+
+<div class="modal fade"
+     id="Unblock-modal"
+     tabindex="-1"
+     aria-labelledby="modelLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title"
+                    id="modelLabel">
+                    UnBlock User
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <p>
+                    Are you sure you want to Unblock this user?
+                </p>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+
+                <form id="Unblock-form"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden"
+                           id="Unblock-id"
+                           name="id" />
+
+                    <button type="submit"
+                            class="btn btn-danger">
+
+                        <i class="bx bx-block me-1"></i>
+
+                        UnBlock
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@section Scripts
+{
+    <!-- =====================================================
+         DATATABLE SCRIPTS
+    ====================================================== -->
+
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
+
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.min.js"></script>
+
+    <script src="https://cdn.datatables.net/responsive/3.0.2/js/responsive.bootstrap5.min.js"></script>
+
+
+    <script>
+
+        $(document).ready(function() {
+
+            // =====================================================
+            // GET ANTIFORGERY TOKEN
+            // =====================================================
+
+            function getAntiForgeryToken() {
+
+                return $('input[name="__RequestVerificationToken"]')
+                    .first()
+                    .val();
+
+            }
+
+
+            // =====================================================
+            // DATATABLE
+            // =====================================================
+
+            var table = $('#users').DataTable({
+
+                processing: true,
+
+                serverSide: true,
+
+                responsive: true,
+
+                searching: false,
+
+                autoWidth: false,
+
+                pagingType: 'simple_numbers',
+
+                pageLength: 10,
+
+                ajax: {
+
+                    url: '@Url.Action(
+                               "GetPagedUsers",
+                                "User",
+                                 new { area = "Admin" }
+                            )',
+
+                            type: 'POST',
+
+                contentType: 'application/json',
+
+                dataType: 'json',
+
+                headers: {
+
+                'RequestVerificationToken':
+                    getAntiForgeryToken()
+
+            },
+
+                data: function(d) {
+
+                    var request = {
+
+                        start: d.start,
+
+                        length: d.length,
+
+                        searchText:
+                            $('#userSearch')
+                                .val()
+                                .trim()
+
+                    };
+
+                    return JSON.stringify(request);
+
+                },
+
+                error: function(xhr) {
+
+                    console.error(
+                        'GetPagedUsers Error:',
+                        xhr.responseText
+                    );
+
+                }
+
+                        },
+
+
+            // =====================================================
+            // COLUMNS
+            // =====================================================
+
+            columns: [
+
+            {
+                data: 'firstName',
+                defaultContent: '-'
+            },
+
+
+            {
+                data: 'lastName',
+                defaultContent: '-'
+            },
+
+
+            {
+                data: 'email',
+                defaultContent: '-'
+            },
+
+
+            // =================================================
+            // EMAIL STATUS
+            // =================================================
+
+            {
+                data: 'emailConfirmed',
+
+                orderable: false,
+
+                render: function(data) {
+
+                    if (data === true) {
+
+                        return `
+                                            <span class="badge bg-success status-badge">
+                                                <i class="bx bx-check me-1"></i>
+                                                Confirmed
+                                            </span>
+                                        `;
+
+                    }
+
+                    return `
+                                        <span class="badge bg-warning status-badge">
+                                            <i class="bx bx-time me-1"></i>
+                                            Not Confirmed
+                                        </span>
+                                    `;
+
+                }
+
+            },
+
+
+            // =================================================
+            // BLOCK STATUS
+            // =================================================
+
+            {
+                data: 'isBlocked',
+
+                orderable: false,
+
+                render: function(data) {
+
+                    if (data === true) {
+
+                        return `
+                                            <span class="badge bg-danger status-badge">
+                                                <i class="bx bx-block me-1"></i>
+                                                Blocked
+                                            </span>
+                                        `;
+
+                    }
+
+                    return `
+                                        <span class="badge bg-success status-badge">
+                                            <i class="bx bx-check-circle me-1"></i>
+                                            Active
+                                        </span>
+                                    `;
+
+                }
+
+            },
+
+
+            // =================================================
+            // ACTION
+            // =================================================
+
+            {
+                data: null,
+
+                orderable: false,
+
+                searchable: false,
+
+                render: function(data, type, row) {
+
+                    if (row.isBlocked === true) {
+
+                        return `
+                                            <button type="button"
+                                                    class="btn btn-success btn-sm user-action-btn unblock-user"
+                                                    data-id="${row.id}">
+
+                                                <i class="bx bx-lock-open-alt me-1"></i>
+
+                                                Unblock
+
+                                            </button>
+                                        `;
+
+                    }
+
+                    return `
+                                        <button type="button"
+                                                class="btn btn-danger btn-sm user-action-btn block-user"
+                                                data-id="${row.id}">
+
+                                            <i class="bx bx-block me-1"></i>
+
+                                            Block
+
+                                        </button>
+                                    `;
+
+                }
+
+            }
+
+        ]
+
+                    });
+
+
+        // =====================================================
+        // SEARCH
+        // =====================================================
+
+        $('#searchButton').on('click', function() {
+
+            table.ajax.reload(null, true);
+
+        });
+
+
+        // =====================================================
+        // ENTER KEY SEARCH
+        // =====================================================
+
+        $('#userSearch').on('keypress', function(e) {
+
+            if (e.which === 13) {
+
+                table.ajax.reload(null, true);
+
+            }
+
+        });
+
+
+        // =====================================================
+        // RESET
+        // =====================================================
+
+        $('#resetButton').on('click', function() {
+
+            $('#userSearch').val('');
+
+            table.ajax.reload(null, true);
+
+        });
+
+
+        // =====================================================
+        // BLOCK USER - OPEN MODAL
+        // =====================================================
+
+        $('#users').on('click', '.block-user', function() {
+
+            let id = $(this).data('id');
+
+            let blockModal = $('#block-modal');
+
+
+            // Set modal title
+
+            blockModal
+                .find('#modelLabel')
+                .text('Block User');
+
+
+            // Set modal message
+
+            blockModal
+                .find('.modal-body p')
+                .html('Are you sure you want to block this user?');
+
+
+            // Put user ID into hidden input
+
+            $('#block-id').val(id);
+
+
+            // Set form action
+
+            $('#block-form').attr(
+                'action',
+                '@Url.Action(
+                            "BlockUser",
+                            "User",
+                            new { area = "Admin" }
+                            )'
+            );
+
+
+            // Show modal
+
+            blockModal.modal('show');
+
+        });
+
+
+
+        // =====================================================
+        // UNBLOCK USER - OPEN MODAL
+        // =====================================================
+
+        $('#users').on('click', '.unblock-user', function() {
+
+            let id = $(this).data('id');
+
+            let UnblockModal = $('#Unblock-modal');
+
+
+            // Set modal title
+
+            UnblockModal
+                .find('#modelLabel')
+                .text('UnBlock User');
+
+
+            // Set modal message
+
+           UnblockModal
+                .find('.modal-body p')
+                .html('Are you sure you want to Unblock this user?');
+
+
+            // Put user ID into hidden input
+
+            $('#Unblock-id').val(id);
+
+
+            // Set form action
+
+            $('#Unblock-form').attr(
+                'action',
+                '@Url.Action(
+                       "UnblockUser",
+                       "User",
+                        new { area = "Admin" }
+                            )'
+            );
+
+
+            // Show modal
+
+            UnblockModal.modal('show');
+
+        });
+
+
+        // =====================================================
+        // BLOCK USER - SUBMIT
+        // =====================================================
+
+        $('#block-form').on('submit', function(e) {
+
+            e.preventDefault();
+
+
+            let form = $(this);
+
+
+            $.ajax({
+
+                url: form.attr('action'),
+
+                type: 'POST',
+
+                data: form.serialize(),
+
+                success: function(response) {
+
+                    /*
+                     * Controller stores the response
+                     * inside TempData.
+                     *
+                     * Reload the page so the TempData
+                     * alert can be displayed.
+                     */
+
+                    window.location.reload();
+
+                },
+
+                error: function(xhr) {
+
+                    console.error(
+                        'BlockUser Error:',
+                        xhr.responseText
+                    );
+
+                    alert('Failed to block user.');
+
+                }
+
+            });
+
+        });
+
+
+        // =====================================================
+        // UNBLOCK USER
+        // =====================================================
+
+        $('#Unblock-form').on('submit', function(e) {
+
+            e.preventDefault();
+
+
+            let form = $(this);
+
+
+            $.ajax({
+
+                url: form.attr('action'),
+
+                type: 'POST',
+
+                data: form.serialize(),
+
+                success: function(response) {
+
+                    /*
+                     * Controller stores the response
+                     * inside TempData.
+                     *
+                     * Reload the page so the TempData
+                     * alert can be displayed.
+                     */
+
+                    window.location.reload();
+
+                },
+
+                error: function(xhr) {
+
+                    console.error(
+                        'UnBlockUser Error:',
+                        xhr.responseText
+                    );
+
+                    alert('Failed to Unblock user.');
+
+                }
+
+            });
+
+        });
+
+
+        // =====================================================
+        // AUTO HIDE TEMP DATA
+        // =====================================================
+
+        setTimeout(function() {
+
+            $('.custom-alert').fadeOut(
+                500,
+                function() {
+
+                    $(this).remove();
+
+                }
+            );
+
+        }, 4000);
+
+                });
+
+    </script>
+}

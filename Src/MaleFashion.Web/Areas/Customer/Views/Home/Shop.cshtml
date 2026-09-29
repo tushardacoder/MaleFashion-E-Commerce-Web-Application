@@ -1,0 +1,2287 @@
+﻿
+@model MaleFashion.Application.Features.Products.Query.ShopViewModel
+
+@{
+    ViewData["Title"] = "Shop";
+
+    var shopModel = Model
+        ?? new MaleFashion.Application.Features.Products.Query.ShopViewModel();
+
+    var products = shopModel.Products
+        ?? new List<MaleFashion.Application.Features.Products.Query.ShopProductViewModel>();
+
+    var categories = shopModel.Categories
+        ?? new List<MaleFashion.Application.Features.Products.Query.ShopCategoryViewModel>();
+
+    var brands = shopModel.Brands
+        ?? new List<string>();
+
+    var sizes = shopModel.Sizes
+        ?? new List<string>();
+
+    var colors = shopModel.Colors
+        ?? new List<string>();
+
+    var tags = shopModel.Tags
+        ?? new List<string>();
+
+    var priceRanges = new[]
+    {
+        new { Min = 0m,      Max = (decimal?)5000m },
+        new { Min = 5000m,   Max = (decimal?)10000m },
+        new { Min = 10000m,  Max = (decimal?)15000m },
+        new { Min = 15000m,  Max = (decimal?)20000m },
+        new { Min = 20000m,  Max = (decimal?)25000m },
+        new { Min = 25000m,  Max = (decimal?)null }
+    };
+}
+
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="description"
+          content="Male_Fashion Template">
+
+    <meta name="keywords"
+          content="Male_Fashion, unica, creative, html">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="X-UA-Compatible"
+          content="ie=edge">
+
+    <title>Male-Fashion | Shop</title>
+
+
+    <!-- ========================================================= -->
+    <!-- GOOGLE FONT -->
+    <!-- ========================================================= -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+
+    <!-- ========================================================= -->
+    <!-- CSS -->
+    <!-- ========================================================= -->
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/bootstrap.min.css"
+          type="text/css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/font-awesome.min.css"
+          type="text/css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/elegant-icons.css"
+          type="text/css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/magnific-popup.css"
+          type="text/css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/nice-select.css"
+          type="text/css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/owl.carousel.min.css"
+          type="text/css">
+
+    <!-- ========================================================= -->
+    <!-- SLICK CAROUSEL CSS -->
+    <!-- ========================================================= -->
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
+          type="text/css">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"
+          type="text/css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/slicknav.min.css"
+          type="text/css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/style.css"
+          type="text/css">
+
+
+    <!-- ========================================================= -->
+    <!-- CUSTOM CSS -->
+    <!-- ========================================================= -->
+
+    <style>
+
+            /* ==========================================================
+                       DETAILS BUTTON
+                       ========================================================== */
+
+            .details-btn {
+                color: blue;
+            }
+
+
+            /* ==========================================================
+                       PRODUCT IMAGE SLIDER
+                       ========================================================== */
+
+            .product-image-slider {
+                position: relative;
+                overflow: hidden;
+                width: 100%;
+            }
+
+
+            .product-slider {
+                width: 100%;
+                height: 100%;
+            }
+
+
+            .product-slide {
+                width: 100%;
+                height: 100%;
+            }
+
+
+            .product-slider-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+
+
+            /* ==========================================================
+                       SLICK ARROWS
+                       ========================================================== */
+
+            .product-slider .slick-prev,
+            .product-slider .slick-next {
+                z-index: 20;
+                width: 36px;
+                height: 36px;
+                background: rgba(0, 0, 0, 0.55);
+                border-radius: 50%;
+            }
+
+
+            .product-slider .slick-prev {
+                left: 10px;
+            }
+
+
+            .product-slider .slick-next {
+                right: 10px;
+            }
+
+
+                .product-slider .slick-prev:hover,
+                .product-slider .slick-next:hover {
+                    background: rgba(0, 0, 0, 0.8);
+                }
+
+
+                .product-slider .slick-prev:before,
+                .product-slider .slick-next:before {
+                    font-size: 18px;
+                }
+
+
+            /* ==========================================================
+                       SLICK DOTS
+                       ========================================================== */
+
+            .product-slider .slick-dots {
+                bottom: 10px;
+                z-index: 20;
+            }
+
+
+                .product-slider .slick-dots li {
+                    margin: 0 2px;
+                }
+
+
+                    .product-slider .slick-dots li button:before {
+                        font-size: 8px;
+                    }
+
+
+            /* ==========================================================
+                       PRODUCT HOVER
+                       ========================================================== */
+
+            .product-image-slider .product__hover {
+                z-index: 30;
+            }
+
+
+            /* ==========================================================
+                       PREVENT IMAGE SELECTION
+                       ========================================================== */
+
+            .product-slider-image {
+                user-select: none;
+                -webkit-user-drag: none;
+            }
+
+
+            /* ==========================================================
+                       MOBILE
+                       ========================================================== */
+
+            @@media (max-width: 768px) {
+
+                .product-slider .slick-prev,
+                .product-slider .slick-next {
+                    width: 30px;
+                    height: 30px;
+                }
+
+                .product-slider .slick-prev {
+                    left: 5px;
+                }
+
+                .product-slider .slick-next {
+                    right: 5px;
+                }
+
+                    .product-slider .slick-prev:before,
+                    .product-slider .slick-next:before {
+                        font-size: 14px;
+                    }
+            }
+
+            /* Wishlist header */
+            /* .wishlist-header-wrapper {
+                display: inline-flex;
+                align-items: center;
+            }
+
+            .wishlist-button {
+                position: relative;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 30px;
+                height: 30px;
+                color: #111;
+                text-decoration: none;
+            } */
+
+                /* .wishlist-button:hover {
+                    text-decoration: none;
+                    color: #111;
+                } */
+
+                /* .wishlist-button img {
+                    width: 22px;
+                    height: 22px;
+                    display: block;
+                } */
+
+            /* Wishlist number */
+            /* .wishlist-count {
+                position: absolute;
+                top: -6px;
+                right: -7px;
+                color:black;
+                font-size: 12px;
+                font-weight: 700;
+                line-height: 1;
+                z-index: 10;
+            } */
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ========================================================= -->
+    <!-- PRELOADER -->
+    <!-- ========================================================= -->
+
+    <div id="preloder">
+
+        <div class="loader"></div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- OFFCANVAS MENU -->
+    <!-- ========================================================= -->
+
+    <div class="offcanvas-menu-overlay"></div>
+
+    <div class="offcanvas-menu-wrapper">
+
+        <div class="offcanvas__option">
+
+            <div class="offcanvas__links">
+
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <span>
+                        Hello, @User.Identity?.Name
+                    </span>
+
+                    <form asp-area=""
+                          asp-controller="Account"
+                          asp-action="Logout"
+                          asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "Customer" })"
+                          method="post"
+                          style="display:inline-block;">
+
+                        <button type="submit"
+                                class="btn btn-link p-0">
+
+                            Logout
+
+                        </button>
+
+                    </form>
+                }
+                else
+                {
+                    <a asp-area=""
+                       asp-controller="Account"
+                       asp-action="Register">
+
+                        Sign in
+
+                    </a>
+                }
+
+                <a asp-area=""
+                   asp-controller="Home"
+                   asp-action="Faq">
+
+                    FAQs
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="offcanvas__nav__option">
+
+            <a href="#"
+               class="search-switch">
+
+                <img src="~/Malefashon/Assets/img/icon/search.png"
+                     alt="Search">
+
+            </a>
+
+            <a href="#">
+
+                <img src="~/Malefashon/Assets/img/icon/heart.png"
+                     alt="Wishlist">
+
+            </a>
+
+            <a href="#">
+
+                <img src="~/Malefashon/Assets/img/icon/cart.png"
+                     alt="Cart">
+
+                <span>0</span>
+
+            </a>
+
+            <div class="price">
+                ৳0.00
+            </div>
+
+        </div>
+
+
+        <div id="mobile-menu-wrap"></div>
+
+
+        <div class="offcanvas__text">
+
+            <p>
+                Free shipping, 30-day return or refund guarantee.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- HEADER -->
+    <!-- ========================================================= -->
+
+    <header class="header">
+
+        <div class="header__top">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-lg-6 col-md-7">
+
+                        <div class="header__top__left">
+
+                            <p>
+                                Free shipping, 30-day return or refund guarantee.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-lg-6 col-md-5">
+
+                        <div class="header__top__right">
+
+                            <div class="header__top__links">
+
+                                <div class="offcanvas__links">
+
+                                    @if (User.Identity?.IsAuthenticated == true)
+                                    {
+                                        <span style="color:#fff;
+                                            background:#000;
+                                            padding:8px 15px;
+                                            border-radius:4px;
+                                            font-weight:600;">
+
+                                            Hello, @User.Identity?.Name
+
+                                        </span>
+
+
+                                        <form asp-area=""
+                                              asp-controller="Account"
+                                              asp-action="Logout"
+                                              asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "Customer" })"
+                                              method="post"
+                                              style="display:inline-block;
+                                            margin-right:30px;">
+
+                                            <button type="submit"
+                                                    class="btn btn-link p-0"
+                                                    style="color:#fff;
+                                                text-decoration:none;">
+
+                                                Logout
+
+                                            </button>
+
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <a asp-area=""
+                                           asp-controller="Account"
+                                           asp-action="Register">
+
+                                            Sign in
+
+                                        </a>
+                                    }
+
+
+                                    <a asp-area=""
+                                       asp-controller="Home"
+                                       asp-action="Faq">
+
+                                        FAQs
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="container">
+
+            <div class="row">
+
+
+                <!-- ================================================= -->
+                <!-- LOGO -->
+                <!-- ================================================= -->
+
+                <div class="col-lg-3 col-md-3">
+
+                    <div class="header__logo">
+
+                        <a asp-area="Customer"
+                           asp-controller="Home"
+                           asp-action="Index">
+
+                            <img src="~/Malefashon/Assets/img/logo.png"
+                                 alt="Male Fashion">
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- NAVIGATION -->
+                <!-- ================================================= -->
+
+                <div class="col-lg-6 col-md-6">
+
+                    <nav class="header__menu mobile-menu">
+
+                        <ul>
+
+                            <li>
+                            </li>
+
+                            <li >
+
+                                
+                                
+                                <a asp-area="Customer"
+                                   asp-controller="Home"
+                                   asp-action="Index">
+                                    Home
+                                </a>
+
+                            </li>
+                            <li>
+                            <li class="active">
+
+                                <a asp-area="Customer"
+                                   asp-controller="Home"
+                                   asp-action="Shop">
+
+                                    Shop
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <a href="#">
+                                    My Shopping
+                                </a>
+
+                                <ul class="dropdown">
+
+                                    <li>
+
+                                        @if (User.Identity?.IsAuthenticated == false)
+                                        {
+                                            <a asp-area="Customer"
+                                               asp-controller="Home"
+                                               asp-action="About">
+
+                                                About Us
+
+                                            </a>
+                                        }
+
+                                    </li>
+
+
+                                    <li>
+
+                                        <a asp-area="Customer"
+                                           asp-controller="Home"
+                                           asp-action="ShopDetails">
+
+                                            Shop Details
+
+                                        </a>
+
+                                    </li>
+
+
+                                    <li>
+
+                                        <a asp-area="Customer"
+                                           asp-controller="Home"
+                                           asp-action="Shoppingcart">
+
+                                            Shopping Cart
+
+                                        </a>
+
+                                    </li>
+
+
+                                    <li>
+
+                                        <a asp-area="Customer"
+                                           asp-controller="Home"
+                                           asp-action="Checkout">
+
+                                            Check Out
+
+                                        </a>
+
+                                    </li>
+
+
+                                    <li>
+
+                                        
+                                          
+
+                                                <a asp-area="Customer"
+                                                   asp-controller="Home"
+                                                   asp-action="OrderHistory">
+                                                    Order History
+                                                </a>
+
+                                            
+                                        
+
+                                    </li>
+
+                                </ul>
+
+                            </li>
+
+
+                            <li>
+
+                                @if (User.Identity?.IsAuthenticated == false)
+                                {
+                                    <a asp-area="Customer"
+                                       asp-controller="Home"
+                                       asp-action="Blog">
+
+                                        Blog
+
+                                    </a>
+                                }
+
+                            </li>
+
+
+                            <li>
+
+                                @if (User.Identity?.IsAuthenticated == false)
+                                {
+                                    <a asp-area="Customer"
+                                       asp-controller="ContactUs"
+                                       asp-action="Contact">
+
+                                        Contacts
+
+                                    </a>
+                                }
+
+                            </li>
+
+                        </ul>
+
+                    </nav>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- HEADER ICONS -->
+                <!-- ================================================= -->
+
+                <div class="col-lg-3 col-md-3">
+
+                    <div class="header__nav__option">
+
+                        <a href="#"
+                           class="search-switch">
+
+                            <img src="~/Malefashon/Assets/img/icon/search.png"
+                                 alt="Search">
+
+                        </a>
+
+                            @* <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Wishlist"
+                               class="wishlist-button"
+                               title="My Wishlist"
+                               style="color: white; text-decoration: none;">
+
+                            
+                                <img src="~/Malefashon/Assets/img/icon/heart.png"
+                                     alt="Wishlist">
+
+                            </a> *@
+
+                           
+
+                                <a asp-area="Customer"
+                                   asp-controller="Home"
+                                   asp-action="Wishlist"
+                                   class="wishlist-button"
+                                   title="My Wishlist">
+
+                                    
+                                    <img src="~/Malefashon/Assets/img/icon/heart.png" alt="Wishlist">
+                                      <span style="font-size: 14px; color: #111; font-weight: normal;">
+                                            @await Component.InvokeAsync("WishlistCount")
+                                         </span>
+                                  
+                                </a>
+
+                            
+
+
+                        @* <a href="#">
+
+                            <img src="~/Malefashon/Assets/img/icon/cart.png"
+                                 alt="Cart">
+
+                            <span>0</span>
+
+                        </a>
+
+
+                        <div class="price">
+                            ৳0.00
+                        </div> *@
+
+                            @await Component.InvokeAsync("CartSummary")
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="canvas__open">
+
+                <i class="fa fa-bars"></i>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ========================================================= -->
+    <!-- BREADCRUMB -->
+    <!-- ========================================================= -->
+
+    <section class="breadcrumb-option">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-lg-12">
+
+                    <div class="breadcrumb__text">
+
+                        <h4>
+                            Shop
+                        </h4>
+
+
+                        <div class="breadcrumb__links">
+
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                Home
+
+                            </a>
+
+                            <span>
+                                Shop
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================================= -->
+    <!-- SHOP -->
+    <!-- ========================================================= -->
+
+    <section class="shop spad">
+
+        <div class="container">
+
+            <div class="row">
+
+
+                <!-- ================================================= -->
+                <!-- SIDEBAR -->
+                <!-- ================================================= -->
+
+                <div class="col-lg-3">
+
+                    <div class="shop__sidebar">
+
+
+                        <!-- ================================================= -->
+                        <!-- SEARCH -->
+                        <!-- ================================================= -->
+
+                        <div class="shop__sidebar__search">
+
+                            <form asp-area="Customer"
+                                  asp-controller="Home"
+                                  asp-action="Shop"
+                                  method="get">
+
+                                <input type="text"
+                                       name="search"
+                                       value="@shopModel.Search"
+                                       placeholder="Search...">
+
+                                <button type="submit">
+
+                                    <span class="icon_search"></span>
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+
+                        <!-- ================================================= -->
+                        <!-- ACCORDION -->
+                        <!-- ================================================= -->
+
+                        <div class="shop__sidebar__accordion">
+
+                            <div class="accordion"
+                                 id="accordionExample">
+
+
+                                <!-- ================================================= -->
+                                <!-- CATEGORIES -->
+                                <!-- ================================================= -->
+
+                                <div class="card">
+
+                                    <div class="card-heading">
+
+                                        <a data-toggle="collapse"
+                                           data-target="#collapseOne">
+
+                                            Categories
+
+                                        </a>
+
+                                    </div>
+
+
+                                    <div id="collapseOne"
+                                         class="collapse show"
+                                         data-parent="#accordionExample">
+
+                                        <div class="card-body">
+
+                                            <div class="shop__sidebar__categories">
+
+                                                <ul class="nice-scroll">
+
+
+                                                    <!-- ALL PRODUCTS -->
+
+                                                    <li>
+
+                                                        <a asp-area="Customer"
+                                                           asp-controller="Home"
+                                                           asp-action="Shop">
+
+                                                            All Products
+
+                                                            <span>
+                                                                (@shopModel.TotalProducts)
+                                                            </span>
+
+                                                        </a>
+
+                                                    </li>
+
+
+                                                    @if (categories.Any())
+                                                    {
+                                                        foreach (var category in categories)
+                                                        {
+                                                            <li>
+
+                                                                <a asp-area="Customer"
+                                                                   asp-controller="Home"
+                                                                   asp-action="Shop"
+                                                                   asp-route-categoryId="@category.Id">
+
+                                                                    @category.Name
+
+                                                                    <span>
+                                                                        (@category.ProductCount)
+                                                                    </span>
+
+                                                                </a>
+
+                                                            </li>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <li>
+
+                                                            <a href="javascript:void(0);">
+
+                                                                No categories found
+
+                                                            </a>
+
+                                                        </li>
+                                                    }
+
+                                                </ul>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ================================================= -->
+                                <!-- BRAND -->
+                                <!-- ================================================= -->
+
+                                <div class="card">
+
+                                    <div class="card-heading">
+
+                                        <a data-toggle="collapse"
+                                           data-target="#collapseTwo">
+
+                                            Branding
+
+                                        </a>
+
+                                    </div>
+
+
+                                    <div id="collapseTwo"
+                                         class="collapse show"
+                                         data-parent="#accordionExample">
+
+                                        <div class="card-body">
+
+                                            <div class="shop__sidebar__brand">
+
+                                                <ul>
+
+                                                    @if (brands.Any())
+                                                    {
+                                                        foreach (var brand in brands)
+                                                        {
+                                                            <li>
+
+                                                                <a asp-area="Customer"
+                                                                   asp-controller="Home"
+                                                                   asp-action="Shop"
+                                                                   asp-route-brand="@brand">
+
+                                                                    @brand
+
+                                                                </a>
+
+                                                            </li>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <li>
+
+                                                            <a href="javascript:void(0);">
+
+                                                                No brands found
+
+                                                            </a>
+
+                                                        </li>
+                                                    }
+
+                                                </ul>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ================================================= -->
+                                <!-- PRICE -->
+                                <!-- ================================================= -->
+
+                                <div class="card">
+
+                                    <div class="card-heading">
+
+                                        <a data-toggle="collapse"
+                                           data-target="#collapseThree">
+
+                                            Filter Price
+
+                                        </a>
+
+                                    </div>
+
+
+                                    <div id="collapseThree"
+                                         class="collapse show"
+                                         data-parent="#accordionExample">
+
+                                        <div class="card-body">
+
+                                            <div class="shop__sidebar__price">
+
+                                                <ul>
+
+                                                    @foreach (var range in priceRanges)
+                                                    {
+                                                        <li>
+
+                                                            <a asp-area="Customer"
+                                                               asp-controller="Home"
+                                                               asp-action="Shop"
+                                                               asp-route-minPrice="@range.Min"
+                                                               asp-route-maxPrice="@range.Max">
+
+                                                                @if (range.Max.HasValue)
+                                                                {
+                                                                    @:৳@range.Min.ToString("N0") - ৳@range.Max.Value.ToString("N0")
+                                                                }
+                                                                else
+                                                                {
+                                                                    @:৳@range.Min.ToString("N0")+
+                                                                }
+
+                                                            </a>
+
+                                                        </li>
+                                                    }
+
+                                                </ul>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ================================================= -->
+                                <!-- SIZE -->
+                                <!-- ================================================= -->
+
+                                <div class="card">
+
+                                    <div class="card-heading">
+
+                                        <a data-toggle="collapse"
+                                           data-target="#collapseFour">
+
+                                            Size
+
+                                        </a>
+
+                                    </div>
+
+
+                                    <div id="collapseFour"
+                                         class="collapse show"
+                                         data-parent="#accordionExample">
+
+                                        <div class="card-body">
+
+                                            <div class="shop__sidebar__size">
+
+                                                @if (sizes.Any())
+                                                {
+                                                    foreach (var size in sizes)
+                                                    {
+                                                        var sizeId =
+                                                            "size-" +
+                                                            size.Replace(" ", "-")
+                                                                .Replace("/", "-");
+
+                                                        <label for="@sizeId">
+
+                                                            @size
+
+                                                            <input type="radio"
+                                                                   id="@sizeId"
+                                                                   name="size"
+                                                                   value="@size"
+                                                            @(shopModel.Size == size ? "checked" : "")
+                                                                   onchange="filterBySize(this)">
+
+                                                        </label>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span>
+                                                        No sizes found
+                                                    </span>
+                                                }
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ================================================= -->
+                                <!-- COLORS -->
+                                <!-- ================================================= -->
+
+                                <div class="card">
+
+                                    <div class="card-heading">
+
+                                        <a data-toggle="collapse"
+                                           data-target="#collapseFive">
+
+                                            Colors
+
+                                        </a>
+
+                                    </div>
+
+
+                                    <div id="collapseFive"
+                                         class="collapse show"
+                                         data-parent="#accordionExample">
+
+                                        <div class="card-body">
+
+                                            <div class="shop__sidebar__color">
+
+                                                @if (colors.Any())
+                                                {
+                                                    var colorIndex = 1;
+
+                                                    foreach (var color in colors)
+                                                    {
+                                                        var colorId =
+                                                            "sp-" + colorIndex;
+
+                                                        var colorClass =
+                                                            GetColorClass(color);
+
+                                                        <label class="@colorClass"
+                                                               for="@colorId"
+                                                               title="@color">
+
+                                                            <input type="radio"
+                                                                   id="@colorId"
+                                                                   name="color"
+                                                                   value="@color"
+                                                            @(shopModel.Color == color ? "checked" : "")
+                                                                   onchange="filterByColor(this)">
+
+                                                        </label>
+
+                                                        colorIndex++;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span>
+                                                        No colors found
+                                                    </span>
+                                                }
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ================================================= -->
+                                <!-- TAGS -->
+                                <!-- ================================================= -->
+
+                                <div class="card">
+
+                                    <div class="card-heading">
+
+                                        <a data-toggle="collapse"
+                                           data-target="#collapseSix">
+
+                                            Tags
+
+                                        </a>
+
+                                    </div>
+
+
+                                    <div id="collapseSix"
+                                         class="collapse show"
+                                         data-parent="#accordionExample">
+
+                                        <div class="card-body">
+
+                                            <div class="shop__sidebar__tags">
+
+                                                @if (tags.Any())
+                                                {
+                                                    foreach (var tag in tags)
+                                                    {
+                                                        <a asp-area="Customer"
+                                                           asp-controller="Home"
+                                                           asp-action="Shop"
+                                                           asp-route-tag="@tag">
+
+                                                            @tag
+
+                                                        </a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span>
+                                                        No tags found
+                                                    </span>
+                                                }
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- PRODUCT AREA -->
+                <!-- ================================================= -->
+
+                <div class="col-lg-9">
+
+
+                    <!-- ================================================= -->
+                    <!-- PRODUCT OPTIONS -->
+                    <!-- ================================================= -->
+
+                    <div class="shop__product__option">
+
+                        <div class="row">
+
+
+                            <!-- RESULT COUNT -->
+
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+
+                                <div class="shop__product__option__left">
+
+                                    @if (shopModel.TotalProducts > 0)
+                                    {
+                                        var start =
+                                            ((shopModel.CurrentPage - 1)
+                                            * shopModel.PageSize) + 1;
+
+                                        var end =
+                                            Math.Min(
+                                                shopModel.CurrentPage *
+                                                shopModel.PageSize,
+                                                shopModel.TotalProducts);
+
+                                        <p>
+
+                                            Showing
+                                            @start
+                                            -
+                                            @end
+                                            of
+                                            @shopModel.TotalProducts
+                                            results
+
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p>
+                                            Showing 0 results
+                                        </p>
+                                    }
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- SORT -->
+
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+
+                                <div class="shop__product__option__right">
+
+                                    <p>
+                                        Sort by Price:
+                                    </p>
+
+
+                                    <select id="sortProducts"
+                                            onchange="sortProducts()">
+
+                                        <option value="default"
+                                                selected="@(string.IsNullOrEmpty(shopModel.Sort))">
+
+                                            Default
+
+                                        </option>
+
+
+                                        <option value="price-low"
+                                                selected="@(shopModel.Sort == "price-low")">
+
+                                            Low To High
+
+                                        </option>
+
+
+                                        <option value="price-high"
+                                                selected="@(shopModel.Sort == "price-high")">
+
+                                            High To Low
+
+                                        </option>
+
+
+                                        <option value="name"
+                                                selected="@(shopModel.Sort == "name")">
+
+                                            Name A-Z
+
+                                        </option>
+
+
+                                        <option value="name-desc"
+                                                selected="@(shopModel.Sort == "name-desc")">
+
+                                            Name Z-A
+
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- PRODUCT LIST -->
+                    <!-- ================================================= -->
+
+                    <div class="row">
+
+                        @if (products.Any())
+                        {
+                            foreach (var product in products)
+                            {
+                                <div class="col-lg-4 col-md-6 col-sm-6">
+
+                                    <div class="product__item">
+
+
+                                        <!-- ================================================= -->
+                                        <!-- PRODUCT IMAGE SLIDER -->
+                                        <!-- ================================================= -->
+
+                                        <div class="product__item__pic product-image-slider">
+
+
+                                            @if (product.Images != null &&
+                                                 product.Images.Any())
+                                            {
+                                                <div class="product-slider">
+
+                                                    @foreach (var image in product.Images)
+                                                    {
+                                                        <div class="product-slide">
+
+                                                            <img src="@Url.Content("~/uploads/products/" + image)"
+                                                                 alt="@product.ProductName"
+                                                                 class="product-slider-image" />
+
+                                                        </div>
+                                                    }
+
+                                                </div>
+                                            }
+                                            else if (!string.IsNullOrWhiteSpace(product.PrimaryImage))
+                                            {
+                                                <img src="@Url.Content("~/uploads/products/" + product.PrimaryImage)"
+                                                     alt="@product.ProductName"
+                                                     class="product-slider-image" />
+                                            }
+                                            else
+                                            {
+                                                <div style="width:100%;
+                                                    height:100%;
+                                                    display:flex;
+                                                    align-items:center;
+                                                    justify-content:center;
+                                                    background:#f5f5f5;">
+
+                                                    <span>
+                                                        No Image
+                                                    </span>
+
+                                                </div>
+                                            }
+
+
+                                            <!-- ================================================= -->
+                                            <!-- PRODUCT HOVER -->
+                                            <!-- ================================================= -->
+
+                                           
+
+                                        </div>
+
+
+                                        <!-- ================================================= -->
+                                        <!-- PRODUCT INFORMATION -->
+                                        <!-- ================================================= -->
+
+                                        <div class="product__item__text">
+
+
+                                            <!-- PRODUCT NAME -->
+
+                                            <h6>
+                                                @product.ProductName
+                                            </h6>
+
+
+                                            <!-- VIEW DETAILS -->
+
+                                            <a asp-area="Customer"
+                                               asp-controller="Home"
+                                               asp-action="ShopDetails"
+                                               asp-route-id="@product.Id"
+                                               class="details-btn">
+
+                                                <i class="fa fa-eye"></i>
+                                                View Details
+
+                                            </a>
+
+
+                                            <!-- PRICE -->
+
+                                            <h5>
+                                                ৳ @product.Price.ToString("N2")
+                                            </h5>
+
+
+                                            <!-- ================================================= -->
+                                            <!-- PRODUCT COLORS -->
+                                            <!-- ================================================= -->
+                                            @if (product.Colors != null && product.Colors.Any())
+                                            {
+                                                <div class="product__color__select">
+
+                                                    @{
+                                                        var productColorIndex = 1;
+                                                    }
+
+                                                    @foreach (var color in product.Colors)
+                                                    {
+                                                        var productColorId =
+                                                            "pc-" +
+                                                            product.Id.ToString("N") +
+                                                            "-" +
+                                                            productColorIndex;
+
+                                                        var productColorClass =
+                                                            GetColorClass(color);
+
+                                                        @* <label class="@productColorClass"
+                                                               for="@productColorId"
+                                                               title="@color">
+
+                                                            <input type="radio"
+                                                                   id="@productColorId"
+                                                                   name="product-color-@product.Id"
+                                                                   value="@color">
+
+                                                        </label> *@
+
+                                                        productColorIndex++;
+                                                    }
+
+                                                </div>
+                                            }
+
+
+                                            <!-- ================================================= -->
+                                            <!-- STOCK -->
+                                            <!-- ================================================= -->
+                                            @if (product.IsInStock)
+                                            {
+                                                <small class="text-success">
+
+                                                    In Stock
+
+                                                </small>
+                                            }
+                                            else
+                                            {
+                                                <small class="text-danger">
+
+                                                    Out of Stock
+
+                                                </small>
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <!-- ================================================= -->
+                            <!-- NO PRODUCTS -->
+                            <!-- ================================================= -->
+
+                            <div class="col-lg-12">
+
+                                <div style="text-align:center;
+                                    padding:80px 0;">
+
+                                    <h4>
+                                        No products found
+                                    </h4>
+
+                                    <p>
+                                        Try changing your search or filters.
+                                    </p>
+
+
+                                    <a asp-area="Customer"
+                                       asp-controller="Home"
+                                       asp-action="Shop"
+                                       class="primary-btn">
+
+                                        View All Products
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- PAGINATION -->
+                    <!-- ================================================= -->
+                    @if (shopModel.TotalPages > 1)
+                    {
+                        <div class="row">
+
+                            <div class="col-lg-12">
+
+                                <div class="product__pagination">
+
+
+                                    <!-- PREVIOUS -->
+                                    @if (shopModel.CurrentPage > 1)
+                                    {
+                                        <a asp-area="Customer"
+                                           asp-controller="Home"
+                                           asp-action="Shop"
+                                           asp-route-page="@(shopModel.CurrentPage - 1)"
+                                           asp-route-search="@shopModel.Search"
+                                           asp-route-categoryId="@shopModel.CategoryId"
+                                           asp-route-brand="@shopModel.Brand"
+                                           asp-route-size="@shopModel.Size"
+                                           asp-route-color="@shopModel.Color"
+                                           asp-route-tag="@shopModel.Tag"
+                                           asp-route-minPrice="@shopModel.MinPrice"
+                                           asp-route-maxPrice="@shopModel.MaxPrice"
+                                           asp-route-sort="@shopModel.Sort">
+
+                                            <i class="fa fa-long-arrow-left"></i>
+
+                                        </a>
+                                    }
+
+
+                                    <!-- PAGE NUMBERS -->
+                                    @for (int i = 1;i <= shopModel.TotalPages;i++)
+                                    {
+                                        if (i == shopModel.CurrentPage)
+                                        {
+                                            <a class="active"
+                                               href="javascript:void(0);">
+
+                                                @i
+
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-area="Customer"
+                                               asp-controller="Home"
+                                               asp-action="Shop"
+                                               asp-route-page="@i"
+                                               asp-route-search="@shopModel.Search"
+                                               asp-route-categoryId="@shopModel.CategoryId"
+                                               asp-route-brand="@shopModel.Brand"
+                                               asp-route-size="@shopModel.Size"
+                                               asp-route-color="@shopModel.Color"
+                                               asp-route-tag="@shopModel.Tag"
+                                               asp-route-minPrice="@shopModel.MinPrice"
+                                               asp-route-maxPrice="@shopModel.MaxPrice"
+                                               asp-route-sort="@shopModel.Sort">
+
+                                                @i
+
+                                            </a>
+                                        }
+                                    }
+
+
+                                    <!-- NEXT -->
+                                    @if (shopModel.CurrentPage < shopModel.TotalPages)
+                                    {
+                                        <a asp-area="Customer"
+                                           asp-controller="Home"
+                                           asp-action="Shop"
+                                           asp-route-page="@(shopModel.CurrentPage + 1)"
+                                           asp-route-search="@shopModel.Search"
+                                           asp-route-categoryId="@shopModel.CategoryId"
+                                           asp-route-brand="@shopModel.Brand"
+                                           asp-route-size="@shopModel.Size"
+                                           asp-route-color="@shopModel.Color"
+                                           asp-route-tag="@shopModel.Tag"
+                                           asp-route-minPrice="@shopModel.MinPrice"
+                                           asp-route-maxPrice="@shopModel.MaxPrice"
+                                           asp-route-sort="@shopModel.Sort">
+
+                                            <i class="fa fa-long-arrow-right"></i>
+
+                                        </a>
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================================= -->
+    <!-- FOOTER -->
+    <!-- ========================================================= -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <div class="row">
+
+
+                <!-- ================================================= -->
+                <!-- ABOUT -->
+                <!-- ================================================= -->
+
+                <div class="col-lg-3 col-md-6 col-sm-6">
+
+                    <div class="footer__about">
+
+                        <div class="footer__logo">
+
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                <img src="~/Malefashon/Assets/img/footer-logo.png"
+                                     alt="Male Fashion">
+
+                            </a>
+
+                        </div>
+
+
+                        <p>
+
+                            The customer is at the heart of our unique
+                            business model, which includes design.
+
+                        </p>
+
+
+                        <a href="#">
+
+                            <img src="~/Malefashon/Assets/img/payment.png"
+                                 alt="Payment">
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- SHOPPING -->
+                <!-- ================================================= -->
+
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+
+                    <div class="footer__widget">
+
+                        <h6>
+                            Shopping
+                        </h6>
+
+                        <ul>
+
+                            <li>
+                                <a href="#">
+                                    Clothing Store
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    Trending Shoes
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    Accessories
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    Sale
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- CUSTOMER SERVICE -->
+                <!-- ================================================= -->
+
+                <div class="col-lg-2 col-md-3 col-sm-6">
+
+                    <div class="footer__widget">
+
+                        <h6>
+                            Shopping
+                        </h6>
+
+                        <ul>
+
+                            <li>
+
+                                <a asp-area="Customer"
+                                   asp-controller="ContactUs"
+                                   asp-action="Contact">
+
+                                    Contact Us
+
+                                </a>
+
+                            </li>
+
+                            <li>
+
+                                <a href="#">
+                                    Payment Methods
+                                </a>
+
+                            </li>
+
+                            <li>
+
+                                <a href="#">
+                                    Delivery
+                                </a>
+
+                            </li>
+
+                            <li>
+
+                                <a href="#">
+                                    Return & Exchanges
+                                </a>
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================================================= -->
+                <!-- NEWSLETTER -->
+                <!-- ================================================= -->
+
+                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+
+                    <div class="footer__widget">
+
+                        <h6>
+                            NewLetter
+                        </h6>
+
+
+                        <div class="footer__newslatter">
+
+                            <p>
+
+                                Be the first to know about new arrivals,
+                                look books, sales & promos!
+
+                            </p>
+
+
+                            <form action="#">
+
+                                <input type="text"
+                                       placeholder="Your email">
+
+                                <button type="submit">
+
+                                    <span class="icon_mail_alt"></span>
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- COPYRIGHT -->
+            <!-- ================================================= -->
+
+            <div class="row">
+
+                <div class="col-lg-12 text-center">
+
+                    <div class="footer__copyright__text">
+
+                        <p>
+
+                            Copyright ©
+
+                            <script>
+
+                                   document.write(
+                                    new Date().getFullYear()
+                                    );
+
+                            </script>
+
+                            All rights reserved |
+
+                            This template is made with
+
+                            <i class="fa fa-heart-o"
+                               aria-hidden="true"></i>
+
+                            by
+
+                            <a href="https://colorlib.com"
+                               target="_blank">
+
+                                Colorlib
+
+                            </a>
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ========================================================= -->
+    <!-- SEARCH POPUP -->
+    <!-- ========================================================= -->
+
+    <div class="search-model">
+
+        <div class="h-100 d-flex align-items-center justify-content-center">
+
+            <div class="search-close-switch">
+                +
+            </div>
+
+
+            <form class="search-model-form"
+                  asp-area="Customer"
+                  asp-controller="Home"
+                  asp-action="Shop"
+                  method="get">
+
+                <input type="text"
+                       id="search-input"
+                       name="search"
+                       value="@shopModel.Search"
+                       placeholder="Search here.....">
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- JAVASCRIPT PLUGINS -->
+    <!-- ========================================================= -->
+
+    <script src="~/Malefashon/Assets/js/jquery-3.3.1.min.js"></script>
+
+
+    <!-- ========================================================= -->
+    <!-- SLICK CAROUSEL JS -->
+    <!-- ========================================================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+
+    <script src="~/Malefashon/Assets/js/bootstrap.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/jquery.nice-select.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/jquery.nicescroll.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/jquery.magnific-popup.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/jquery.countdown.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/jquery.slicknav.js"></script>
+
+    <script src="~/Malefashon/Assets/js/mixitup.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/owl.carousel.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/main.js"></script>
+
+
+    <!-- ========================================================= -->
+    <!-- SHOP JAVASCRIPT -->
+    <!-- ========================================================= -->
+
+    <script>
+
+            // ==========================================================
+            // SIZE FILTER
+            // ==========================================================
+
+            function filterBySize(element) {
+
+                const url =
+                    new URL(window.location.href);
+
+
+                if (element.checked) {
+
+                    url.searchParams.set(
+                        "size",
+                        element.value
+                    );
+
+                }
+                else {
+
+                    url.searchParams.delete(
+                        "size"
+                    );
+
+                }
+
+
+                url.searchParams.set(
+                    "page",
+                    "1"
+                );
+
+
+                window.location.href =
+                    url.toString();
+
+            }
+
+
+            // ==========================================================
+            // COLOR FILTER
+            // ==========================================================
+
+            function filterByColor(element) {
+
+                const url =
+                    new URL(window.location.href);
+
+
+                if (element.checked) {
+
+                    url.searchParams.set(
+                        "color",
+                        element.value
+                    );
+
+                }
+                else {
+
+                    url.searchParams.delete(
+                        "color"
+                    );
+
+                }
+
+
+                url.searchParams.set(
+                    "page",
+                    "1"
+                );
+
+
+                window.location.href =
+                    url.toString();
+
+            }
+
+
+            // ==========================================================
+            // SORT
+            // ==========================================================
+
+            function sortProducts() {
+
+                const select =
+                    document.getElementById(
+                        "sortProducts"
+                    );
+
+
+                const url =
+                    new URL(window.location.href);
+
+
+                const sort =
+                    select.value;
+
+
+                if (sort === "default") {
+
+                    url.searchParams.delete(
+                        "sort"
+                    );
+
+                }
+                else {
+
+                    url.searchParams.set(
+                        "sort",
+                        sort
+                    );
+
+                }
+
+
+                url.searchParams.set(
+                    "page",
+                    "1"
+                );
+
+
+                window.location.href =
+                    url.toString();
+
+            }
+
+
+            // ==========================================================
+            // PRODUCT IMAGE SLIDER
+            // ==========================================================
+
+            $(document).ready(function() {
+
+
+                $('.product-slider').each(function() {
+
+
+                    $(this).slick({
+
+                        slidesToShow: 1,
+
+                        slidesToScroll: 1,
+
+                        arrows: true,
+
+                        dots: true,
+
+                        infinite: true,
+
+                        autoplay: true,
+
+                        autoplaySpeed: 3000,
+
+                        speed: 500,
+
+                        pauseOnHover: true,
+
+                        adaptiveHeight: false
+
+                    });
+
+
+                });
+
+
+            });
+
+    </script>
+
+</body>
+
+</html>
+
+
+@functions
+{
+    string GetColorClass(string? color)
+    {
+        if (string.IsNullOrWhiteSpace(color))
+            return "c-1";
+
+        return color.Trim().ToLowerInvariant() switch
+        {
+            "black" => "black",
+            "grey" => "c-2",
+            "gray" => "c-2",
+            "red" => "c-3",
+            "white" => "c-4",
+            "blue" => "c-5",
+            "green" => "c-6",
+            "yellow" => "c-7",
+            "brown" => "c-8",
+            "orange" => "c-9",
+            _ => "c-1"
+        };
+    }
+}
+

@@ -1,0 +1,48 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Email Verification Successful";
+}
+
+<div class="container-xxl flex-grow-1 container-p-y">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6 col-lg-5">
+
+            <div class="card">
+
+                <div class="card-body text-center p-5">
+
+                    <div class="mb-4">
+                        <i class="bx bx-check-circle text-success"
+                           style="font-size: 64px;">
+                        </i>
+                    </div>
+
+                    <h4 class="mb-3">
+                        Email Verification Successful!
+                    </h4>
+
+                    <p class="text-muted mb-4">
+                        Your email address has been successfully verified.
+                        Your account is now ready to use.
+                    </p>
+
+                    <a asp-controller="Account"
+                       asp-action="Login"
+                       class="btn btn-primary">
+
+                        <i class="bx bx-log-in me-1"></i>
+                        Continue to Login
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

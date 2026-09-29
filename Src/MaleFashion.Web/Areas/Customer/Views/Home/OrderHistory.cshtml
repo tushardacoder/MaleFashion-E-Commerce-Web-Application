@@ -1,0 +1,649 @@
+﻿@model MaleFashion.Application.Features.Orders.Query.OrderHistoryViewModel
+
+@{
+    ViewData["Title"] = "Order History";
+
+    var orders =
+        Model?.Orders
+        ?? new List<
+            MaleFashion.Application.Features.Orders.Query
+                .OrderHistoryItemViewModel>();
+}
+<style>
+    /* =========================================================
+       ORDER HISTORY
+       ========================================================= */
+
+    .order-history {
+        padding: 80px 0;
+        background: #f7f7f7;
+    }
+
+    .order-history__header {
+        text-align: center;
+        margin-bottom: 45px;
+    }
+
+        .order-history__header span {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: #e53637;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .order-history__header h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #111111;
+            margin-bottom: 0;
+        }
+
+
+    /* =========================================================
+       EMPTY ORDER
+       ========================================================= */
+
+    .order-history__empty {
+        background: #ffffff;
+        text-align: center;
+        padding: 70px 30px;
+        border: 1px solid #ebebeb;
+    }
+
+    .order-history__empty-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 25px;
+        border-radius: 50%;
+        background: #f5f5f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .order-history__empty-icon i {
+            font-size: 32px;
+            color: #111111;
+        }
+
+    .order-history__empty h3 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #111111;
+        margin-bottom: 10px;
+    }
+
+    .order-history__empty p {
+        color: #666666;
+        font-size: 15px;
+        margin-bottom: 30px;
+    }
+
+
+    /* =========================================================
+       ORDER LIST
+       ========================================================= */
+
+    .order-history__list {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+
+    /* =========================================================
+       ORDER CARD
+       ========================================================= */
+
+    .order-card {
+        background: #ffffff;
+        border: 1px solid #ebebeb;
+        padding: 30px;
+        transition: all 0.3s ease;
+    }
+
+        .order-card:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+
+    /* =========================================================
+       ORDER CARD TOP
+       ========================================================= */
+
+    .order-card__top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .order-card__label {
+        display: block;
+        font-size: 12px;
+        color: #888888;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 7px;
+    }
+
+    .order-card__top h5 {
+        font-size: 17px;
+        font-weight: 700;
+        color: #111111;
+        margin: 0;
+        word-break: break-all;
+    }
+
+    .order-card__date {
+        text-align: right;
+    }
+
+        .order-card__date span {
+            display: block;
+            font-size: 12px;
+            color: #888888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 7px;
+        }
+
+        .order-card__date strong {
+            font-size: 14px;
+            color: #111111;
+        }
+
+
+    /* =========================================================
+       ORDER INFORMATION
+       ========================================================= */
+
+    .order-card__info {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        padding: 25px 0;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+        .order-card__info > div {
+            padding: 0 20px;
+            border-right: 1px solid #eeeeee;
+        }
+
+            .order-card__info > div:first-child {
+                padding-left: 0;
+            }
+
+            .order-card__info > div:last-child {
+                padding-right: 0;
+                border-right: none;
+            }
+
+        .order-card__info span {
+            display: block;
+            font-size: 12px;
+            color: #888888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .order-card__info strong {
+            display: block;
+            font-size: 16px;
+            font-weight: 700;
+            color: #111111;
+        }
+
+        .order-card__info .discount {
+            color: #28a745;
+        }
+
+        .order-card__info .total {
+            color: #e53637;
+            font-size: 18px;
+        }
+
+
+    /* =========================================================
+       PAYMENT INFORMATION
+       ========================================================= */
+
+    .order-card__payment {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 0;
+    }
+
+        .order-card__payment span {
+            display: block;
+            font-size: 12px;
+            color: #888888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 7px;
+        }
+
+        .order-card__payment strong {
+            font-size: 14px;
+            color: #111111;
+        }
+
+
+        /* =========================================================
+       PAYMENT STATUS
+       ========================================================= */
+
+        .order-card__payment .status-paid {
+            color: #28a745;
+        }
+
+        .order-card__payment .status-pending {
+            color: #f39c12;
+        }
+
+
+    /* =========================================================
+       ORDER ACTION
+       ========================================================= */
+
+    .order-card__action {
+        padding-top: 20px;
+        border-top: 1px solid #eeeeee;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .order-card__button {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: #111111;
+        color: #ffffff;
+        padding: 12px 22px;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+    }
+
+        .order-card__button:hover {
+            background: #e53637;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .order-card__button .arrow_right {
+            font-size: 14px;
+        }
+
+
+    /* =========================================================
+       PRIMARY BUTTON
+       ========================================================= */
+
+    .order-history .primary-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: #111111;
+        color: #ffffff;
+        padding: 13px 25px;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+        .order-history .primary-btn:hover {
+            background: #e53637;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @@media (max-width: 991px) {
+
+        .order-history {
+            padding: 60px 0;
+        }
+
+        .order-card__info {
+            grid-template-columns: repeat(2, 1fr);
+            row-gap: 25px;
+        }
+
+            .order-card__info > div:nth-child(2) {
+                border-right: none;
+            }
+
+            .order-card__info > div:nth-child(3) {
+                padding-left: 0;
+            }
+
+            .order-card__info > div:nth-child(4) {
+                padding-left: 20px;
+            }
+    }
+
+
+    @@media (max-width: 767px) {
+
+        .order-history {
+            padding: 45px 0;
+        }
+
+        .order-history__header h2 {
+            font-size: 27px;
+        }
+
+        .order-card {
+            padding: 20px;
+        }
+
+        .order-card__top {
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .order-card__date {
+            text-align: right;
+        }
+
+        .order-card__info {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .order-card__payment {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .order-card__action {
+            justify-content: stretch;
+        }
+
+        .order-card__button {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+
+    @@media (max-width: 480px) {
+
+        .order-history__header {
+            margin-bottom: 30px;
+        }
+
+            .order-history__header h2 {
+                font-size: 24px;
+            }
+
+        .order-card__top {
+            flex-direction: column;
+        }
+
+        .order-card__date {
+            text-align: left;
+        }
+
+        .order-card__info {
+            grid-template-columns: 1fr;
+            row-gap: 20px;
+        }
+
+            .order-card__info > div {
+                padding: 0 !important;
+                border-right: none !important;
+            }
+
+        .order-card__payment {
+            flex-direction: column;
+        }
+        /* =========================================================
+       BACK BUTTON
+       ========================================================= */
+       
+    }
+</style>
+<section class="order-history">
+
+    <div class="container">
+
+        
+
+            <!-- BACK BUTTON -->
+        @* <div class="order-history__back">
+
+            
+            <a href="javascript:history.back();"
+               class="primary-btn">
+
+                <span class="arrow_left"></span>
+
+                Back
+
+            </a>
+            
+
+        </div> *@
+
+
+
+
+        <div class="order-history__header">
+
+            <span>Your Orders</span>
+
+            <h2>Order History</h2>
+
+        </div>
+
+
+        @if (!orders.Any())
+        {
+            <div class="order-history__empty">
+
+                <div class="order-history__empty-icon">
+
+                    <i class="fa fa-shopping-bag"></i>
+
+                </div>
+
+                <h3>No Orders Yet</h3>
+
+                <p>
+                    You haven't placed any orders yet.
+                </p>
+
+                <a asp-area="Customer"
+                   asp-controller="Home"
+                   asp-action="Shop"
+                   class="primary-btn">
+
+                    Continue Shopping
+
+                    <span class="arrow_right"></span>
+
+                </a>
+
+            </div>
+        }
+        else
+        {
+            <div class="order-history__list">
+
+                @foreach (var order in orders)
+                {
+                    <div class="order-card">
+
+                        <div class="order-card__top">
+
+                            <div>
+
+                                <span class="order-card__label">
+                                    Order ID
+                                </span>
+
+                                <h5>
+                                    #@order.Id
+                                </h5>
+
+                            </div>
+
+
+                            <div class="order-card__date">
+
+                                <span>
+                                    Order Date
+                                </span>
+
+                                <strong>
+                                    @order.CreatedAt.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="order-card__info">
+
+                            <div>
+
+                                <span>
+                                    Items
+                                </span>
+
+                                <strong>
+                                    @order.ItemCount
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Subtotal
+                                </span>
+
+                                <strong>
+                                    @order.Subtotal.ToString("N2")
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Discount
+                                </span>
+
+                                <strong class="discount">
+                                    -@order.DiscountAmount.ToString("N2")
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Total
+                                </span>
+
+                                <strong class="total">
+                                    @order.Total.ToString("N2")
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="order-card__payment">
+
+                            <div>
+
+                                <span>
+                                    Payment Method
+                                </span>
+
+                                <strong>
+                                    @order.PaymentType
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Payment Status
+                                </span>
+
+                                <strong class="
+                                    @(order.PaymentStatus == "Paid"
+                                        ? "status-paid"
+                                        : "status-pending")">
+
+                                    @order.PaymentStatus
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="order-card__action">
+
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="OrderDetails"
+                               asp-route-id="@order.Id"
+                               class="order-card__button">
+
+                                View Order Details
+
+                                <span class="arrow_right"></span>
+
+                            </a>
+
+                        </div>
+
+
+                        <a asp-area="Customer"
+                           asp-controller="Home"
+                           asp-action="Shop"
+                           class="primary-btn">
+
+                            Continue Shopping
+
+                            <span class="arrow_right"></span>
+
+                        </a>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</section>

@@ -1,0 +1,3242 @@
+﻿
+@model MaleFashion.Application.Features.Products.Query.ShopProductDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.ProductName;
+
+    var productImages =
+        Model.Images ?? new List<string>();
+
+    var productColors =
+        Model.Colors ?? new List<string>();
+
+    var productSizes =
+        Model.Sizes ?? new List<string>();
+
+    var productTags =
+        Model.Tags ?? new List<string>();
+
+
+    string GetImageUrl(string? imageName)
+    {
+        if (string.IsNullOrWhiteSpace(imageName))
+        {
+            return Url.Content(
+                "~/Malefashon/Assets/img/shop-details/product-big.png");
+        }
+
+        return Url.Content(
+            "~/uploads/products/" + imageName);
+    }
+
+
+    string GetThumbUrl(string? imageName)
+    {
+        if (string.IsNullOrWhiteSpace(imageName))
+        {
+            return Url.Content(
+                "~/Malefashon/Assets/img/shop-details/thumb-1.png");
+        }
+
+        return Url.Content(
+            "~/uploads/products/" + imageName);
+    }
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="description"
+          content="@Model.ProductName">
+
+    <meta name="keywords"
+          content="Male Fashion, @Model.ProductName">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="X-UA-Compatible"
+          content="ie=edge">
+
+    <title>
+        @Model.ProductName | Male Fashion
+    </title>
+
+
+    <!-- Google Font -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+
+    <!-- CSS -->
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/bootstrap.min.css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/font-awesome.min.css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/elegant-icons.css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/magnific-popup.css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/nice-select.css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/owl.carousel.min.css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/slicknav.min.css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/style.css">
+
+
+    <style>
+
+        /* ==========================================
+           PRODUCT DETAILS IMAGE
+        ========================================== */
+
+        .product__details__pic__item img {
+            width: 100%;
+            max-height: 600px;
+            object-fit: contain;
+        }
+
+
+        .product__thumb__pic {
+            width: 100%;
+            height: 100px;
+            overflow: hidden;
+            background: #f5f5f5;
+        }
+
+
+        .product__thumb__pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+        .dynamic-description {
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
+
+        /* ==========================================
+           STOCK
+        ========================================== */
+
+        .stock-status {
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+
+        .stock-status.in-stock {
+            color: #28a745;
+        }
+
+
+        .stock-status.out-of-stock {
+            color: #dc3545;
+        }
+
+
+        /* ==========================================
+           COLOR
+        ========================================== */
+
+        .dynamic-color-label {
+            display: inline-block;
+            min-width: 70px;
+            padding: 8px 14px;
+            margin-right: 5px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            text-align: center;
+        }
+
+
+        .dynamic-color-label input {
+            display: none;
+        }
+
+
+        .dynamic-size-label input {
+            display: none;
+        }
+
+
+        /* ==========================================
+           SELECTED COLOR
+        ========================================== */
+
+        .dynamic-color-label.selected {
+            border-color: #111;
+            background: #111;
+            color: #fff;
+        }
+
+
+        /* ==========================================
+           SELECTED SIZE
+        ========================================== */
+
+        .size-option.selected {
+            font-weight: 700;
+        }
+
+
+        /* ==========================================
+           QUANTITY
+        ========================================== */
+
+        .cart-quantity-wrapper {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+
+        .cart-quantity-wrapper span {
+            margin-right: 15px;
+            font-weight: 600;
+        }
+
+
+        .cart-quantity-input {
+            width: 70px;
+            height: 42px;
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 5px;
+        }
+
+
+        /* ==========================================
+           RELATED PRODUCT SLIDER
+        ========================================== */
+
+        .related-product-image {
+            position: relative;
+
+            width: 100%;
+            height: 360px;
+
+            overflow: hidden;
+
+            background: #f5f5f5;
+        }
+
+
+        .related-image-slider {
+            position: relative;
+
+            width: 100%;
+            height: 100%;
+
+            overflow: hidden;
+        }
+
+
+        .related-product-img {
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            display: none;
+
+            transition: opacity 0.4s ease;
+        }
+
+
+        .related-product-img:first-child {
+            display: block;
+        }
+
+
+        /* ==========================================
+           PREVIOUS / NEXT BUTTON
+        ========================================== */
+
+        .related-prev,
+        .related-next {
+
+            position: absolute;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            width: 40px;
+            height: 40px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: rgba(0, 0, 0, 0.65);
+
+            color: #fff;
+
+            cursor: pointer;
+
+            z-index: 20;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            transition: all 0.3s ease;
+        }
+
+
+        .related-prev {
+            left: 10px;
+        }
+
+
+        .related-next {
+            right: 10px;
+        }
+
+
+        .related-prev:hover,
+        .related-next:hover {
+
+            background: #000;
+
+            transform:
+                translateY(-50%)
+                scale(1.1);
+        }
+
+
+        .related-prev i,
+        .related-next i {
+
+            font-size: 18px;
+        }
+
+
+        .related-prev:focus,
+        .related-next:focus {
+
+            outline: none;
+        }
+
+
+        /* ==========================================
+           WISHLIST BUTTON
+        ========================================== */
+
+        .wishlist-button {
+
+            background: transparent;
+
+            border: none;
+
+            padding: 0;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+            color: #111;
+
+            transition: 0.3s;
+        }
+
+
+        .wishlist-button:hover {
+            color: #e53637;
+        }
+
+
+        .wishlist-button i {
+            margin-right: 6px;
+        }
+
+
+        /* ==========================================
+           SIZE
+        ========================================== */
+
+        .size-option {
+
+            cursor: pointer;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+        }
+
+
+        .size-option input[type="radio"] {
+
+            display: inline-block !important;
+
+            opacity: 1 !important;
+
+            visibility: visible !important;
+
+            pointer-events: auto !important;
+
+            cursor: pointer;
+        }
+
+
+        /* ==========================================
+           CART ERROR
+        ========================================== */
+
+        .cart-error-message {
+
+            display: none;
+
+            margin-bottom: 15px;
+
+            padding: 10px 15px;
+
+            border: 1px solid #dc3545;
+
+            background: #fff5f5;
+
+            color: #dc3545;
+
+            font-weight: 600;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+         PRELOADER
+    ========================================================= -->
+
+    <div id="preloder">
+
+        <div class="loader"></div>
+
+    </div>
+
+
+
+    <!-- =========================================================
+         HEADER
+    ========================================================= -->
+
+    <header class="header">
+
+        <!-- TOP -->
+
+        <div class="header__top">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-lg-6 col-md-7">
+
+                        <div class="header__top__left">
+
+                            <p>
+                                Free shipping, 30-day return
+                                or refund guarantee.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-lg-6 col-md-5">
+
+                        <div class="header__top__right">
+
+                            <div class="header__top__links">
+
+                                <div class="offcanvas__links">
+
+                                    @if (User.Identity?.IsAuthenticated == true)
+                                    {
+
+                                        <span style="
+                                            color:#fff;
+                                            background:#000;
+                                            padding:8px 15px;
+                                            border-radius:4px;
+                                            font-weight:600;">
+
+                                            Hello,
+                                            @User.Identity.Name
+
+                                        </span>
+
+
+                                        <form asp-area=""
+                                              asp-controller="Account"
+                                              asp-action="Logout"
+                                              asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "Customer" })"
+                                              method="post"
+                                              style="display:inline-block;">
+
+                                            <button type="submit"
+                                                    class="btn btn-link p-0"
+                                                    style="color:#fff;">
+
+                                                Logout
+
+                                            </button>
+
+                                        </form>
+
+                                    }
+                                    else
+                                    {
+
+                                        <a asp-area=""
+                                           asp-controller="Account"
+                                           asp-action="Register">
+
+                                            Sign in
+
+                                        </a>
+
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- MAIN HEADER -->
+
+        <div class="container">
+
+            <div class="row">
+
+
+                <!-- LOGO -->
+
+                <div class="col-lg-3 col-md-3">
+
+                    <div class="header__logo">
+
+                        <a asp-area="Customer"
+                           asp-controller="Home"
+                           asp-action="Index">
+
+                            <img src="~/Malefashon/Assets/img/logo.png"
+                                 alt="Male Fashion">
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- NAV -->
+
+                <div class="col-lg-6 col-md-6">
+
+                    <nav class="header__menu mobile-menu">
+
+                        <ul>
+
+                            <li>
+
+                                <a asp-area="Customer"
+                                   asp-controller="Home"
+                                   asp-action="Index">
+
+                                    Home
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <a asp-area="Customer"
+                                   asp-controller="Home"
+                                   asp-action="Shop">
+
+                                    Shop
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <a href="#">
+
+                                    My Shopping
+
+                                </a>
+
+
+                                <ul class="dropdown">
+
+                                    <li>
+
+                                        <a asp-area="Customer"
+                                           asp-controller="Home"
+                                           asp-action="Shoppingcart">
+
+                                            Shopping Cart
+
+                                        </a>
+
+                                    </li>
+
+
+                                    <li>
+
+                                        <a asp-area="Customer"
+                                           asp-controller="Home"
+                                           asp-action="Checkout">
+
+                                            Check Out
+
+                                        </a>
+
+                                    </li>
+
+                                    <li>
+
+                                        <a asp-area="Customer"
+                                           asp-controller="Home"
+                                           asp-action="OrderHistory">
+                                            Order History
+                                        </a>
+
+                                    </li>
+
+                                </ul>
+
+                            </li>
+
+
+                            @if (User.Identity?.IsAuthenticated == false)
+                            {
+
+                                <li>
+
+                                    <a asp-area="Customer"
+                                       asp-controller="Home"
+                                       asp-action="Blog">
+
+                                        Blog
+
+                                    </a>
+
+                                </li>
+
+                            }
+
+
+                            @if (User.Identity?.IsAuthenticated == false)
+                            {
+
+                                <li>
+
+                                    <a asp-area="Customer"
+                                       asp-controller="ContactUs"
+                                       asp-action="Contact">
+
+                                        Contacts
+
+                                    </a>
+
+                                </li>
+
+                            }
+
+                        </ul>
+
+                    </nav>
+
+                </div>
+
+
+                <!-- ICONS -->
+
+                <div class="col-lg-3 col-md-3">
+
+                    <div class="header__nav__option">
+
+
+                        <!-- WISHLIST -->
+
+                        <a asp-area="Customer"
+                           asp-controller="Home"
+                           asp-action="Wishlist"
+                           class="wishlist-button"
+                           title="My Wishlist">
+
+                            <img src="~/Malefashon/Assets/img/icon/heart.png"
+                                 alt="Wishlist">
+
+                            <span style="
+                                font-size:14px;
+                                color:#111;
+                                font-weight:normal;">
+
+                                @await Component.InvokeAsync("WishlistCount")
+
+                            </span>
+
+                        </a>
+
+
+                        <!-- CART -->
+
+                        @* <a asp-area="Customer"
+                           asp-controller="Home"
+                           asp-action="Shoppingcart">
+
+                            <img src="~/Malefashon/Assets/img/icon/cart.png"
+                                 alt="Cart">
+
+                            <span>0</span>
+
+                        </a>
+
+
+                        <div class="price">
+
+                            ৳0.00
+
+                        </div> *@
+
+                        @await Component.InvokeAsync("CartSummary")
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="canvas__open">
+
+                <i class="fa fa-bars"></i>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================================
+         SHOP DETAILS
+    ========================================================= -->
+
+    <section class="shop-details">
+
+
+        <!-- =====================================================
+             PRODUCT IMAGES
+        ====================================================== -->
+
+        <div class="product__details__pic">
+
+            <div class="container">
+
+
+                <!-- BREADCRUMB -->
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <div class="product__details__breadcrumb">
+
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                Home
+
+                            </a>
+
+
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Shop">
+
+                                Shop
+
+                            </a>
+
+
+                            <span>
+
+                                @Model.ProductName
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- IMAGE AREA -->
+
+                <div class="row">
+
+
+                    <!-- THUMBNAILS -->
+
+                    <div class="col-lg-3 col-md-3">
+
+                        @if (productImages.Any())
+                        {
+
+                            <ul class="nav nav-tabs"
+                                role="tablist">
+
+                                @for (
+                                    int i = 0;
+                                    i < productImages.Count;
+                                    i++)
+                                {
+
+                                    var image =
+                                        productImages[i];
+
+
+                                    <li class="nav-item">
+
+                                        <a class="nav-link @(i == 0 ? "active" : "")"
+                                           data-toggle="tab"
+                                           href="#product-image-@i"
+                                           role="tab">
+
+                                            <div class="product__thumb__pic">
+
+                                                <img src="@GetThumbUrl(image)"
+                                                     alt="@Model.ProductName">
+
+                                            </div>
+
+                                        </a>
+
+                                    </li>
+
+                                }
+
+                            </ul>
+
+                        }
+
+                    </div>
+
+
+
+                    <!-- MAIN IMAGE -->
+
+                    <div class="col-lg-6 col-md-9">
+
+                        <div class="tab-content">
+
+                            @if (productImages.Any())
+                            {
+
+                                @for (
+                                    int i = 0;
+                                    i < productImages.Count;
+                                    i++)
+                                {
+
+                                    var image =
+                                        productImages[i];
+
+
+                                    <div class="tab-pane @(i == 0 ? "active" : "")"
+                                         id="product-image-@i"
+                                         role="tabpanel">
+
+                                        <div class="product__details__pic__item">
+
+                                            <img src="@GetImageUrl(image)"
+                                                 alt="@Model.ProductName">
+
+                                        </div>
+
+                                    </div>
+
+                                }
+
+                            }
+                            else
+                            {
+
+                                <div class="tab-pane active">
+
+                                    <div class="product__details__pic__item">
+
+                                        <img src="@GetImageUrl(null)"
+                                             alt="No image">
+
+                                    </div>
+
+                                </div>
+
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             PRODUCT CONTENT
+        ====================================================== -->
+
+        <div class="product__details__content">
+
+            <div class="container">
+
+                <div class="row d-flex justify-content-center">
+
+                    <div class="col-lg-8">
+
+                        <div class="product__details__text">
+
+
+                            <!-- PRODUCT NAME -->
+
+                            <h4>
+
+                                @Model.ProductName
+
+                            </h4>
+
+
+                            <!-- BRAND -->
+
+                            @if (!string.IsNullOrWhiteSpace(
+                                Model.Branding))
+                            {
+
+                                <div class="mb-2">
+
+                                    <strong>
+
+                                        @Model.Branding
+
+                                    </strong>
+
+                                </div>
+
+                            }
+
+
+                            <!-- PRICE -->
+
+                            <h3>
+
+                                ৳@Model.Price.ToString("0.00")
+
+                            </h3>
+
+
+                            <!-- DESCRIPTION -->
+
+                            <p class="dynamic-description">
+
+                                @Model.Description
+
+                            </p>
+
+
+                            <!-- STOCK -->
+
+                            @if (Model.IsInStock)
+                            {
+
+                                <div class="stock-status in-stock">
+
+                                    <i class="fa fa-check-circle"></i>
+
+                                    In Stock
+
+                                </div>
+
+                            }
+                            else
+                            {
+
+                                <div class="stock-status out-of-stock">
+
+                                    <i class="fa fa-times-circle"></i>
+
+                                    Out of Stock
+
+                                </div>
+
+                            }
+
+
+                            <!-- =================================================
+                                 ADD TO CART FORM
+                            ================================================== -->
+
+                            @if (Model.IsInStock)
+                            {
+
+                                <form asp-area="Customer"
+                                      asp-controller="Home"
+                                      asp-action="AddToCart"
+                                      method="post"
+                                      id="cartForm">
+
+                                    @Html.AntiForgeryToken()
+
+
+                                    <!-- PRODUCT ID -->
+
+                                    <input type="hidden"
+                                           name="ProductId"
+                                           value="@Model.Id" />
+
+
+                                    <!-- PRODUCT VARIANT ID -->
+
+                                    <input type="hidden"
+                                           name="ProductVariantId"
+                                           id="cartVariantId"
+                                           value="" />
+
+
+                                    <!-- QUANTITY -->
+
+                                    <input type="hidden"
+                                           name="Quantity"
+                                           id="cartQuantity"
+                                           value="1" />
+
+
+                                    <!-- OPTIONS -->
+
+                                    <div class="product__details__option">
+
+
+                                        <!-- SIZE -->
+
+                                        @if (productSizes.Any())
+                                        {
+
+                                            <div class="product__details__option__size">
+
+                                                <span>
+                                                    Size:
+                                                </span>
+
+
+                                                @foreach (
+                                                    var size
+                                                    in productSizes)
+                                                {
+
+                                                    var sizeId =
+                                                        "size-" +
+                                                        Guid.NewGuid()
+                                                            .ToString("N");
+
+
+                                                    <label class="size-option"
+                                                           for="@sizeId">
+
+                                                        @size
+
+                                                        <input type="radio"
+                                                               id="@sizeId"
+                                                               name="product-size"
+                                                               value="@size">
+
+                                                    </label>
+
+                                                }
+
+                                            </div>
+
+                                        }
+
+
+                                        <!-- COLOR -->
+
+                                        @if (productColors.Any())
+                                        {
+
+                                            <div class="product__details__option__color">
+
+                                                <span>
+                                                    Color:
+                                                </span>
+
+
+                                                @foreach (
+                                                    var color
+                                                    in productColors)
+                                                {
+
+                                                    var colorId =
+                                                        "color-" +
+                                                        Guid.NewGuid()
+                                                            .ToString("N");
+
+
+                                                    <label class="dynamic-color-label"
+                                                           for="@colorId">
+
+                                                        <input type="radio"
+                                                               id="@colorId"
+                                                               name="product-color"
+                                                               value="@color">
+
+                                                        <span>
+                                                            @color
+                                                        </span>
+
+                                                    </label>
+
+                                                }
+
+                                            </div>
+
+                                        }
+
+                                    </div>
+
+
+                                    <!-- =================================================
+                                         QUANTITY
+                                    ================================================== -->
+
+                                  @*   <div class="cart-quantity-wrapper">
+
+                                        <span>
+                                            Quantity:
+                                        </span>
+
+
+                                        <input type="number"
+                                               id="quantityInput"
+                                               class="cart-quantity-input"
+                                               value="1"
+                                               min="1"
+                                               max="@(Model.Variants.FirstOrDefault()?.InventoryQuantity ?? 0)"
+                                
+                                               step="1" />
+
+                                    </div> *@
+
+                                    <div class="cart-quantity-wrapper">
+
+                                        <span>
+                                            Quantity:
+                                        </span>
+
+                                        <input type="number"
+                                               id="quantityInput"
+                                               class="cart-quantity-input"
+                                               value="1"
+                                               min="1"
+                                               max="1"
+                                               step="1"
+                                               disabled />
+
+                                    </div>
+
+
+                                    <!-- ERROR -->
+
+                                    <div id="cartErrorMessage"
+                                         class="cart-error-message">
+
+                                        Please select a valid color and size.
+
+                                    </div>
+
+
+                                    <!-- =================================================
+                                         ADD TO CART BUTTON
+                                    ================================================== -->
+
+                                    <div class="product__details__cart__option">
+
+                                        <button type="submit"
+                                                class="primary-btn">
+
+                                            <img src="~/Malefashon/Assets/img/icon/cart.png"
+                                                 alt="Cart"
+                                                 style="
+                                                     width:20px;
+                                                     height:20px;
+                                                     margin-right:8px;
+                                                     vertical-align:middle;">
+
+                                            Add To Cart
+
+                                        </button>
+
+                                    </div>
+
+                                </form>
+
+                            }
+                            else
+                            {
+
+                                <button type="button"
+                                        class="primary-btn"
+                                        disabled>
+
+                                    Out Of Stock
+
+                                </button>
+
+                            }
+
+
+
+                            <!-- =================================================
+                                 WISHLIST
+                            ================================================== -->
+
+                            <form asp-area="Customer"
+                                  asp-controller="Home"
+                                  asp-action="AddToWishlist"
+                                  method="post"
+                                  id="wishlistForm">
+
+                                @Html.AntiForgeryToken()
+
+
+                                <!-- PRODUCT ID -->
+
+                                <input type="hidden"
+                                       name="productId"
+                                       value="@Model.Id" />
+
+
+                                <!-- VARIANT ID -->
+
+                                <input type="hidden"
+                                       name="productVariantId"
+                                       id="wishlistVariantId"
+                                       value="" />
+
+
+                                <button type="submit"
+                                        class="wishlist-button"
+                                        id="wishlistButton"
+                                        title="Add to favourites">
+
+                                    <i class="fa fa-heart"></i>
+
+                                </button>
+
+                            </form>
+
+
+
+                            <!-- =================================================
+                                 WISHLIST MODAL
+                            ================================================== -->
+
+                            <div class="modal fade"
+                                 id="wishlistModal"
+                                 tabindex="-1"
+                                 role="dialog"
+                                 aria-labelledby="wishlistModalLabel"
+                                 aria-hidden="true">
+
+                                <div class="modal-dialog modal-dialog-centered"
+                                     role="document">
+
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+
+                                            <h5 class="modal-title"
+                                                id="wishlistModalLabel">
+
+                                                Selection Required
+
+                                            </h5>
+
+                                            <button type="button"
+                                                    class="close"
+                                                    data-dismiss="modal"
+                                                    aria-label="Close">
+
+                                                <span aria-hidden="true">
+                                                    &times;
+                                                </span>
+
+                                            </button>
+
+                                        </div>
+
+
+                                        <div class="modal-body text-center">
+
+                                            <i class="fa fa-heart"
+                                               style="
+                                                   font-size:40px;
+                                                   color:#e53637;
+                                                   margin-bottom:15px;">
+                                            </i>
+
+
+                                            <p class="mb-0">
+
+                                                Please select a color
+                                                and size before continuing.
+
+                                            </p>
+
+                                        </div>
+
+
+                                        <div class="modal-footer justify-content-center">
+
+                                            <button type="button"
+                                                    class="btn btn-dark"
+                                                    data-dismiss="modal">
+
+                                                OK
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 PRODUCT INFO
+                            ================================================== -->
+
+                            <div class="product__details__last__option">
+
+                                <h5>
+
+                                    <span>
+                                        Guaranteed Safe Checkout
+                                    </span>
+
+                                </h5>
+
+
+                                <img src="~/Malefashon/Assets/img/shop-details/details-payment.png"
+                                     alt="Payment">
+
+
+                                <ul>
+
+                                    @if (!string.IsNullOrWhiteSpace(
+                                        Model.Sku))
+                                    {
+
+                                        <li>
+
+                                            <span>
+                                                SKU:
+                                            </span>
+
+                                            @Model.Sku
+
+                                        </li>
+
+                                    }
+
+
+                                    @if (!string.IsNullOrWhiteSpace(
+                                        Model.CategoryName))
+                                    {
+
+                                        <li>
+
+                                            <span>
+                                                Categories:
+                                            </span>
+
+                                            @Model.CategoryName
+
+                                        </li>
+
+                                    }
+
+
+                                    @if (productTags.Any())
+                                    {
+
+                                        <li>
+
+                                            <span>
+                                                Tags:
+                                            </span>
+
+                                            @string.Join(
+                                                ", ",
+                                                productTags)
+
+                                        </li>
+
+                                    }
+
+                                </ul>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     DESCRIPTION TAB
+                ================================================== -->
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <div class="product__details__tab">
+
+                            <ul class="nav nav-tabs"
+                                role="tablist">
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link active"
+                                       data-toggle="tab"
+                                       href="#tabs-description"
+                                       role="tab">
+
+                                        Description
+
+                                    </a>
+
+                                </li>
+
+
+                                <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       data-toggle="tab"
+                                       href="#tabs-information"
+                                       role="tab">
+
+                                        Additional Information
+
+                                    </a>
+
+                                </li>
+
+
+                                  <li class="nav-item">
+
+                                    <a class="nav-link"
+                                       data-toggle="tab"
+                                       href="#tabs-CustomerPreview"
+                                       role="tab">
+
+                                        Customer Preview
+
+                                    </a>
+
+                                </li>
+
+                            </ul>
+
+
+
+                            <div class="tab-content">
+
+
+                                <!-- DESCRIPTION -->
+
+                                <div class="tab-pane active"
+                                     id="tabs-description"
+                                     role="tabpanel">
+
+                                    <div class="product__details__tab__content">
+
+
+                                          <div class="product__details__tab__content__item">
+
+                                            <h5>
+                                                Product Details
+                                            </h5>
+
+
+                                            <ul>
+
+                                                @if (!string.IsNullOrWhiteSpace(
+                                                    Model.Branding))
+                                                {
+
+                                                    <li>
+
+                                                        <strong>
+                                                            Brand:
+                                                        </strong>
+
+                                                        @Model.Branding
+
+                                                    </li>
+
+                                                }
+
+
+                                                @if (!string.IsNullOrWhiteSpace(
+                                                    Model.Sku))
+                                                {
+
+                                                    <li>
+
+                                                        <strong>
+                                                            SKU:
+                                                        </strong>
+
+                                                        @Model.Sku
+
+                                                    </li>
+
+                                                }
+
+
+                                                @if (!string.IsNullOrWhiteSpace(
+                                                    Model.CategoryName))
+                                                {
+
+                                                    <li>
+
+                                                        <strong>
+                                                            Category:
+                                                        </strong>
+
+                                                        @Model.CategoryName
+
+                                                    </li>
+
+                                                }
+
+
+                                                @if (productSizes.Any())
+                                                {
+
+                                                    <li>
+
+                                                        <strong>
+                                                            Sizes:
+                                                        </strong>
+
+                                                        @string.Join(
+                                                            ", ",
+                                                            productSizes)
+
+                                                    </li>
+
+                                                }
+
+
+                                                @if (productColors.Any())
+                                                {
+
+                                                    <li>
+
+                                                        <strong>
+                                                            Colors:
+                                                        </strong>
+
+                                                        @string.Join(
+                                                            ", ",
+                                                            productColors)
+
+                                                    </li>
+
+                                                }
+
+
+                                                <li>
+
+                                                    <strong>
+                                                        Availability:
+                                                    </strong>
+
+                                                    @if (Model.IsInStock)
+                                                    {
+
+                                                        <span class="text-success">
+
+                                                            In Stock
+
+                                                        </span>
+
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <span class="text-danger">
+
+                                                            Out of Stock
+
+                                                        </span>
+
+                                                    }
+
+                                                </li>
+
+                                            </ul>
+
+                                        </div>
+
+
+                                        @* <div class="product__details__tab__content__item">
+
+                                            <h5>
+                                                Product Information
+                                            </h5>
+
+                                            <p class="dynamic-description">
+
+                                                
+
+                                            </p>
+
+                                        </div> *@
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- ADDITIONAL INFORMATION -->
+
+                                <div class="tab-pane"
+                                     id="tabs-information"
+                                     role="tabpanel">
+
+                                    <div class="product__details__tab__content">
+
+                                       <p class="note dynamic-description">
+
+                                            @Model.Description
+
+                                        </p>
+                                        
+
+                                        </div> 
+
+                                    </div>
+
+
+                                    
+
+                                <!-- Customer Preview -->
+
+                                <div class="tab-pane"
+                                     id="tabs-CustomerPreview"
+                                     role="tabpanel">
+
+                                    <div class="product__Preview__tab__content">
+
+                                       <p class="note dynamic-description">
+
+                                            @Model.CustomerPreview
+
+                                        </p>
+                                        
+
+                                        </div> 
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         RELATED PRODUCTS
+    ========================================================= -->
+
+    @if (Model.RelatedProducts != null &&
+         Model.RelatedProducts.Any())
+    {
+
+        <section class="related spad">
+
+            <div class="container">
+
+
+                <!-- TITLE -->
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <h3 class="related-title">
+
+                            Related Products
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PRODUCTS -->
+
+                <div class="row">
+
+                    @foreach (
+                        var relatedProduct
+                        in Model.RelatedProducts)
+                    {
+
+                        var relatedImages =
+                            relatedProduct.Images?
+                                .Where(x =>
+                                    !string.IsNullOrWhiteSpace(x))
+                                .Distinct()
+                                .ToList()
+                            ?? new List<string>();
+
+
+                        var fallbackImage =
+                            Url.Content(
+                                "~/Malefashon/Assets/img/product/product-1.jpg");
+
+
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+
+                            <div class="product__item">
+
+
+                                <!-- PRODUCT IMAGE SLIDER -->
+
+                                <div class="related-product-image">
+
+                                    @if (relatedImages.Any())
+                                    {
+
+                                        <div class="related-image-slider"
+                                             data-product-id="@relatedProduct.Id">
+
+
+                                            <!-- IMAGES -->
+
+                                            @foreach (
+                                                var image
+                                                in relatedImages)
+                                            {
+
+                                                <img src="@Url.Content("~/uploads/products/" + image)"
+                                                     alt="@relatedProduct.ProductName"
+                                                     class="related-product-img" />
+
+                                            }
+
+
+                                            <!-- BUTTONS -->
+
+                                            @if (relatedImages.Count > 1)
+                                            {
+
+                                                <button type="button"
+                                                        class="related-prev"
+                                                        aria-label="Previous image">
+
+                                                    <i class="fa fa-angle-left"></i>
+
+                                                </button>
+
+
+                                                <button type="button"
+                                                        class="related-next"
+                                                        aria-label="Next image">
+
+                                                    <i class="fa fa-angle-right"></i>
+
+                                                </button>
+
+                                            }
+
+                                        </div>
+
+                                    }
+                                    else
+                                    {
+
+                                        <img src="@fallbackImage"
+                                             alt="@relatedProduct.ProductName"
+                                             class="related-product-img"
+                                             style="display:block;" />
+
+                                    }
+
+                                </div>
+
+
+
+                                <!-- PRODUCT INFORMATION -->
+
+                                <div class="product__item__text">
+
+
+                                    <!-- NAME -->
+
+                                    <h6>
+
+                                        @relatedProduct.ProductName
+
+                                    </h6>
+
+
+                                    <!-- BRAND -->
+
+                                    @if (!string.IsNullOrWhiteSpace(
+                                        relatedProduct.Branding))
+                                    {
+
+                                        <small>
+
+                                            @relatedProduct.Branding
+
+                                        </small>
+
+                                    }
+
+
+                                    <!-- STOCK -->
+
+                                    <div class="mt-2">
+
+                                        @if (relatedProduct.IsInStock)
+                                        {
+
+                                            <span class="text-success">
+
+                                                In Stock
+
+                                            </span>
+
+                                        }
+                                        else
+                                        {
+
+                                            <span class="text-danger">
+
+                                                Out Of Stock
+
+                                            </span>
+
+                                        }
+
+                                    </div>
+
+
+                                    <!-- VIEW DETAILS -->
+
+                                    <a asp-area="Customer"
+                                       asp-controller="Home"
+                                       asp-action="ShopDetails"
+                                       asp-route-id="@relatedProduct.Id"
+                                       class="add-cart">
+
+                                        View Details
+
+                                    </a>
+
+
+                                    <!-- PRICE -->
+
+                                    <h5>
+
+                                        ৳@relatedProduct.Price.ToString("0.00")
+
+                                    </h5>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    }
+
+                </div>
+
+            </div>
+
+        </section>
+
+    }
+
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================= -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <div class="row">
+
+
+                <div class="col-lg-3 col-md-6 col-sm-6">
+
+                    <div class="footer__about">
+
+                        <div class="footer__logo">
+
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                <img src="~/Malefashon/Assets/img/footer-logo.png"
+                                     alt="Male Fashion">
+
+                            </a>
+
+                        </div>
+
+
+                        <p>
+
+                            The customer is at the heart of our
+                            unique business model, which includes design.
+
+                        </p>
+
+
+                        <a href="#">
+
+                            <img src="~/Malefashon/Assets/img/payment.png"
+                                 alt="Payment">
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+
+                    <div class="footer__widget">
+
+                        <h6>
+                            Shopping
+                        </h6>
+
+
+                        <ul>
+
+                            <li>
+
+                                <a asp-area="Customer"
+                                   asp-controller="Home"
+                                   asp-action="Shop">
+
+                                    Clothing Store
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <a href="#">
+
+                                    Trending Shoes
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <a href="#">
+
+                                    Accessories
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <a href="#">
+
+                                    Sale
+
+                                </a>
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="col-lg-2 col-md-3 col-sm-6">
+
+                    <div class="footer__widget">
+
+                        <h6>
+                            Customer Service
+                        </h6>
+
+
+                        <ul>
+
+                            <li>
+
+                                <a asp-area="Customer"
+                                   asp-controller="ContactUs"
+                                   asp-action="Contact">
+
+                                    Contact Us
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <a href="#">
+
+                                    Payment Methods
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <a href="#">
+
+                                    Delivery
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <a href="#">
+
+                                    Return & Exchanges
+
+                                </a>
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+
+                    <div class="footer__widget">
+
+                        <h6>
+                            Newsletter
+                        </h6>
+
+
+                        <div class="footer__newslatter">
+
+                            <p>
+
+                                Be the first to know about new arrivals,
+                                look books, sales & promos!
+
+                            </p>
+
+
+                            <form action="#">
+
+                                <input type="text"
+                                       placeholder="Your email">
+
+
+                                <button type="submit">
+
+                                    <span class="icon_mail_alt"></span>
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- COPYRIGHT -->
+
+            <div class="row">
+
+                <div class="col-lg-12 text-center">
+
+                    <div class="footer__copyright__text">
+
+                        <p>
+
+                            Copyright &copy;
+
+                            <script>
+
+                                document.write(
+                                    new Date().getFullYear()
+                                );
+
+                            </script>
+
+                            All rights reserved
+
+                            | This template is made with
+
+                            <i class="fa fa-heart-o"
+                               aria-hidden="true"></i>
+
+                            by
+
+                            <a href="https://colorlib.com"
+                               target="_blank">
+
+                                Colorlib
+
+                            </a>
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================= -->
+
+    <script src="~/Malefashon/Assets/js/jquery-3.3.1.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/bootstrap.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/jquery.nice-select.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/jquery.nicescroll.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/jquery.magnific-popup.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/jquery.countdown.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/jquery.slicknav.js"></script>
+
+    <script src="~/Malefashon/Assets/js/mixitup.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/owl.carousel.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/main.js"></script>
+
+
+
+    <!-- =========================================================
+         VARIANT + CART + WISHLIST JAVASCRIPT
+    ========================================================= -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                /* ==========================================
+                   FORMS / INPUTS
+                ========================================== */
+
+                const wishlistForm =
+                    document.getElementById(
+                        "wishlistForm"
+                    );
+
+
+                const wishlistVariantId =
+                    document.getElementById(
+                        "wishlistVariantId"
+                    );
+
+
+                const cartForm =
+                    document.getElementById(
+                        "cartForm"
+                    );
+
+
+                const cartVariantId =
+                    document.getElementById(
+                        "cartVariantId"
+                    );
+
+
+                const cartQuantity =
+                    document.getElementById(
+                        "cartQuantity"
+                    );
+
+
+                const quantityInput =
+                    document.getElementById(
+                        "quantityInput"
+                    );
+
+
+                const cartErrorMessage =
+                    document.getElementById(
+                        "cartErrorMessage"
+                    );
+
+
+                const colorInputs =
+                    document.querySelectorAll(
+                        'input[name="product-color"]'
+                    );
+
+
+                const sizeInputs =
+                    document.querySelectorAll(
+                        'input[name="product-size"]'
+                    );
+
+
+                /* ==========================================
+                   PRODUCT VARIANTS FROM SERVER
+                ========================================== */
+
+                
+                     const variants = @Html.Raw(
+        System.Text.Json.JsonSerializer.Serialize(Model.Variants)
+    ) || [];
+
+                console.log(
+                    "Product Variants:",
+                    variants
+                );
+
+
+                /* ==========================================
+                   FIND SELECTED VARIANT
+                ========================================== */
+
+                function updateVariant() {
+
+                    const selectedColor =
+                        document.querySelector(
+                            'input[name="product-color"]:checked'
+                        )?.value;
+
+
+                    const selectedSize =
+                        document.querySelector(
+                            'input[name="product-size"]:checked'
+                        )?.value;
+
+
+                    console.log(
+                        "Selected Color:",
+                        selectedColor
+                    );
+
+
+                    console.log(
+                        "Selected Size:",
+                        selectedSize
+                    );
+
+
+                    /* ======================================
+                       RESET
+                    ====================================== */
+
+                    if (!selectedColor ||
+                        !selectedSize) {
+
+                        if (wishlistVariantId) {
+
+                            wishlistVariantId.value = "";
+
+                        }
+
+
+                        if (cartVariantId) {
+
+                            cartVariantId.value = "";
+
+                        }
+
+                        return;
+                    }
+
+
+                    /* ======================================
+                       FIND VARIANT
+                    ====================================== */
+
+                    const variant =
+                        variants.find(
+                            function (v) {
+
+                                return String(v.Color)
+                                           .trim()
+                                           .toLowerCase()
+                                       ===
+                                       String(selectedColor)
+                                           .trim()
+                                           .toLowerCase()
+
+                                       &&
+
+                                       String(v.Size)
+                                           .trim()
+                                           .toLowerCase()
+                                       ===
+                                       String(selectedSize)
+                                           .trim()
+                                           .toLowerCase();
+
+                            }
+                        );
+
+
+                    /* ======================================
+                       VARIANT FOUND
+                    ====================================== */
+
+                    if (variant) {
+
+                        console.log(
+                            "Selected Variant:",
+                            variant
+                        );
+
+
+                        console.log(
+                            "Selected Variant ID:",
+                            variant.Id
+                        );
+
+
+                        if (wishlistVariantId) {
+
+                            wishlistVariantId.value =
+                                variant.Id;
+
+                        }
+
+
+                        if (cartVariantId) {
+
+                            cartVariantId.value =
+                                variant.Id;
+
+                        }
+
+
+                        if (cartErrorMessage) {
+
+                            cartErrorMessage.style.display =
+                                "none";
+
+                        }
+
+                    }
+                    else {
+
+                        console.log(
+                            "No matching variant found."
+                        );
+
+
+                        if (wishlistVariantId) {
+
+                            wishlistVariantId.value = "";
+
+                        }
+
+
+                        if (cartVariantId) {
+
+                            cartVariantId.value = "";
+
+                        }
+
+                    }
+
+                }
+
+
+                /* ==========================================
+                   COLOR CHANGE
+                ========================================== */
+
+                colorInputs.forEach(
+                    function (input) {
+
+                        input.addEventListener(
+                            "change",
+                            function () {
+
+                                colorInputs.forEach(
+                                    function (item) {
+
+                                        const label =
+                                            item.closest(
+                                                ".dynamic-color-label"
+                                            );
+
+                                        if (label) {
+
+                                            label.classList.remove(
+                                                "selected"
+                                            );
+
+                                        }
+
+                                    }
+                                );
+
+
+                                const selectedLabel =
+                                    input.closest(
+                                        ".dynamic-color-label"
+                                    );
+
+
+                                if (selectedLabel) {
+
+                                    selectedLabel.classList.add(
+                                        "selected"
+                                    );
+
+                                }
+
+
+                                updateVariant();
+
+                            }
+                        );
+
+                    }
+                );
+
+
+                /* ==========================================
+                   SIZE CHANGE
+                ========================================== */
+
+                sizeInputs.forEach(
+                    function (input) {
+
+                        input.addEventListener(
+                            "change",
+                            function () {
+
+                                sizeInputs.forEach(
+                                    function (item) {
+
+                                        const label =
+                                            item.closest(
+                                                ".size-option"
+                                            );
+
+                                        if (label) {
+
+                                            label.classList.remove(
+                                                "selected"
+                                            );
+
+                                        }
+
+                                    }
+                                );
+
+
+                                const selectedLabel =
+                                    input.closest(
+                                        ".size-option"
+                                    );
+
+
+                                if (selectedLabel) {
+
+                                    selectedLabel.classList.add(
+                                        "selected"
+                                    );
+
+                                }
+
+
+                                updateVariant();
+
+                            }
+                        );
+
+                    }
+                );
+
+
+                /* ==========================================
+                   QUANTITY
+                ========================================== */
+
+                if (quantityInput &&
+                    cartQuantity) {
+
+                    quantityInput.addEventListener(
+                        "input",
+                        function () {
+
+                            let quantity =
+                                parseInt(
+                                    quantityInput.value
+                                );
+
+
+                            if (
+                                isNaN(quantity) ||
+                                quantity < 1
+                            ) {
+
+                                quantity = 1;
+
+                            }
+
+
+                            quantityInput.value =
+                                quantity;
+
+
+                            cartQuantity.value =
+                                quantity;
+
+                        }
+                    );
+
+
+                    quantityInput.addEventListener(
+                        "change",
+                        function () {
+
+                            let quantity =
+                                parseInt(
+                                    quantityInput.value
+                                );
+
+
+                            if (
+                                isNaN(quantity) ||
+                                quantity < 1
+                            ) {
+
+                                quantity = 1;
+
+                            }
+
+
+                            quantityInput.value =
+                                quantity;
+
+
+                            cartQuantity.value =
+                                quantity;
+
+                        }
+                    );
+
+                }
+
+
+                /* ==========================================
+                   ADD TO CART SUBMIT
+                ========================================== */
+
+                if (cartForm) {
+
+                    cartForm.addEventListener(
+                        "submit",
+                        function (event) {
+
+                            /* ==============================
+                               CHECK VARIANT
+                            ============================== */
+
+                            if (
+                                !cartVariantId ||
+                                !cartVariantId.value
+                            ) {
+
+                                event.preventDefault();
+
+
+                                if (cartErrorMessage) {
+
+                                    cartErrorMessage.innerText =
+                                        "Please select a valid color and size.";
+
+                                    cartErrorMessage.style.display =
+                                        "block";
+
+                                }
+
+
+                                return;
+
+                            }
+
+
+                            /* ==============================
+                               CHECK QUANTITY
+                            ============================== */
+
+                            let quantity =
+                                parseInt(
+                                    quantityInput?.value
+                                );
+
+
+                            if (
+                                isNaN(quantity) ||
+                                quantity <= 0
+                            ) {
+
+                                event.preventDefault();
+
+
+                                if (cartErrorMessage) {
+
+                                    cartErrorMessage.innerText =
+                                        "Please enter a valid quantity.";
+
+                                    cartErrorMessage.style.display =
+                                        "block";
+
+                                }
+
+
+                                return;
+
+                            }
+
+
+                            /* ==============================
+                               SET FINAL QUANTITY
+                            ============================== */
+
+                            cartQuantity.value =
+                                quantity;
+
+                        }
+                    );
+
+                }
+
+
+                /* ==========================================
+                   WISHLIST SUBMIT
+                ========================================== */
+
+                if (wishlistForm) {
+
+                    wishlistForm.addEventListener(
+                        "submit",
+                        function (event) {
+
+                            if (
+                                !wishlistVariantId ||
+                                !wishlistVariantId.value
+                            ) {
+
+                                event.preventDefault();
+
+
+                                $("#wishlistModal")
+                                    .modal("show");
+
+
+                                return;
+
+                            }
+
+                        }
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+
+    <!-- =========================================================
+         RELATED PRODUCT AUTOMATIC SLIDER
+    ========================================================= -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                document
+                    .querySelectorAll(
+                        ".related-image-slider"
+                    )
+                    .forEach(
+                        function (slider) {
+
+
+                            /* ==================================
+                               GET IMAGES
+                            ================================== */
+
+                            const images =
+                                slider.querySelectorAll(
+                                    ".related-product-img"
+                                );
+
+
+                            /* ==================================
+                               GET BUTTONS
+                            ================================== */
+
+                            const prevButton =
+                                slider.querySelector(
+                                    ".related-prev"
+                                );
+
+
+                            const nextButton =
+                                slider.querySelector(
+                                    ".related-next"
+                                );
+
+
+                            /* ==================================
+                               ONLY ONE IMAGE
+                            ================================== */
+
+                            if (images.length <= 1) {
+
+                                return;
+
+                            }
+
+
+                            /* ==================================
+                               CURRENT IMAGE
+                            ================================== */
+
+                            let currentIndex = 0;
+
+
+                            /* ==================================
+                               SLIDE TIME
+                               2000 = 2 seconds
+                            ================================== */
+
+                            const slideInterval = 2000;
+
+
+                            let autoSlide;
+
+
+                            /* ==================================
+                               SHOW IMAGE
+                            ================================== */
+
+                            function showImage(index) {
+
+                                images.forEach(
+                                    function (image, i) {
+
+                                        if (i === index) {
+
+                                            image.style.display =
+                                                "block";
+
+                                        }
+                                        else {
+
+                                            image.style.display =
+                                                "none";
+
+                                        }
+
+                                    }
+                                );
+
+                            }
+
+
+                            /* ==================================
+                               NEXT
+                            ================================== */
+
+                            function nextImage() {
+
+                                currentIndex++;
+
+
+                                if (
+                                    currentIndex >=
+                                    images.length
+                                ) {
+
+                                    currentIndex = 0;
+
+                                }
+
+
+                                showImage(
+                                    currentIndex
+                                );
+
+                            }
+
+
+                            /* ==================================
+                               PREVIOUS
+                            ================================== */
+
+                            function previousImage() {
+
+                                currentIndex--;
+
+
+                                if (
+                                    currentIndex < 0
+                                ) {
+
+                                    currentIndex =
+                                        images.length - 1;
+
+                                }
+
+
+                                showImage(
+                                    currentIndex
+                                );
+
+                            }
+
+
+                            /* ==================================
+                               START AUTO SLIDE
+                            ================================== */
+
+                            function startAutoSlide() {
+
+                                clearInterval(
+                                    autoSlide
+                                );
+
+
+                                autoSlide =
+                                    setInterval(
+                                        function () {
+
+                                            nextImage();
+
+                                        },
+                                        slideInterval
+                                    );
+
+                            }
+
+
+                            /* ==================================
+                               STOP AUTO SLIDE
+                            ================================== */
+
+                            function stopAutoSlide() {
+
+                                clearInterval(
+                                    autoSlide
+                                );
+
+                            }
+
+
+                            /* ==================================
+                               NEXT BUTTON
+                            ================================== */
+
+                            if (nextButton) {
+
+                                nextButton.addEventListener(
+                                    "click",
+                                    function (event) {
+
+                                        event.preventDefault();
+
+                                        event.stopPropagation();
+
+
+                                        nextImage();
+
+
+                                        startAutoSlide();
+
+                                    }
+                                );
+
+                            }
+
+
+                            /* ==================================
+                               PREVIOUS BUTTON
+                            ================================== */
+
+                            if (prevButton) {
+
+                                prevButton.addEventListener(
+                                    "click",
+                                    function (event) {
+
+                                        event.preventDefault();
+
+                                        event.stopPropagation();
+
+
+                                        previousImage();
+
+
+                                        startAutoSlide();
+
+                                    }
+                                );
+
+                            }
+
+
+                            /* ==================================
+                               INITIAL IMAGE
+                            ================================== */
+
+                            showImage(
+                                currentIndex
+                            );
+
+
+                            /* ==================================
+                               START SLIDER
+                            ================================== */
+
+                            startAutoSlide();
+
+
+                            /* ==================================
+                               PAUSE ON MOUSE ENTER
+                            ================================== */
+
+                            slider.addEventListener(
+                                "mouseenter",
+                                function () {
+
+                                    stopAutoSlide();
+
+                                }
+                            );
+
+
+                            /* ==================================
+                               RESUME ON MOUSE LEAVE
+                            ================================== */
+
+                            slider.addEventListener(
+                                "mouseleave",
+                                function () {
+
+                                    startAutoSlide();
+
+                                }
+                            );
+
+                        }
+                    );
+
+            }
+        );
+
+        //inventory section
+
+            const variants = @Html.Raw(
+                                    System.Text.Json.JsonSerializer.Serialize(
+                                            Model.Variants.Select(v => new
+                                    {
+                                        id = v.Id,
+                                        color = v.Color,
+                                        size = v.Size,
+                                        stock = v.InventoryQuantity,
+                                        isInStock = v.IsInStock
+                                    })
+                            )
+                            );
+
+            const quantityInput =
+                document.getElementById("quantityInput");
+
+
+            function updateQuantityLimit() {
+
+                const selectedColor =
+                    document.querySelector(
+                        'input[name="product-color"]:checked'
+                    )?.value;
+
+                const selectedSize =
+                    document.querySelector(
+                        'input[name="product-size"]:checked'
+                    )?.value;
+
+
+                // User has not selected both
+                if (!selectedColor || !selectedSize) {
+
+                    quantityInput.disabled = true;
+
+                    quantityInput.value = 1;
+
+                    quantityInput.max = 1;
+
+                    return;
+                }
+
+
+                // Find matching variant
+                const variant = variants.find(v =>
+                    v.color === selectedColor &&
+                    v.size === selectedSize
+                );
+
+
+                // Variant doesn't exist
+                if (!variant) {
+
+                    quantityInput.disabled = true;
+
+                    quantityInput.value = 1;
+
+                    quantityInput.max = 1;
+
+                    return;
+                }
+
+
+                // Variant exists but no stock
+                if (!variant.isInStock ||
+                    variant.stock <= 0) {
+
+                    quantityInput.disabled = true;
+
+                    quantityInput.value = 1;
+
+                    quantityInput.max = 1;
+
+                    return;
+                }
+
+
+                // ===============================
+                // SET INVENTORY LIMIT
+                // ===============================
+
+                quantityInput.disabled = false;
+
+                quantityInput.min = 1;
+
+                quantityInput.max = variant.stock;
+
+                quantityInput.value = 1;
+            }
+
+
+            // Size changed
+            document
+                .querySelectorAll('input[name="product-size"]')
+                .forEach(input => {
+
+                    input.addEventListener(
+                        "change",
+                        updateQuantityLimit
+                    );
+
+                });
+
+
+            // Color changed
+            document
+                .querySelectorAll('input[name="product-color"]')
+                .forEach(input => {
+
+                    input.addEventListener(
+                        "change",
+                        updateQuantityLimit
+                    );
+
+                });
+
+
+            // Prevent manually entering more than stock
+            quantityInput.addEventListener("input", function() {
+
+                const max = parseInt(this.max);
+
+                let value = parseInt(this.value);
+
+
+                if (isNaN(value) || value < 1) {
+
+                    this.value = 1;
+
+                    return;
+                }
+
+
+                if (value > max) {
+
+                    this.value = max;
+                }
+
+            });
+    </script>
+
+
+</body>
+
+</html>
+

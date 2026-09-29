@@ -1,0 +1,1455 @@
+﻿@using MaleFashion.Web.Codes
+
+@model MaleFashion.Application.Features.Wishlists.Query.WishlistViewModel
+
+@{
+    ViewData["Title"] = "My Wishlist";
+
+    var items =
+        Model?.Items
+        ?? new List<
+            MaleFashion.Application.Features.Wishlists.Query.WishlistItemViewModel>();
+
+    var response =
+        TempData.Get<ResponseModel>(
+            Constants.ResponseTempKey);
+}
+
+<!-- =========================================================
+     WISHLIST SECTION
+========================================================= -->
+
+<section class="wishlist spad">
+
+    <div class="container">
+
+        <!-- =====================================================
+             HEADER
+        ====================================================== -->
+
+        <div class="row">
+
+            <div class="col-lg-12">
+
+                <div class="wishlist__header">
+
+                    <span>Your Favorites</span>
+
+                    <h2>My Wishlist</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             RESPONSE MESSAGE
+        ====================================================== -->
+
+        @* <div id="wishlistMessage"
+             class="wishlist__message"
+             style="display:none;">
+
+            <div class="alert"
+                 role="alert">
+
+                <i class="fa"></i>
+
+                <span></span>
+
+                <button type="button"
+                        class="close"
+                        data-dismiss="alert"
+                        aria-label="Close">
+
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div> *@
+
+
+        <!-- =====================================================
+             INITIAL TEMP DATA MESSAGE
+        ====================================================== -->
+        @* @if (response != null)
+        {
+            <div class="wishlist__message">
+
+                <div class="alert
+                    @(response.Type == ResponseTypes.Success
+                        ? "alert-success"
+                        : "alert-danger")"
+                     role="alert">
+
+                    <i class="fa
+                        @(response.Type == ResponseTypes.Success
+                           ? "fa-check-circle"
+                           : "fa-exclamation-circle")">
+                    </i>
+
+                    <span>
+                        @response.Message
+                    </span>
+
+                    <button type="button"
+                            class="close"
+                            data-dismiss="alert"
+                            aria-label="Close">
+
+                        <span aria-hidden="true">
+                            &times;
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+        } *@
+
+
+        <!-- =====================================================
+             EMPTY WISHLIST
+        ====================================================== -->
+        @if (!items.Any())
+        {
+            <div class="wishlist__empty">
+
+                <div class="wishlist__empty__icon">
+
+                    <i class="fa fa-heart-o"></i>
+
+                </div>
+
+                <h3>
+                    Your Wishlist Is Empty
+                </h3>
+
+                <p>
+                    You haven't added any products to your wishlist yet.
+                </p>
+
+                <a asp-area="Customer"
+                   asp-controller="Home"
+                   asp-action="Shop"
+                   class="primary-btn">
+
+                    Continue Shopping
+
+                    <span class="arrow_right"></span>
+
+                </a>
+
+            </div>
+        }
+        else
+        {
+
+            <!-- =================================================
+                 PRODUCT GRID
+            ================================================== -->
+
+            <div class="row wishlist__grid"
+                 id="wishlistGrid">
+
+                @foreach (var item in items)
+                {
+                    var imageUrl =
+                        string.IsNullOrWhiteSpace(item.Image)
+
+                            ? Url.Content(
+                                "~/Malefashon/Assets/img/product/product-1.jpg")
+
+                            : Url.Content(
+                                "~/uploads/products/" +
+                                item.Image);
+
+
+                    <!-- =============================================
+                         PRODUCT COLUMN
+                    ============================================== -->
+
+                    <div class="wishlist__column"
+                         data-wishlist-item-id="@item.Id">
+
+
+                        <!-- =========================================
+                             PRODUCT
+                        ========================================== -->
+
+                        <div class="wishlist__product">
+
+
+                            <!-- =====================================
+                                 PRODUCT IMAGE
+                            ====================================== -->
+
+                            <div class="wishlist__product__pic">
+
+                                <a asp-area="Customer"
+                                   asp-controller="Home"
+                                   asp-action="ShopDetails"
+                                   asp-route-productId="@item.ProductId">
+
+                                    <img src="@imageUrl"
+                                         alt="@item.ProductName" />
+
+                                </a>
+
+
+                                <!-- STOCK -->
+                                @if (item.IsInStock)
+                                {
+                                    <span class="wishlist__stock wishlist__stock--in">
+
+                                        In Stock
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="wishlist__stock wishlist__stock--out">
+
+                                        Out of Stock
+
+                                    </span>
+                                }
+
+                            </div>
+
+
+                            <!-- =====================================
+                                 PRODUCT INFORMATION
+                            ====================================== -->
+
+                            <div class="wishlist__product__text">
+
+
+                                <!-- =================================
+                                     BRAND
+                                ================================== -->
+                                @if (!string.IsNullOrWhiteSpace(item.Branding))
+                                {
+                                    <span class="wishlist__brand">
+
+                                        @item.Branding
+
+                                    </span>
+                                }
+
+
+                                <!-- =================================
+                                     PRODUCT NAME
+                                ================================== -->
+
+                                <h5>
+
+                                    <a asp-area="Customer"
+                                       asp-controller="Home"
+                                       asp-action="ShopDetails"
+                                       asp-route-productId="@item.ProductId">
+
+                                        @item.ProductName
+
+                                    </a>
+
+                                </h5>
+
+
+                                <!-- =================================
+                                     COLOR + SIZE
+                                ================================== -->
+
+                                <div class="wishlist__variant">
+
+                                    @if (!string.IsNullOrWhiteSpace(item.Color))
+                                    {
+                                        <span>
+
+                                            Color:
+
+                                            <strong>
+                                                @item.Color
+                                            </strong>
+
+                                        </span>
+                                    }
+
+
+                                    @if (!string.IsNullOrWhiteSpace(item.Size))
+                                    {
+                                        <span>
+
+                                            Size:
+
+                                            <strong>
+                                                @item.Size
+                                            </strong>
+
+                                        </span>
+                                    }
+
+                                </div>
+
+
+                                <!-- =================================
+                                     SKU
+                                ================================== -->
+                                @if (!string.IsNullOrWhiteSpace(item.Sku))
+                                {
+                                    <div class="wishlist__sku">
+
+                                        SKU:
+                                        @item.Sku
+
+                                    </div>
+                                }
+
+
+                                <!-- =================================
+                                     PRICE
+                                ================================== -->
+
+                                <div class="wishlist__price">
+
+                                    ৳@item.Price.ToString("N2")
+
+                                </div>
+
+
+                                <!-- =================================
+                                     ACTIONS
+                                ================================== -->
+
+                                <div class="wishlist__actions">
+
+
+                                    <!-- =============================
+                                         VIEW PRODUCT
+                                    ============================== -->
+
+                                    @* <a asp-area="Customer"
+                                       asp-controller="Home"
+                                       asp-action="ShopDetails"
+                                       asp-route-productId="@item.ProductId"
+                                       class="wishlist__view">
+
+                                        <span>
+                                            View Product
+                                        </span>
+
+                                        <span class="arrow_right"></span>
+
+                                    </a> *@
+
+                                    <a asp-area="Customer"
+                                       asp-controller="Home"
+                                       asp-action="ShopDetails"
+                                       asp-route-id="@item.ProductId"
+                                       class="wishlist__view">
+
+                                        <span>View Product</span>
+
+                                        <span class="arrow_right"></span>
+
+                                    </a>
+
+
+                                    <!-- =============================
+                                         REMOVE
+                                    ============================== -->
+
+                                    <form class="wishlist__remove-form">
+
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="hidden"
+                                               name="wishlistItemId"
+                                               value="@item.Id" />
+
+                                        <button type="submit"
+                                                class="wishlist__remove">
+
+                                            <i class="fa fa-trash"></i>
+
+                                            <span>
+                                                Remove
+                                            </span>
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     WISHLIST CSS
+========================================================= -->
+
+<style>
+
+    /* =========================================================
+           MAIN WISHLIST
+        ========================================================= */
+
+    .wishlist {
+        padding: 55px 0 70px;
+        background: #ffffff;
+    }
+
+
+    /* =========================================================
+           HEADER
+        ========================================================= */
+
+    .wishlist__header {
+        text-align: center;
+        margin-bottom: 38px;
+    }
+
+        .wishlist__header span {
+            display: block;
+            color: #e53637;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        .wishlist__header h2 {
+            margin: 0;
+            color: #111111;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+
+    /* =========================================================
+           RESPONSE MESSAGE
+        ========================================================= */
+
+    .wishlist__message {
+        margin-bottom: 28px;
+    }
+
+        .wishlist__message .alert {
+            position: relative;
+            border: none;
+            border-radius: 0;
+            padding: 12px 45px 12px 15px;
+            font-size: 12px;
+            margin-bottom: 0;
+        }
+
+            .wishlist__message .alert i {
+                margin-right: 7px;
+            }
+
+        .wishlist__message .close {
+            position: absolute;
+            top: 7px;
+            right: 12px;
+        }
+
+
+    /* =========================================================
+           PRODUCT GRID
+        ========================================================= */
+
+    .wishlist__grid {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: -7px;
+        margin-right: -7px;
+    }
+
+    .wishlist__column {
+        width: 20%;
+        padding-left: 7px;
+        padding-right: 7px;
+        transition: opacity .3s ease, transform .3s ease;
+    }
+
+
+    /* =========================================================
+           PRODUCT CARD
+        ========================================================= */
+
+    .wishlist__product {
+        width: 100%;
+        margin-bottom: 32px;
+        background: #ffffff;
+    }
+
+
+    /* =========================================================
+           PRODUCT IMAGE
+        ========================================================= */
+
+    .wishlist__product__pic {
+        position: relative;
+        width: 100%;
+        height: 250px;
+        overflow: hidden;
+        background: #f6f6f6;
+    }
+
+        .wishlist__product__pic a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .wishlist__product__pic img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            transition: transform .45s ease;
+        }
+
+    .wishlist__product:hover
+    .wishlist__product__pic img {
+        transform: scale(1.05);
+    }
+
+
+    /* =========================================================
+           STOCK BADGE
+        ========================================================= */
+
+    .wishlist__stock {
+        position: absolute;
+        left: 8px;
+        bottom: 8px;
+        padding: 4px 7px;
+        background: #ffffff;
+        font-size: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+    }
+
+    .wishlist__stock--in {
+        color: #28a745;
+    }
+
+    .wishlist__stock--out {
+        color: #e53637;
+    }
+
+
+    /* =========================================================
+           PRODUCT INFORMATION
+        ========================================================= */
+
+    .wishlist__product__text {
+        padding-top: 12px;
+    }
+
+
+    /* =========================================================
+           BRAND
+        ========================================================= */
+
+    .wishlist__brand {
+        display: block;
+        margin-bottom: 4px;
+        color: #a8a8a8;
+        font-size: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+
+    /* =========================================================
+           PRODUCT NAME
+        ========================================================= */
+
+    .wishlist__product__text h5 {
+        margin: 0 0 7px;
+        min-height: 38px;
+    }
+
+        .wishlist__product__text h5 a {
+            color: #111111;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.4;
+            text-decoration: none;
+            transition: color .25s ease;
+        }
+
+            .wishlist__product__text h5 a:hover {
+                color: #e53637;
+            }
+
+
+    /* =========================================================
+           COLOR + SIZE
+        ========================================================= */
+
+    .wishlist__variant {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-bottom: 5px;
+    }
+
+        .wishlist__variant span {
+            color: #888888;
+            font-size: 9px;
+        }
+
+        .wishlist__variant strong {
+            color: #333333;
+            font-weight: 500;
+        }
+
+
+    /* =========================================================
+           SKU
+        ========================================================= */
+
+    .wishlist__sku {
+        color: #aaaaaa;
+        font-size: 8px;
+        margin-bottom: 5px;
+    }
+
+
+    /* =========================================================
+           PRICE
+        ========================================================= */
+
+    .wishlist__price {
+        color: #111111;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+
+    /* =========================================================
+           ACTIONS
+        ========================================================= */
+
+    .wishlist__actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 7px;
+    }
+
+
+    /* =========================================================
+           VIEW PRODUCT
+        ========================================================= */
+
+    .wishlist__view {
+        display: inline-flex;
+        align-items: center;
+        color: #111111;
+        font-size: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .8px;
+        text-decoration: none;
+        border-bottom: 1px solid #111111;
+        padding-bottom: 2px;
+        transition: all .25s ease;
+    }
+
+        .wishlist__view .arrow_right {
+            margin-left: 4px;
+            font-size: 11px;
+        }
+
+        .wishlist__view:hover {
+            color: #e53637;
+            border-color: #e53637;
+        }
+
+
+    /* =========================================================
+           REMOVE FORM
+        ========================================================= */
+
+    .wishlist__remove-form {
+        margin: 0;
+        padding: 0;
+    }
+
+
+    /* =========================================================
+           REMOVE BUTTON
+        ========================================================= */
+
+    .wishlist__remove {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        height: 27px;
+        padding: 0 9px;
+        border: 1px solid #e53637;
+        border-radius: 0;
+        background: #ffffff;
+        color: #e53637;
+        font-size: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .6px;
+        cursor: pointer;
+        transition: all .25s ease;
+    }
+
+        .wishlist__remove i {
+            font-size: 9px;
+        }
+
+        .wishlist__remove:hover {
+            background: #e53637;
+            color: #ffffff;
+        }
+
+        .wishlist__remove:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+
+    /* =========================================================
+           EMPTY WISHLIST
+        ========================================================= */
+
+    .wishlist__empty {
+        text-align: center;
+        padding: 65px 20px;
+        background: #fafafa;
+        border: 1px solid #eeeeee;
+    }
+
+    .wishlist__empty__icon {
+        width: 65px;
+        height: 65px;
+        margin: 0 auto 17px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 1px solid #e5e5e5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .wishlist__empty__icon i {
+            color: #e53637;
+            font-size: 27px;
+        }
+
+    .wishlist__empty h3 {
+        color: #111111;
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .wishlist__empty p {
+        color: #777777;
+        font-size: 12px;
+        margin-bottom: 22px;
+    }
+
+
+    /* =========================================================
+           SHOPPING BUTTON
+        ========================================================= */
+
+    .wishlist .primary-btn {
+        display: inline-flex;
+        align-items: center;
+        color: #ffffff;
+        background: #111111;
+        padding: 11px 22px;
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-decoration: none;
+        transition: all .25s ease;
+    }
+
+        .wishlist .primary-btn:hover {
+            background: #e53637;
+            color: #ffffff;
+        }
+
+
+    /* =========================================================
+           AJAX EMPTY STATE
+        ========================================================= */
+
+    .wishlist__ajax-empty {
+        width: 100%;
+        text-align: center;
+        padding: 65px 20px;
+        background: #fafafa;
+        border: 1px solid #eeeeee;
+    }
+
+        .wishlist__ajax-empty i {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 17px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            color: #e53637;
+            font-size: 27px;
+        }
+
+        .wishlist__ajax-empty h3 {
+            color: #111111;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .wishlist__ajax-empty p {
+            color: #777777;
+            font-size: 12px;
+            margin-bottom: 22px;
+        }
+
+
+    /* =========================================================
+           LARGE DESKTOP
+           5 COLUMNS
+        ========================================================= */
+
+    @@media (min-width: 1200px) {
+
+        .wishlist__column {
+            width: 20%;
+        }
+
+        .wishlist__product__pic {
+            height: 250px;
+        }
+    }
+
+
+    /* =========================================================
+           DESKTOP / LAPTOP
+           4 COLUMNS
+        ========================================================= */
+
+    @@media (min-width: 992px) and (max-width: 1199px) {
+
+        .wishlist__column {
+            width: 25%;
+        }
+
+        .wishlist__product__pic {
+            height: 250px;
+        }
+    }
+
+
+    /* =========================================================
+           TABLET
+           3 COLUMNS
+        ========================================================= */
+
+    @@media (min-width: 768px) and (max-width: 991px) {
+
+        .wishlist {
+            padding: 45px 0 60px;
+        }
+
+        .wishlist__column {
+            width: 33.333333%;
+        }
+
+        .wishlist__product__pic {
+            height: 240px;
+        }
+
+        .wishlist__header h2 {
+            font-size: 28px;
+        }
+    }
+
+
+    /* =========================================================
+           MOBILE
+           2 COLUMNS
+        ========================================================= */
+
+    @@media (min-width: 576px) and (max-width: 767px) {
+
+        .wishlist {
+            padding: 40px 0 50px;
+        }
+
+        .wishlist__column {
+            width: 50%;
+        }
+
+        .wishlist__product {
+            margin-bottom: 28px;
+        }
+
+        .wishlist__product__pic {
+            height: 250px;
+        }
+
+        .wishlist__product__text h5 {
+            min-height: 36px;
+        }
+
+            .wishlist__product__text h5 a {
+                font-size: 12px;
+            }
+
+        .wishlist__price {
+            font-size: 12px;
+        }
+    }
+
+
+    /* =========================================================
+           SMALL MOBILE
+           2 COLUMNS
+        ========================================================= */
+
+    @@media (max-width: 575px) {
+
+        .wishlist {
+            padding: 35px 0 45px;
+        }
+
+        .wishlist__header {
+            margin-bottom: 30px;
+        }
+
+            .wishlist__header span {
+                font-size: 9px;
+            }
+
+            .wishlist__header h2 {
+                font-size: 24px;
+            }
+
+        .wishlist__grid {
+            margin-left: -5px;
+            margin-right: -5px;
+        }
+
+        .wishlist__column {
+            width: 50%;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        .wishlist__product {
+            margin-bottom: 28px;
+        }
+
+        .wishlist__product__pic {
+            height: 190px;
+        }
+
+        .wishlist__product__text {
+            padding-top: 10px;
+        }
+
+        .wishlist__brand {
+            font-size: 7px;
+            margin-bottom: 3px;
+        }
+
+        .wishlist__product__text h5 {
+            min-height: 34px;
+            margin-bottom: 5px;
+        }
+
+            .wishlist__product__text h5 a {
+                font-size: 11px;
+            }
+
+        .wishlist__variant {
+            gap: 4px;
+        }
+
+            .wishlist__variant span {
+                font-size: 8px;
+            }
+
+        .wishlist__sku {
+            font-size: 7px;
+        }
+
+        .wishlist__price {
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
+        .wishlist__view {
+            font-size: 7px;
+            letter-spacing: .5px;
+        }
+
+        .wishlist__remove {
+            height: 25px;
+            padding: 0 8px;
+            font-size: 7px;
+        }
+
+            .wishlist__remove i {
+                font-size: 8px;
+            }
+
+        .wishlist__empty {
+            padding: 50px 15px;
+        }
+
+            .wishlist__empty h3 {
+                font-size: 19px;
+            }
+
+            .wishlist__empty p {
+                font-size: 11px;
+            }
+    }
+
+</style>
+
+
+<!-- =========================================================
+     WISHLIST AJAX
+========================================================= -->
+
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            const forms =
+                document.querySelectorAll(
+                    ".wishlist__remove-form"
+                );
+
+
+            forms.forEach(function(form) {
+
+                form.addEventListener(
+                    "submit",
+                    async function(event) {
+
+                        event.preventDefault();
+
+
+                        const button =
+                            form.querySelector(
+                                ".wishlist__remove"
+                            );
+
+
+                        const itemIdInput =
+                            form.querySelector(
+                                'input[name="wishlistItemId"]'
+                            );
+
+
+                        const tokenInput =
+                            form.querySelector(
+                                'input[name="__RequestVerificationToken"]'
+                            );
+
+
+                        if (!itemIdInput ||
+                            !tokenInput) {
+
+                            showWishlistMessage(
+                                false,
+                                "Invalid wishlist request."
+                            );
+
+                            return;
+                        }
+
+
+                        const wishlistItemId =
+                            itemIdInput.value;
+
+
+                        const token =
+                            tokenInput.value;
+
+
+                        const column =
+                            form.closest(
+                                ".wishlist__column"
+                            );
+
+
+                        if (!column) {
+                            return;
+                        }
+
+
+                        button.disabled = true;
+
+
+                        const originalText =
+                            button.innerHTML;
+
+
+                        button.innerHTML =
+                            `
+                                    <i class="fa fa-spinner fa-spin"></i>
+                                    <span>Removing...</span>
+                                `;
+
+
+                        try {
+
+                            const response =
+                                await fetch(
+                                    '@Url.Action(
+                                               "RemoveFromWishlist",
+                                               "Home",
+                                               new { area = "Customer" }
+                                                                        )',
+                                        {
+                                        method: "POST",
+
+                                        headers: {
+
+                                            "Content-Type":
+                                                "application/x-www-form-urlencoded; charset=UTF-8",
+
+                                            "RequestVerificationToken":
+                                                token,
+
+                                            "X-Requested-With":
+                                                "XMLHttpRequest"
+                                        },
+
+                                        body:
+                                            new URLSearchParams({
+
+                                                wishlistItemId:
+                                                    wishlistItemId,
+
+                                                __RequestVerificationToken:
+                                                    token
+
+                                            })
+                                    }
+                                );
+
+
+                            if (!response.ok) {
+
+                                throw new Error(
+                                    "Server returned an error."
+                                );
+                            }
+
+
+                            const data =
+                                await response.json();
+
+
+                            /*
+                             * SHOW TEMP DATA MESSAGE
+                             */
+
+                            showWishlistMessage(
+                                data.success,
+                                data.message
+                            );
+
+
+                            /*
+                             * REMOVE CARD
+                             */
+
+                            if (data.success) {
+
+                                column.style.opacity = "0";
+
+                                column.style.transform =
+                                    "scale(0.85)";
+
+
+                                setTimeout(
+                                    function() {
+
+                                        column.remove();
+
+
+                                         @*  column.style.opacity = "0";
+                                          column.style.transform = "scale(0.85)";
+
+                                         setTimeout(function() {
+                                              column.remove();
+                                          }, 300); *@
+
+                                        /*
+                                         * CHECK IF LAST ITEM
+                                         */
+
+                                        const remainingItems =
+                                            document.querySelectorAll(
+                                                ".wishlist__column"
+                                            );
+
+
+                                        if (
+                                            remainingItems.length === 0
+                                        ) {
+
+                                            showEmptyWishlist();
+
+                                        }
+
+                                    },
+                                    300
+                                );
+
+                            }
+                            else {
+
+                                button.disabled = false;
+
+                                button.innerHTML =
+                                    originalText;
+
+                            }
+
+                        }
+                        catch (error) {
+
+                            console.error(error);
+
+
+                            showWishlistMessage(
+                                false,
+                                "Something went wrong. Please try again."
+                            );
+
+
+                            button.disabled = false;
+
+                            button.innerHTML =
+                                originalText;
+
+                        }
+
+                    }
+                );
+
+            });
+
+
+            /*
+             * =====================================================
+             * SHOW MESSAGE
+             * =====================================================
+             */
+
+            function showWishlistMessage(
+                success,
+                message) {
+
+                const container =
+                    document.getElementById(
+                        "wishlistMessage"
+                    );
+
+
+                if (!container) {
+                    return;
+                }
+
+
+                const alert =
+                    container.querySelector(
+                        ".alert"
+                    );
+
+
+                const icon =
+                    container.querySelector(
+                        "i"
+                    );
+
+
+                const text =
+                    container.querySelector(
+                        "span"
+                    );
+
+                    // Clear previous timer
+
+                 @* if (wishlistMessageTimer)
+                 {
+                       clearTimeout(wishlistMessageTimer);
+                 } *@
+
+                /*
+                 * ALERT TYPE
+                 */
+
+                alert.classList.remove(
+                    "alert-success",
+                    "alert-danger",
+                    "alert-warning"
+                );
+
+
+                alert.classList.add(
+                    success
+                        ? "alert-success"
+                        : "alert-danger"
+                );
+
+
+                /*
+                 * ICON
+                 */
+
+                icon.className =
+                    success
+                        ? "fa fa-check-circle"
+                        : "fa fa-exclamation-circle";
+
+
+                /*
+                 * MESSAGE
+                 */
+
+                text.textContent =
+                    message;
+
+
+                /*
+                 * SHOW
+                 */
+
+                container.style.display =
+                    "block";
+
+
+                /*
+                 * SCROLL TO MESSAGE
+                 */
+
+                container.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest"
+                });
+
+
+                /*
+                 * HIDE AFTER 3 SECONDS
+                 */
+
+                 setTimeout(
+                    function() {
+
+                        container.style.display =
+                            "none";
+
+                    },
+                    3000
+                );
+            }
+
+
+            /*
+             * =====================================================
+             * EMPTY WISHLIST
+             * =====================================================
+             */
+
+            function showEmptyWishlist() {
+
+                const grid =
+                    document.getElementById(
+                        "wishlistGrid"
+                    );
+
+
+                if (!grid) {
+                    return;
+                }
+
+
+                grid.innerHTML =
+                    `
+                            <div class="wishlist__ajax-empty">
+
+                                <i class="fa fa-heart-o"></i>
+
+                                <h3>
+                                    Your Wishlist Is Empty
+                                </h3>
+
+                                <p>
+                                    You haven't added any products
+                                    to your wishlist yet.
+                                </p>
+                                
+                                <a href="@Url.Action(
+                                          "Shop",
+                                          "Home",
+                                          new { area = "Customer" }
+                                         )"
+                                   class="primary-btn">
+
+                                    Continue Shopping
+
+                                    <span class="arrow_right"></span>
+
+                                </a>
+
+                            </div>
+                        `;
+            }
+
+        }
+    );
+
+</script>

@@ -1,0 +1,1017 @@
+﻿@model MaleFashion.Application.Features.Orders.Query.OrderDetailsViewModel
+
+@{
+    ViewData["Title"] = "Order Details";
+
+    var order = Model;
+}
+<style>
+    /* =========================================================
+        ORDER DETAILS
+        ========================================================= */
+
+    .order-details {
+        padding: 60px 0 80px;
+        background: #ffffff;
+    }
+
+    /* =========================================================
+        HEADER
+        ========================================================= */
+
+    .order-details__header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+        .order-details__header span {
+            display: block;
+            margin-bottom: 8px;
+            color: #e53637;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .order-details__header h2 {
+            margin: 0 0 10px;
+            color: #111111;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .order-details__header p {
+            margin: 0;
+            color: #777777;
+            font-size: 14px;
+        }
+
+            .order-details__header p strong {
+                color: #111111;
+            }
+
+    /* =========================================================
+        TOP ORDER INFORMATION
+        ========================================================= */
+
+    .order-details__top {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        margin-bottom: 30px;
+        background: #fafafa;
+        border: 1px solid #eeeeee;
+    }
+
+        .order-details__top > div {
+            padding: 22px 25px;
+            border-right: 1px solid #eeeeee;
+        }
+
+            .order-details__top > div:last-child {
+                border-right: none;
+            }
+
+        .order-details__top span,
+        .payment-info span {
+            display: block;
+            margin-bottom: 7px;
+            color: #888888;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .order-details__top strong {
+            display: block;
+            color: #111111;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+    /* =========================================================
+        COMMON SECTION
+        ========================================================= */
+
+    .order-details__section {
+        margin-bottom: 30px;
+        background: #ffffff;
+        border: 1px solid #eeeeee;
+    }
+
+    .order-details__section-title {
+        display: flex;
+        align-items: center;
+        min-height: 58px;
+        padding: 15px 22px;
+        background: #fafafa;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+        .order-details__section-title h4 {
+            margin: 0;
+            color: #111111;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+    /* =========================================================
+        ORDER ITEMS
+        ========================================================= */
+
+    .order-item {
+        display: grid;
+        grid-template-columns: 2fr 1.2fr 1fr;
+        align-items: center;
+        gap: 25px;
+        padding: 20px 22px;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+    /* PRODUCT */
+
+    .order-item__product {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        gap: 14px;
+    }
+
+    .order-item__icon {
+        flex: 0 0 50px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f7f7f7;
+        color: #555555;
+    }
+
+        .order-item__icon i {
+            font-size: 18px;
+        }
+
+    .order-item__product > div:last-child {
+        min-width: 0;
+    }
+
+    .order-item__product h5 {
+        margin: 0 0 5px;
+        color: #111111;
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 1.4;
+    }
+
+    .order-item__product span {
+        display: block;
+        color: #888888;
+        font-size: 12px;
+    }
+
+    /* VARIANT */
+
+    .order-item__variant {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+        .order-item__variant span {
+            color: #777777;
+            font-size: 13px;
+        }
+
+        .order-item__variant strong {
+            color: #111111;
+            font-weight: 600;
+        }
+
+    /* PRICE */
+
+    .order-item__price {
+        text-align: right;
+    }
+
+        .order-item__price > span {
+            display: block;
+            margin-bottom: 5px;
+            color: #888888;
+            font-size: 13px;
+        }
+
+        .order-item__price > strong {
+            display: block;
+            color: #111111;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+    /* =========================================================
+        SHIPPING INFORMATION
+        ========================================================= */
+
+    .shipping-info {
+        padding: 22px;
+    }
+
+        .shipping-info h5 {
+            margin: 0 0 12px;
+            color: #111111;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .shipping-info p {
+            margin: 0 0 7px;
+            color: #666666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+            .shipping-info p:last-child {
+                margin-bottom: 0;
+            }
+
+        .shipping-info strong {
+            color: #111111;
+            font-weight: 600;
+        }
+
+    /* =========================================================
+        PAYMENT INFORMATION
+        ========================================================= */
+
+    .payment-info {
+        padding: 22px;
+    }
+
+        .payment-info > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 11px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+            .payment-info > div:first-child {
+                padding-top: 0;
+            }
+
+            .payment-info > div:last-child {
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+        .payment-info span {
+            margin-bottom: 0;
+        }
+
+        .payment-info strong {
+            max-width: 60%;
+            color: #111111;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+    /* =========================================================
+        PAYMENT STATUS
+        ========================================================= */
+
+    .status-paid {
+        color: #28a745 !important;
+    }
+
+    .status-pending {
+        color: #f0ad4e !important;
+    }
+
+    /* =========================================================
+        ORDER SUMMARY
+        ========================================================= */
+
+    .order-summary {
+        width: 100%;
+        max-width: 430px;
+        margin: 0 0 30px auto;
+        padding: 22px 25px;
+        background: #fafafa;
+        border: 1px solid #eeeeee;
+    }
+
+    .order-summary__row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 9px 0;
+        color: #666666;
+        font-size: 14px;
+    }
+
+        .order-summary__row strong {
+            color: #111111;
+            font-weight: 600;
+        }
+
+        .order-summary__row .discount {
+            color: #28a745;
+        }
+
+    .order-summary__total {
+        margin-top: 8px;
+        padding-top: 16px;
+        border-top: 1px solid #dddddd;
+    }
+
+        .order-summary__total span {
+            color: #111111;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .order-summary__total strong {
+            color: #e53637;
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+    /* =========================================================
+        ORDER NOTES
+        ========================================================= */
+
+    .order-notes {
+        margin-bottom: 30px;
+        padding: 20px 22px;
+        background: #fafafa;
+        border-left: 3px solid #e53637;
+    }
+
+        .order-notes h4 {
+            margin: 0 0 8px;
+            color: #111111;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .order-notes p {
+            margin: 0;
+            color: #666666;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+    /* =========================================================
+        BACK BUTTON
+        ========================================================= */
+
+    .order-details__back {
+        padding-top: 5px;
+    }
+
+    .order-details .primary-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 13px 24px;
+        background: #111111;
+        color: #ffffff;
+        border: none;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        .order-details .primary-btn:hover {
+            background: #e53637;
+            color: #ffffff;
+        }
+
+        .order-details .primary-btn .arrow_left {
+            font-size: 13px;
+            transition: transform 0.3s ease;
+        }
+
+        .order-details .primary-btn:hover .arrow_left {
+            transform: translateX(-3px);
+        }
+
+    /* =========================================================
+        RESPONSIVE
+        ========================================================= */
+
+    @@media (max-width: 991px) {
+
+       
+        .order-details__top {
+            grid-template-columns: 1fr;
+        }
+
+            .order-details__top > div {
+                border-right: none;
+                border-bottom: 1px solid #eeeeee;
+            }
+
+                .order-details__top > div:last-child {
+                    border-bottom: none;
+                }
+
+        .order-item {
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 15px;
+        }
+    }
+
+    @@media (max-width: 767px) {
+
+      
+        .order-details {
+            padding: 45px 0 60px;
+        }
+
+        .order-details__header {
+            margin-bottom: 30px;
+        }
+
+            .order-details__header h2 {
+                font-size: 27px;
+            }
+
+        .order-item {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .order-item__price {
+            padding-top: 10px;
+            text-align: left;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .payment-info > div {
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .payment-info strong {
+            max-width: 100%;
+            text-align: left;
+        }
+
+        .order-summary {
+            max-width: 100%;
+        }
+    }
+
+    @@media (max-width: 480px) {
+
+       
+        .order-details__header h2 {
+            font-size: 24px;
+        }
+
+        .order-details__top > div {
+            padding: 18px;
+        }
+
+        .order-details__section-title {
+            padding: 14px 17px;
+        }
+
+        .order-item {
+            padding: 18px;
+        }
+
+        .shipping-info,
+        .payment-info {
+            padding: 18px;
+        }
+
+        .order-summary {
+            padding: 18px;
+        }
+
+        .order-details .primary-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+
+        .order-item__icon {
+            width: 45px;
+            height: 45px;
+            min-width: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f7f7f7;
+            border-radius: 4px;
+            color: #111;
+        }
+
+            .order-item__icon svg {
+                width: 22px;
+                height: 22px;
+            }
+    }
+
+</style>
+
+<section class="order-details">
+
+    <div class="container">
+
+        <!-- =====================================================
+             HEADER
+        ====================================================== -->
+
+        <div class="order-details__header">
+
+            <span>Order Information</span>
+
+            <h2>
+                Order Details
+            </h2>
+
+            <p>
+                Order ID:  #@order.Id
+            </p>
+
+        </div>
+
+
+        <!-- =====================================================
+             TOP INFORMATION
+        ====================================================== -->
+
+        <div class="order-details__top">
+
+            <div>
+
+                <span>
+                    Order Date
+                </span>
+
+                <strong>
+                    @order.CreatedAt.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Payment Method
+                </span>
+
+                <strong>
+                    @order.PaymentType
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Payment Status
+                </span>
+
+                <strong class="
+                    @(order.PaymentStatus == "Paid"
+                        ? "status-paid"
+                        : "status-pending")">
+
+                    @order.PaymentStatus
+
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             ORDER ITEMS
+        ====================================================== -->
+
+        <div class="order-details__section">
+
+            <div class="order-details__section-title">
+
+                <h4>
+                    Ordered Products
+                </h4>
+
+            </div>
+
+
+            <div class="order-items">
+
+                @foreach (var item in order.Items)
+                {
+                    <div class="order-item">
+
+                        <!-- PRODUCT -->
+
+                        <div class="order-item__product">
+
+                            @* <div class="order-item__icon">
+
+                                <i class="fa fa-shopping-bag"></i>
+
+                            </div> *@
+                            <div class="order-item__icon">
+                                <svg width="22"
+                                     height="22"
+                                     viewBox="0 0 24 24"
+                                     fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+
+                                    <path d="M6 8H18L19 21H5L6 8Z"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linejoin="round" />
+
+                                    <path d="M9 8C9 5.8 10.3 4 12 4C13.7 4 15 5.8 15 8"
+                                          stroke="currentColor"
+                                          stroke-width="1.8"
+                                          stroke-linecap="round" />
+
+                                </svg>
+                            </div>
+
+                            <div>
+
+                                <h5>
+                                    @item.ProductName
+                                </h5>
+
+                                <span>
+                                    SKU: @item.Sku
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- VARIANT -->
+
+                        <div class="order-item__variant">
+
+                            <span>
+                                Color:
+                                <strong>
+                                    @item.Color
+                                </strong>
+                            </span>
+
+                            <span>
+                                Size:
+                                <strong>
+                                    @item.Size
+                                </strong>
+                            </span>
+
+                        </div>
+
+
+                        <!-- PRICE -->
+
+                        <div class="order-item__price">
+
+                            <span>
+
+                                ৳@item.UnitPrice.ToString("N2") × @item.Quantity
+
+                                
+                            </span>
+
+                            <strong>
+                                ৳@item.TotalPrice.ToString("N2")
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             TWO COLUMNS
+        ====================================================== -->
+
+        <div class="row">
+
+            <!-- SHIPPING -->
+
+            <div class="col-lg-6">
+
+                <div class="order-details__section">
+
+                    <div class="order-details__section-title">
+
+                        <h4>
+                            Shipping Information
+                        </h4>
+
+                    </div>
+
+
+                    <div class="shipping-info">
+
+                        <h5>
+
+                            @order.FirstName
+                            @order.LastName
+
+                        </h5>
+
+
+                        <p>
+                            @order.Address
+                        </p>
+
+
+                        <p>
+
+                            @order.TownCity,
+                            @order.CountryState
+
+                        </p>
+
+
+                        <p>
+                            @order.PostcodeZip
+                        </p>
+
+
+                        <p>
+
+                            <strong>
+                                Phone:
+                            </strong>
+
+                            @order.Phone
+
+                        </p>
+
+
+                        <p>
+
+                            <strong>
+                                Email:
+                            </strong>
+
+                            @order.Email
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- PAYMENT -->
+
+            <div class="col-lg-6">
+
+                <div class="order-details__section">
+
+                    <div class="order-details__section-title">
+
+                        <h4>
+                            Payment Information
+                        </h4>
+
+                    </div>
+
+
+                    <div class="payment-info">
+
+                        <div>
+
+                            <span>
+                                Payment Method
+                            </span>
+
+                            <strong>
+                                @order.PaymentType
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Payment Status
+                            </span>
+
+                            <strong class="
+                                @(order.PaymentStatus == "Paid"
+                                    ? "status-paid"
+                                    : "status-pending")">
+
+                                @order.PaymentStatus
+
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Amount
+                            </span>
+
+                            <strong>
+                                ৳@order.PaymentAmount.ToString("N2")
+                            </strong>
+
+                        </div>
+
+
+                        @if (!string.IsNullOrWhiteSpace(
+                            order.MobileNumber))
+                        {
+                            <div>
+
+                                <span>
+                                    Mobile Number
+                                </span>
+
+                                <strong>
+                                    @order.MobileNumber
+                                </strong>
+
+                            </div>
+                        }
+
+
+                        @if (!string.IsNullOrWhiteSpace(
+                            order.TransactionId))
+                        {
+                            <div>
+
+                                <span>
+                                    Transaction ID
+                                </span>
+
+                                <strong>
+                                    @order.TransactionId
+                                </strong>
+
+                            </div>
+                        }
+
+
+                        @if (order.PaidAt.HasValue)
+                        {
+                            <div>
+
+                                <span>
+                                    Paid At
+                                </span>
+
+                                <strong>
+
+                                    @if (order.PaidAt.HasValue)
+                                    {
+
+                                        <strong>
+                                            @order.PaidAt.Value.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+                                        </strong>
+
+                                    }
+
+                                </strong>
+
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             ORDER SUMMARY
+        ====================================================== -->
+
+        <div class="order-summary">
+
+            <div class="order-summary__row">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong>
+                    ৳@order.Subtotal.ToString("N2")
+                </strong>
+
+            </div>
+
+
+            <div class="order-summary__row">
+
+                <span>
+                    Discount
+                </span>
+
+                <strong class="discount">
+
+                    - ৳@order.DiscountAmount.ToString("N2")
+
+                </strong>
+
+            </div>
+
+
+            <div class="
+                order-summary__row
+                order-summary__total">
+
+                <span>
+                    Total
+                </span>
+
+                <strong>
+                    ৳@order.Total.ToString("N2")
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             ORDER NOTES
+        ====================================================== -->
+        @if (!string.IsNullOrWhiteSpace(
+                    order.OrderNotes))
+        {
+            <div class="order-notes">
+
+                <h4>
+                    Order Notes
+                </h4>
+
+                <p>
+                    @order.OrderNotes
+                </p>
+
+            </div>
+        }
+
+
+        <!-- =====================================================
+             BACK
+        ====================================================== -->
+
+        <div class="order-details__back">
+
+            <a asp-area="Customer"
+               asp-controller="Home"
+               asp-action="OrderHistory"
+               class="primary-btn">
+
+                <span class="arrow_left"></span>
+
+                Back to Orders
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>

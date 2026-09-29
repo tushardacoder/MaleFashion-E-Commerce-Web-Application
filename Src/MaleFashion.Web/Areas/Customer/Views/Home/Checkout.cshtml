@@ -1,0 +1,3153 @@
+﻿@model MaleFashion.Application.Features.Carts.Query.CartViewModel
+
+@{
+    ViewData["Title"] = "Checkout";
+
+    // =========================================================
+    // CART ITEMS
+    // =========================================================
+
+    var cartItems =
+        Model?.Items
+        ?? new List<MaleFashion.Application.Features.Carts.Query.CartItemViewModel>();
+
+
+    // =========================================================
+    // CART QUANTITY
+    // =========================================================
+
+    var cartQuantity =
+        cartItems.Sum(x => x.Quantity);
+
+
+    // =========================================================
+    // SUBTOTAL
+    // =========================================================
+
+    var cartSubtotal =
+        Model?.Subtotal ?? 0m;
+
+
+    // =========================================================
+    // DISCOUNT PERCENTAGE
+    // =========================================================
+
+    var discountPercentage =
+        Model?.Discount ?? 0m;
+
+
+    // =========================================================
+    // ACTUAL DISCOUNT AMOUNT
+    // =========================================================
+
+    var cartDiscount =
+        cartSubtotal * discountPercentage / 100m;
+
+
+    // =========================================================
+    // FINAL TOTAL
+    // =========================================================
+
+    var cartTotal =
+        Math.Max(
+            0m,
+            cartSubtotal - cartDiscount);
+
+
+    // =========================================================
+    // COUPON CODE
+
+    // =========================================================
+
+    var couponCode =
+        Model?.CouponCode ?? string.Empty;
+
+
+   
+    // =========================================================
+    // COUPON Name
+
+    // =========================================================
+
+    var couponName =
+        Model?.CouponName ?? string.Empty;
+}
+
+<!DOCTYPE html>
+
+<html lang="zxx">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="description"
+          content="Male Fashion Checkout">
+
+    <meta name="keywords"
+          content="Male_Fashion, Checkout, Payment">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="X-UA-Compatible"
+          content="ie=edge">
+
+    <title>Male-Fashion | Checkout</title>
+
+
+    <!-- =========================================================
+         GOOGLE FONT
+    ========================================================= -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+
+    <!-- =========================================================
+         CSS
+    ========================================================= -->
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/bootstrap.min.css"
+          type="text/css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/font-awesome.min.css"
+          type="text/css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/elegant-icons.css"
+          type="text/css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/magnific-popup.css"
+          type="text/css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/nice-select.css"
+          type="text/css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/owl.carousel.min.css"
+          type="text/css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/slicknav.min.css"
+          type="text/css">
+
+    <link rel="stylesheet"
+          href="~/Malefashon/Assets/css/style.css"
+          type="text/css">
+
+
+    <!-- =========================================================
+         CUSTOM CHECKOUT CSS
+    ========================================================= -->
+
+    <style>
+
+            /* =========================================================
+                                   CHECKOUT
+                                ========================================================= */
+
+            .checkout {
+                padding-top: 80px;
+                padding-bottom: 80px;
+            }
+
+
+            /* =========================================================
+                                   CHECKOUT FORM
+                                ========================================================= */
+
+            .checkout__form {
+                margin-bottom: 30px;
+            }
+
+
+            .checkout__title {
+                color: #111;
+                font-size: 24px;
+                font-weight: 700;
+                margin-bottom: 30px;
+            }
+
+
+            .checkout__input {
+                margin-bottom: 20px;
+            }
+
+
+                .checkout__input p {
+                    color: #111;
+                    margin-bottom: 8px;
+                    font-weight: 600;
+                }
+
+
+                    .checkout__input p span {
+                        color: #e53637;
+                    }
+
+
+                .checkout__input input,
+                .checkout__input textarea {
+                    width: 100%;
+                    border: 1px solid #e1e1e1;
+                    height: 50px;
+                    padding-left: 20px;
+                    font-size: 14px;
+                    color: #666;
+                    background: #fff;
+                }
+
+
+                .checkout__input textarea {
+                    height: 120px;
+                    padding-top: 15px;
+                    resize: vertical;
+                }
+
+
+                    .checkout__input input:focus,
+                    .checkout__input textarea:focus {
+                        border-color: #111;
+                        outline: none;
+                    }
+
+
+            /* =========================================================
+                                   ACTIVE COUPON BANNER
+                                ========================================================= */
+
+            .mf-coupon-banner {
+                background: #f7f7f7;
+                border-left: 4px solid #111;
+                padding: 15px 20px;
+                margin-bottom: 30px;
+            }
+
+
+                .mf-coupon-banner h6 {
+                    margin: 0;
+                    color: #111;
+                    font-size: 14px;
+                    font-weight: 600;
+                    line-height: 1.6;
+                }
+
+
+                .mf-coupon-banner strong {
+                    font-weight: 800;
+                }
+
+
+            .coupon-icon {
+                margin-right: 8px;
+                font-size: 16px;
+            }
+
+
+            /* =========================================================
+                                   ORDER SUMMARY
+                                ========================================================= */
+
+            .checkout__order {
+                background: #f7f7f7;
+                padding: 30px;
+            }
+
+
+                .checkout__order h4 {
+                    color: #111;
+                    font-weight: 700;
+                    margin-bottom: 25px;
+                }
+
+
+            .checkout__order__products {
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 10px;
+                margin-bottom: 15px;
+            }
+
+
+                .checkout__order__products li {
+                    list-style: none;
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 12px;
+                    font-size: 14px;
+                }
+
+
+                    .checkout__order__products li.product-header {
+                        font-weight: 700;
+                        margin-bottom: 20px;
+                    }
+
+
+                    .checkout__order__products li span {
+                        font-weight: 600;
+                    }
+
+
+            .checkout__order__subtotal,
+            .checkout__order__discount,
+            .checkout__order__total {
+                list-style: none;
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 15px;
+            }
+
+
+            .checkout__order__discount {
+                color: #333;
+            }
+
+
+            .checkout__order__total {
+                border-top: 1px solid #ddd;
+                padding-top: 15px;
+                font-size: 18px;
+                font-weight: 700;
+            }
+
+
+            /* =========================================================
+                                   APPLY DISCOUNT BUTTON
+                                ========================================================= */
+
+            .apply-discount-wrapper {
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 20px;
+            }
+
+
+            .apply-discount-btn {
+                border: none;
+                cursor: pointer;
+                padding: 10px 20px;
+                background: #111;
+                color: #fff;
+                font-size: 13px;
+                font-weight: 700;
+                transition: 0.2s;
+            }
+
+
+                .apply-discount-btn:hover {
+                    background: #333;
+                }
+
+
+                .apply-discount-btn:disabled {
+                    cursor: not-allowed;
+                    opacity: 0.6;
+                }
+
+
+            /* =========================================================
+                                   DISCOUNT AMOUNT
+                                ========================================================= */
+
+            .discount-amount-row {
+                display: none;
+            }
+
+
+                .discount-amount-row.show {
+                    display: flex;
+                }
+
+
+            .discount-value {
+                font-weight: 700;
+            }
+
+
+            /* =========================================================
+                                   PRODUCT
+                                ========================================================= */
+
+            .checkout-product {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+
+            .checkout-product-image {
+                width: 55px;
+                height: 65px;
+                background: #fff;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+
+
+                .checkout-product-image img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+
+
+            .checkout-product-details {
+                flex: 1;
+            }
+
+
+                .checkout-product-details h6 {
+                    margin: 0 0 4px 0;
+                    font-size: 14px;
+                    font-weight: 700;
+                }
+
+
+                .checkout-product-details span {
+                    display: block;
+                    font-size: 12px;
+                    color: #777;
+                }
+
+
+            /* =========================================================
+                                   PAYMENT METHOD
+                                ========================================================= */
+
+            .payment-section {
+                margin-top: 30px;
+                margin-bottom: 25px;
+            }
+
+
+                .payment-section h5 {
+                    font-size: 18px;
+                    font-weight: 700;
+                    margin-bottom: 20px;
+                    color: #111;
+                }
+
+
+            .payment-option {
+                border: 1px solid #ddd;
+                background: #fff;
+                padding: 15px 18px;
+                margin-bottom: 12px;
+                cursor: pointer;
+                transition: 0.2s;
+            }
+
+
+                .payment-option:hover {
+                    border-color: #111;
+                }
+
+
+                .payment-option.active {
+                    border-color: #111;
+                }
+
+
+                .payment-option label {
+                    display: flex;
+                    align-items: center;
+                    margin: 0;
+                    cursor: pointer;
+                    width: 100%;
+                }
+
+
+                .payment-option input[type="radio"] {
+                    margin-right: 12px;
+                }
+
+
+            .payment-name {
+                font-weight: 700;
+                color: #111;
+            }
+
+
+            .payment-description {
+                display: block;
+                font-size: 12px;
+                color: #777;
+                margin-left: 27px;
+                margin-top: 4px;
+            }
+
+
+            /* =========================================================
+                                   PLACE ORDER BUTTON
+                                ========================================================= */
+
+            .place-order-btn {
+                width: 100%;
+                border: none;
+                cursor: pointer;
+                text-align: center;
+                margin-top: 15px;
+            }
+
+
+            /* =========================================================
+                                   BKASH MODAL
+                                ========================================================= */
+
+            .bkash-modal-overlay {
+                display: none;
+                position: fixed;
+                z-index: 99999;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.65);
+                align-items: center;
+                justify-content: center;
+            }
+
+
+                .bkash-modal-overlay.show {
+                    display: flex;
+                }
+
+
+            .bkash-modal {
+                width: 430px;
+                max-width: 92%;
+                background: #fff;
+                border-radius: 6px;
+                padding: 30px;
+                position: relative;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            }
+
+
+            .bkash-modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 25px;
+            }
+
+
+                .bkash-modal-header h4 {
+                    margin: 0;
+                    font-weight: 700;
+                    color: #111;
+                }
+
+
+            .bkash-close {
+                border: none;
+                background: transparent;
+                font-size: 25px;
+                cursor: pointer;
+                color: #111;
+            }
+
+
+            .bkash-logo {
+                text-align: center;
+                margin-bottom: 25px;
+            }
+
+
+                .bkash-logo span {
+                    display: inline-block;
+                    padding: 10px 25px;
+                    background: #e2136e;
+                    color: #fff;
+                    font-weight: 800;
+                    font-size: 20px;
+                    border-radius: 4px;
+                }
+
+
+            .bkash-amount {
+                background: #f7f7f7;
+                padding: 18px;
+                text-align: center;
+                margin-bottom: 25px;
+            }
+
+
+                .bkash-amount small {
+                    display: block;
+                    color: #777;
+                    margin-bottom: 5px;
+                }
+
+
+                .bkash-amount strong {
+                    font-size: 25px;
+                    color: #111;
+                }
+
+
+            .bkash-info {
+                font-size: 13px;
+                color: #777;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+
+            .bkash-pay-btn {
+                width: 100%;
+                border: none;
+                background: #e2136e;
+                color: #fff;
+                padding: 13px;
+                font-weight: 700;
+                cursor: pointer;
+                margin-bottom: 10px;
+            }
+
+
+                .bkash-pay-btn:hover {
+                    opacity: 0.9;
+                }
+
+
+            .bkash-cancel-btn {
+                width: 100%;
+                border: 1px solid #ddd;
+                background: #fff;
+                color: #111;
+                padding: 13px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+
+
+            /* =========================================================
+                                   TOAST
+                                ========================================================= */
+
+            .checkout-toast {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 999999;
+                display: none;
+                padding: 14px 22px;
+                color: #fff;
+                background: #111;
+                border-radius: 4px;
+            }
+
+
+                .checkout-toast.error {
+                    background: #dc3545;
+                }
+
+
+            /* =========================================================
+                                   RESPONSIVE
+                                ========================================================= */
+
+            @@media (max-width: 991px) {
+
+                .checkout__order {
+                    margin-top: 40px;
+                }
+            }
+
+
+            @@media (max-width: 767px) {
+
+                .mf-coupon-banner h6 {
+                    font-size: 13px;
+                }
+
+                .apply-discount-wrapper {
+                    justify-content: flex-start;
+                }
+
+                .apply-discount-btn {
+                    width: 100%;
+                }
+            }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+         PRELOADER
+    ========================================================= -->
+
+    <div id="preloder">
+
+        <div class="loader"></div>
+
+    </div>
+
+
+    <!-- =========================================================
+         OFFCANVAS
+    ========================================================= -->
+
+    <div class="offcanvas-menu-overlay"></div>
+
+
+    <div class="offcanvas-menu-wrapper">
+
+        <div class="offcanvas__option">
+
+            <div class="offcanvas__links">
+
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <span>
+                        Hello, @User.Identity?.Name
+                    </span>
+
+                    <form asp-area=""
+                          asp-controller="Account"
+                          asp-action="Logout"
+                          asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "Customer" })"
+                          method="post"
+                          style="display:inline-block; margin-left:15px;">
+
+                        <button type="submit"
+                                class="btn btn-link p-0"
+                                style="color:#fff; text-decoration:none;">
+
+                            Logout
+
+                        </button>
+
+                    </form>
+                }
+                else
+                {
+                    <a asp-area=""
+                       asp-controller="Account"
+                       asp-action="Register">
+
+                        Sign in
+
+                    </a>
+
+                    <a asp-area=""
+                       asp-controller="Home"
+                       asp-action="Faq">
+
+                        FAQs
+
+                    </a>
+                }
+
+            </div>
+
+        </div>
+
+
+        <div class="offcanvas__nav__option">
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a asp-area="Customer"
+                   asp-controller="Home"
+                   asp-action="Wishlist"
+                   class="wishlist-button"
+                   title="My Wishlist">
+
+                    <img src="~/Malefashon/Assets/img/icon/heart.png"
+                         alt="Wishlist">
+
+                    <span>
+                        @await Component.InvokeAsync("WishlistCount")
+                    </span>
+
+                </a>
+            }
+
+
+            @await Component.InvokeAsync("CartSummary")
+
+        </div>
+
+
+        <div id="mobile-menu-wrap"></div>
+
+
+        <div class="offcanvas__text">
+
+            <p>
+                Free shipping, 30-day return or refund guarantee.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         HEADER
+    ========================================================= -->
+
+    <header class="header">
+
+        <div class="header__top">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-lg-6 col-md-7">
+
+                        <div class="header__top__left">
+
+                            <p>
+                                Free shipping, 30-day return or refund guarantee.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-lg-6 col-md-5">
+
+                        <div class="header__top__right">
+
+                            <div class="header__top__links">
+
+                                @if (User.Identity?.IsAuthenticated == true)
+                                {
+                                    <div style="
+                                        display:flex;
+                                        align-items:center;
+                                        gap:15px;
+                                        margin-right:30px;">
+
+                                        <span style="
+                                            color:#fff;
+                                            background:#000;
+                                            padding:8px 15px;
+                                            border-radius:4px;
+                                            font-weight:600;
+                                            white-space:nowrap;">
+
+                                            Hello, @User.Identity?.Name
+
+                                        </span>
+
+
+                                        <a asp-area="Customer"
+                                           asp-controller="Account"
+                                           asp-action="ChangePassword"
+                                           style="
+                                            color:#fff;
+                                            text-decoration:none;
+                                            font-weight:600;
+                                            white-space:nowrap;">
+
+                                            Change Password
+
+                                        </a>
+
+
+                                        <form asp-area=""
+                                              asp-controller="Account"
+                                              asp-action="Logout"
+                                              asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "Customer" })"
+                                              method="post"
+                                              style="margin:0;">
+
+                                            <button type="submit"
+                                                    class="btn btn-link p-0"
+                                                    style="
+                                                color:#fff;
+                                                text-decoration:none;
+                                                font-weight:600;
+                                                border:none;
+                                                background:transparent;">
+
+                                                Logout
+
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="offcanvas__links">
+
+                                        <a asp-area=""
+                                           asp-controller="Account"
+                                           asp-action="Register">
+
+                                            Sign in
+
+                                        </a>
+
+                                        <a asp-area=""
+                                           asp-controller="Home"
+                                           asp-action="Faq">
+
+                                            FAQs
+
+                                        </a>
+
+                                    </div>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             MAIN HEADER
+        ====================================================== -->
+
+        <div class="container">
+
+            <div class="row">
+
+                <!-- LOGO -->
+
+                <div class="col-lg-3 col-md-3">
+
+                    <div class="header__logo">
+
+                        <a asp-area="Customer"
+                           asp-controller="Home"
+                           asp-action="Index">
+
+                            <img src="~/Malefashon/Assets/img/logo.png"
+                                 alt="Male Fashion">
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- NAVIGATION -->
+
+                <div class="col-lg-6 col-md-6">
+
+                    <nav class="header__menu mobile-menu">
+
+                        <ul>
+
+                            <li>
+
+                                <a asp-area="Customer"
+                                   asp-controller="Home"
+                                   asp-action="Index">
+
+                                    Home
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <a asp-area="Customer"
+                                   asp-controller="Home"
+                                   asp-action="Shop">
+
+                                    Shop
+
+                                </a>
+
+                            </li>
+
+
+                            <li class="active">
+
+                                <a href="#">
+
+                                    My Shopping
+
+                                </a>
+
+                                <ul class="dropdown">
+
+                                    <li>
+
+                                        <a asp-area="Customer"
+                                           asp-controller="Home"
+                                           asp-action="ShopDetails">
+
+                                            Shop Details
+
+                                        </a>
+
+                                    </li>
+
+
+                                    <li>
+
+                                        <a asp-area="Customer"
+                                           asp-controller="Home"
+                                           asp-action="Shoppingcart">
+
+                                            Shopping Cart
+
+                                        </a>
+
+                                    </li>
+
+
+                                    <li class="active">
+
+                                        <a asp-area="Customer"
+                                           asp-controller="Home"
+                                           asp-action="Checkout">
+
+                                            Check Out
+
+                                        </a>
+
+                                    </li>
+
+                                    <li>
+
+                                        <a asp-area="Customer"
+                                           asp-controller="Home"
+                                           asp-action="OrderHistory">
+                                            Order History
+                                        </a>
+
+                                    </li>
+
+                                </ul>
+
+                            </li>
+
+
+                            @if (User.Identity?.IsAuthenticated == false)
+                            {
+                                <li>
+
+                                    <a asp-area="Customer"
+                                       asp-controller="Home"
+                                       asp-action="Blog">
+
+                                        Blog
+
+                                    </a>
+
+                                </li>
+
+
+                                <li>
+
+                                    <a asp-area="Customer"
+                                       asp-controller="ContactUs"
+                                       asp-action="Contact">
+
+                                        Contacts
+
+                                    </a>
+
+                                </li>
+
+
+                               
+                            }
+
+                        </ul>
+
+                    </nav>
+
+                </div>
+
+
+                <!-- HEADER ICONS -->
+
+                <div class="col-lg-3 col-md-3">
+
+                    <div class="header__nav__option">
+
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Wishlist"
+                               class="wishlist-button"
+                               title="My Wishlist">
+
+                                <img src="~/Malefashon/Assets/img/icon/heart.png"
+                                     alt="Wishlist">
+
+                                <span style="
+                                    font-size:14px;
+                                    color:#111;
+                                    font-weight:normal;">
+
+                                    @await Component.InvokeAsync("WishlistCount")
+
+                                </span>
+
+                            </a>
+                        }
+
+
+                        <!-- CART -->
+
+                        <a asp-area="Customer"
+                           asp-controller="Home"
+                           asp-action="Shoppingcart"
+                           title="Shopping Cart">
+
+                            <img src="~/Malefashon/Assets/img/icon/cart.png"
+                                 alt="Cart">
+
+                            <span id="headerCartQuantity">
+
+                                @cartQuantity
+
+                            </span>
+
+                        </a>
+
+
+                        <!-- CART TOTAL -->
+
+                        <div class="price"
+                             id="headerCartTotal">
+
+                            ৳@cartTotal.ToString("N2")
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="canvas__open">
+
+                <i class="fa fa-bars"></i>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         BREADCRUMB
+    ========================================================= -->
+
+    <section class="breadcrumb-option">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-lg-12">
+
+                    <div class="breadcrumb__text">
+
+                        <h4>
+                            Checkout
+                        </h4>
+
+                        <div class="breadcrumb__links">
+
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                Home
+
+                            </a>
+
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Shoppingcart">
+
+                                Shopping Cart
+
+                            </a>
+
+                            <span>
+                                Checkout
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         CHECKOUT
+    ========================================================= -->
+
+    <section class="checkout">
+
+        <div class="container">
+
+            @if (!cartItems.Any())
+            {
+                <!-- =================================================
+                     EMPTY CART
+                ================================================= -->
+
+                <div class="text-center"
+                     style="padding:80px 20px;">
+
+                    <h4>
+                        Your shopping cart is empty.
+                    </h4>
+
+                    <p>
+                        Add products to your cart before checkout.
+                    </p>
+
+                    <a asp-area="Customer"
+                       asp-controller="Home"
+                       asp-action="Shop"
+                       class="primary-btn">
+
+                        START SHOPPING
+
+                    </a>
+
+                </div>
+            }
+            else
+            {
+                <!-- =================================================
+                     ACTIVE COUPON BANNER
+                ================================================= -->
+                @if (!string.IsNullOrWhiteSpace(couponCode))
+                {
+                    <div class="mf-coupon-banner">
+
+                        <h6>
+
+                            <span class="icon_tag_alt coupon-icon"></span>
+
+                            <strong>
+                                @couponName
+                            </strong>
+
+                            &nbsp;|&nbsp;
+
+                            You save
+
+                            <strong>
+                                @discountPercentage.ToString("0.##")%
+                            </strong>
+
+                            on this order.
+
+                        </h6>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="mf-coupon-banner">
+
+                        <h6>
+
+                            <span class="icon_tag_alt coupon-icon"></span>
+
+                            No active coupon is available at the moment.
+
+                        </h6>
+
+                    </div>
+                }
+
+
+                <!-- =================================================
+                     CHECKOUT FORM
+                ================================================= -->
+
+                <form asp-area="Customer"
+                      asp-controller="Home"
+                      asp-action="PlaceOrder"
+                      method="post"
+                      id="checkoutForm">
+
+                    @Html.AntiForgeryToken()
+
+
+                    <div class="row">
+
+
+                        <!-- =================================================
+                             CUSTOMER INFORMATION
+                        ================================================= -->
+
+                        <div class="col-lg-7">
+
+                            <div class="checkout__form">
+
+                                <h4 class="checkout__title">
+                                    Billing Details
+                                </h4>
+
+
+                               
+                                <input type="hidden"
+                                       name="CouponCode"
+                                       value="@couponCode" />
+
+                                <input type="hidden"
+                                       name="MobileNumber"
+                                       id="mobileNumberHidden">
+
+                                <input type="hidden"
+                                       name="TransactionId"
+                                       id="transactionIdHidden">
+
+
+                                <!-- PHONE -->
+
+                                <div class="checkout__input">
+
+                                    <p>
+                                        Phone
+                                        <span>*</span>
+                                    </p>
+
+                                    <input type="text"
+                                           name="Phone"
+                                           placeholder="01XXXXXXXXX"
+                                           required>
+
+                                </div>
+
+
+                                <!-- ADDRESS -->
+
+                                <div class="checkout__input">
+
+                                    <p>
+                                        Address
+                                        <span>*</span>
+                                    </p>
+
+                                    <input type="text"
+                                           name="Address"
+                                           placeholder="Street Address"
+                                           required>
+
+                                </div>
+
+
+                                <!-- CITY -->
+
+                                <div class="checkout__input">
+
+                                    <p>
+                                        Town / City
+                                        <span>*</span>
+                                    </p>
+
+                                    <input type="text"
+                                           name="TownCity"
+                                           placeholder="Town / City"
+                                           required>
+
+                                </div>
+
+
+                                <!-- STATE -->
+
+                                <div class="checkout__input">
+
+                                    <p>
+                                        State / Country
+                                        <span>*</span>
+                                    </p>
+
+                                    <input type="text"
+                                           name="CountryState"
+                                           placeholder="State / Country"
+                                           required>
+
+                                </div>
+
+
+                                <!-- POSTCODE -->
+
+                                <div class="checkout__input">
+
+                                    <p>
+                                        Postcode / ZIP
+                                        <span>*</span>
+                                    </p>
+
+                                    <input type="text"
+                                           name="PostcodeZip"
+                                           placeholder="Postcode / ZIP"
+                                           required>
+
+                                </div>
+
+
+                                <!-- ORDER NOTES -->
+
+                                <div class="checkout__input">
+
+                                    <p>
+                                        Order Notes
+                                    </p>
+
+                                    <textarea name="OrderNotes"
+                                              placeholder="Notes about your order, e.g. special delivery instructions."></textarea>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             ORDER SUMMARY
+                        ================================================= -->
+
+                        <div class="col-lg-5">
+
+                            <div class="checkout__order">
+
+                                <h4>
+                                    Your Order
+                                </h4>
+
+
+                                <!-- =================================================
+                                     PRODUCTS
+                                ================================================= -->
+
+                                <ul class="checkout__order__products">
+
+                                    <li class="product-header">
+
+                                        <span>
+                                            Product
+                                        </span>
+
+                                        <span>
+                                            Total
+                                        </span>
+
+                                    </li>
+
+
+                                    @foreach (var item in cartItems)
+                                    {
+                                        <li>
+
+                                            <div class="checkout-product">
+
+                                                <!-- IMAGE -->
+
+                                                <div class="checkout-product-image">
+
+                                                    @if (!string.IsNullOrWhiteSpace(item.ImageName))
+                                                    {
+                                                        <img src="@Url.Content("~/uploads/products/" + item.ImageName)"
+                                                             alt="@item.ProductName">
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>
+                                                            No Image
+                                                        </span>
+                                                    }
+
+                                                </div>
+
+
+                                                <!-- DETAILS -->
+
+                                                <div class="checkout-product-details">
+
+                                                    <h6>
+                                                        @item.ProductName
+                                                    </h6>
+
+
+                                                    @if (!string.IsNullOrEmpty(item.Size))
+                                                    {
+                                                        <span>
+                                                            Size: @item.Size
+                                                        </span>
+                                                    }
+
+
+                                                    @if (!string.IsNullOrEmpty(item.Color))
+                                                    {
+                                                        <span>
+                                                            Color: @item.Color
+                                                        </span>
+                                                    }
+
+
+                                                    <span>
+                                                        Qty: @item.Quantity
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <!-- PRODUCT TOTAL -->
+
+                                            <span>
+
+                                                ৳@item.Total.ToString("N2")
+
+                                            </span>
+
+                                        </li>
+                                    }
+
+                                </ul>
+
+
+                                <!-- =================================================
+                                     SUBTOTAL
+                                ================================================= -->
+
+                                <ul>
+
+                                    <li class="checkout__order__subtotal">
+
+                                        <span>
+                                            Subtotal
+                                        </span>
+
+                                        <span>
+
+                                            ৳@cartSubtotal.ToString("N2")
+
+                                        </span>
+
+                                    </li>
+
+
+                                    <!-- =================================================
+                                         DISCOUNT PERCENTAGE
+                                    ================================================= -->
+
+                                    <li class="checkout__order__discount">
+
+                                        <span>
+                                            Discount
+                                        </span>
+
+                                        <span>
+
+                                            @if (discountPercentage > 0)
+                                            {
+                                                <span>
+
+                                                    ৳@cartDiscount.ToString("N2")
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span>
+                                                    0%
+                                                </span>
+                                            }
+
+                                        </span>
+
+                                    </li>
+
+
+                                    <!-- =================================================
+                                         APPLY DISCOUNT BUTTON
+                                    ================================================= -->
+                                    @* <li class="apply-discount-wrapper">
+
+                                        <button type="button"
+                                                id="applyDiscountButton"
+                                                class="apply-discount-btn">
+
+                                            APPLY DISCOUNT
+
+                                        </button>
+
+                                    </li> *@
+
+
+                                    <!-- =================================================
+                                         ACTUAL DISCOUNT AMOUNT
+                                    ================================================= -->
+
+                                    <li class="checkout__order__discount discount-amount-row"
+                                        id="discountAmountRow">
+
+                                        <span>
+                                            Discount Amount
+                                        </span>
+
+                                        <span class="discount-value"
+                                              id="discountAmount">
+
+                                            ৳0.00
+
+                                        </span>
+
+                                    </li>
+
+
+                                    <!-- =================================================
+                                         FINAL TOTAL
+                                    ================================================= -->
+
+                                    <li class="checkout__order__total">
+
+                                        <span>
+                                            Total
+                                        </span>
+
+                                        <span id="checkoutTotal">
+
+                                            ৳@cartTotal.ToString("N2")
+
+                                        </span>
+
+                                    </li>
+
+                                </ul>
+
+
+                                <!-- =================================================
+                                     PAYMENT METHOD
+                                ================================================= -->
+
+                                <div class="payment-section">
+
+                                    <h5>
+                                        Payment Method
+                                    </h5>
+
+
+                                    <!-- COD -->
+
+                                    <div class="payment-option active"
+                                         id="codOption">
+
+                                        <label>
+
+                                            <input type="radio"
+                                                   name="PaymentType"
+                                                   value="CashOnDelivery"
+                                                   checked>
+
+                                            <span class="payment-name">
+
+                                                Cash On Delivery
+
+                                            </span>
+
+                                        </label>
+
+
+                                        <span class="payment-description">
+
+                                            Pay when your order is delivered.
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <!-- BKASH -->
+
+                                    <div class="payment-option"
+                                         id="bkashOption">
+
+                                        <label>
+
+                                            <input type="radio"
+                                                   name="PaymentType"
+                                                   value="Bkash">
+
+                                            <span class="payment-name">
+
+                                                bKash
+
+                                            </span>
+
+                                        </label>
+
+
+                                        <span class="payment-description">
+
+                                            Pay securely using bKash.
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- =================================================
+                                     PLACE ORDER
+                                ================================================= -->
+
+                                <button type="submit"
+                                        class="primary-btn place-order-btn"
+                                        id="placeOrderButton">
+
+                                    PLACE ORDER
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            }
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         BKASH POPUP
+    ========================================================= -->
+    <!-- =========================================================
+     BKASH PAYMENT MODAL
+========================================================= -->
+
+    <div id="bkashModal"
+         class="bkash-modal-overlay">
+
+        <div class="bkash-modal">
+
+            <!-- HEADER -->
+
+            <div class="bkash-modal-header">
+
+                <h4>
+                    bKash Payment
+                </h4>
+
+                <button type="button"
+                        class="bkash-close"
+                        id="bkashClose">
+
+                    &times;
+
+                </button>
+
+            </div>
+
+
+            <!-- LOGO -->
+
+            <div class="bkash-logo">
+
+                <span>
+                    bKash
+                </span>
+
+            </div>
+
+
+            <!-- AMOUNT -->
+
+            <div class="bkash-amount">
+
+                <small>
+                    Amount to Pay
+                </small>
+
+                <strong>
+                    ৳@cartTotal.ToString("N2")
+                </strong>
+
+            </div>
+
+
+            <!-- =====================================================
+             STEP 1 - MOBILE + PIN
+        ====================================================== -->
+
+            <div id="bkashLoginStep">
+
+                <div class="checkout__input">
+
+                    <p>
+                        bKash Mobile Number
+                        <span>*</span>
+                    </p>
+
+                    <input type="text"
+                           id="bkashMobileNumber"
+                           maxlength="11"
+                           inputmode="numeric"
+                           placeholder="01XXXXXXXXX"
+                           autocomplete="off">
+
+                    <small id="bkashMobileError"
+                           style="
+                        display:none;
+                        color:#dc3545;
+                        margin-top:5px;">
+                    </small>
+
+                </div>
+
+
+                <div class="checkout__input">
+
+                    <p>
+                        bKash PIN
+                        <span>*</span>
+                    </p>
+
+                    <input type="password"
+                           id="bkashPin"
+                           maxlength="5"
+                           inputmode="numeric"
+                           placeholder="Enter 5 digit PIN"
+                           autocomplete="off">
+
+                    <small id="bkashPinError"
+                           style="
+                        display:none;
+                        color:#dc3545;
+                        margin-top:5px;">
+                    </small>
+
+                </div>
+
+
+                <p class="bkash-info">
+
+                    Enter your simulated bKash mobile number
+                    and PIN to continue.
+
+                </p>
+
+
+                <button type="button"
+                        class="bkash-pay-btn"
+                        id="bkashSendOtpButton">
+
+                    SEND OTP
+
+                </button>
+
+
+                <button type="button"
+                        class="bkash-cancel-btn"
+                        id="bkashCancelButton">
+
+                    CANCEL
+
+                </button>
+
+            </div>
+
+
+            <!-- =====================================================
+             STEP 2 - OTP
+        ====================================================== -->
+
+            <div id="bkashOtpStep"
+                 style="display:none;">
+
+                <div class="checkout__input">
+
+                    <p>
+                        OTP
+                        <span>*</span>
+                    </p>
+
+                    <input type="text"
+                           id="bkashOtp"
+                           maxlength="6"
+                           inputmode="numeric"
+                           placeholder="Enter 6 digit OTP"
+                           autocomplete="off">
+
+                    <small id="bkashOtpError"
+                           style="
+                        display:none;
+                        color:#dc3545;
+                        margin-top:5px;">
+                    </small>
+
+                </div>
+
+
+                <!-- SIMULATION OTP -->
+
+                <div id="simulatedOtpBox"
+                     style="
+                    background:#f7f7f7;
+                    padding:12px;
+                    margin-bottom:15px;
+                    text-align:center;
+                    display:none;">
+
+                    <small>
+                        Simulation OTP
+                    </small>
+
+                    <strong id="simulatedOtp"
+                            style="
+                        display:block;
+                        font-size:20px;
+                        margin-top:5px;">
+                    </strong>
+
+                </div>
+
+
+                <p class="bkash-info">
+
+                    A simulated OTP has been sent to your
+                    bKash mobile number.
+
+                </p>
+
+
+                <button type="button"
+                        class="bkash-pay-btn"
+                        id="bkashConfirmButton">
+
+                    CONFIRM PAYMENT
+
+                </button>
+
+
+                <button type="button"
+                        class="bkash-cancel-btn"
+                        id="bkashBackButton">
+
+                    BACK
+
+                </button>
+
+            </div>
+
+
+            <!-- =====================================================
+             STEP 3 - SUCCESS
+        ====================================================== -->
+
+            <div id="bkashSuccessStep"
+                 style="
+                display:none;
+                text-align:center;">
+
+                <div style="
+                    font-size:50px;
+                    margin-bottom:15px;">
+
+                    ✓
+
+                </div>
+
+                <h5>
+                    Payment Successful
+                </h5>
+
+                <p style="
+                    color:#777;
+                    font-size:13px;
+                    margin-top:10px;">
+
+                    Your bKash payment has been completed.
+
+                </p>
+
+                <p>
+
+                    TrxID:
+
+                    <strong id="bkashTransactionId">
+                    </strong>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         TOAST
+    ========================================================= -->
+
+    <div id="checkoutToast"
+         class="checkout-toast">
+    </div>
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================= -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <div class="row">
+
+
+                <div class="col-lg-3 col-md-6 col-sm-6">
+
+                    <div class="footer__about">
+
+                        <div class="footer__logo">
+
+                            <a asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                <img src="~/Malefashon/Assets/img/footer-logo.png"
+                                     alt="Male Fashion">
+
+                            </a>
+
+                        </div>
+
+
+                        <p>
+
+                            The customer is at the heart
+                            of our unique business model,
+                            which includes design.
+
+                        </p>
+
+
+                        <a href="#">
+
+                            <img src="~/Malefashon/Assets/img/payment.png"
+                                 alt="Payment Methods">
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+
+                    <div class="footer__widget">
+
+                        <h6>
+                            Shopping
+                        </h6>
+
+                        <ul>
+
+                            <li>
+
+                                <a asp-area="Customer"
+                                   asp-controller="Home"
+                                   asp-action="Shop">
+
+                                    Clothing Store
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <a asp-area="Customer"
+                                   asp-controller="Home"
+                                   asp-action="Shop">
+
+                                    Trending Shoes
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <a asp-area="Customer"
+                                   asp-controller="Home"
+                                   asp-action="Shop">
+
+                                    Accessories
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <a asp-area="Customer"
+                                   asp-controller="Home"
+                                   asp-action="Shop">
+
+                                    Sale
+
+                                </a>
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-lg-2 col-md-3 col-sm-6">
+
+                    <div class="footer__widget">
+
+                        <h6>
+                            Customer Service
+                        </h6>
+
+                        <ul>
+
+                            <li>
+
+                                <a asp-area="Customer"
+                                   asp-controller="ContactUs"
+                                   asp-action="Contact">
+
+                                    Contact Us
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <a href="#">
+
+                                    Payment Methods
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <a href="#">
+
+                                    Delivery
+
+                                </a>
+
+                            </li>
+
+
+                            <li>
+
+                                <a href="#">
+
+                                    Return & Exchanges
+
+                                </a>
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+
+                    <div class="footer__widget">
+
+                        <h6>
+                            NewLetter
+                        </h6>
+
+
+                        <div class="footer__newslatter">
+
+                            <p>
+
+                                Be the first to know
+                                about new arrivals,
+                                look books, sales & promos!
+
+                            </p>
+
+
+                            <form action="#">
+
+                                <input type="text"
+                                       placeholder="Your email">
+
+
+                                <button type="submit">
+
+                                    <span class="icon_mail_alt"></span>
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-lg-12 text-center">
+
+                    <div class="footer__copyright__text">
+
+                        <p>
+
+                            Copyright ©
+
+                            <script>
+
+                                 document.write(
+                                      new Date().getFullYear()
+                                 );
+
+                            </script>
+
+                            All rights reserved |
+
+                            This template is made with
+
+                            <i class="fa fa-heart-o"
+                               aria-hidden="true"></i>
+
+                            by
+
+                            <a href="https://colorlib.com"
+                               target="_blank">
+
+                                Colorlib
+
+                            </a>
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================================
+         JAVASCRIPT LIBRARIES
+    ========================================================= -->
+
+    <script src="~/Malefashon/Assets/js/jquery-3.3.1.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/bootstrap.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/jquery.nice-select.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/jquery.nicescroll.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/jquery.magnific-popup.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/jquery.countdown.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/jquery.slicknav.js"></script>
+
+    <script src="~/Malefashon/Assets/js/mixitup.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/owl.carousel.min.js"></script>
+
+    <script src="~/Malefashon/Assets/js/main.js"></script>
+
+
+    <!-- =========================================================
+         CHECKOUT JAVASCRIPT
+    ========================================================= -->
+   
+    <!-- =========================================================
+     CHECKOUT JAVASCRIPT
+========================================================= -->
+
+    <script>
+
+            document.addEventListener("DOMContentLoaded", function() {
+
+                /* =========================================================
+                   FORM
+                ========================================================= */
+
+                const checkoutForm =
+                    document.getElementById("checkoutForm");
+
+
+                /* =========================================================
+                   BKASH MODAL
+                ========================================================= */
+
+                const bkashModal =
+                    document.getElementById("bkashModal");
+
+                const bkashOption =
+                    document.getElementById("bkashOption");
+
+                const codOption =
+                    document.getElementById("codOption");
+
+                const bkashClose =
+                    document.getElementById("bkashClose");
+
+                const bkashCancelButton =
+                    document.getElementById("bkashCancelButton");
+
+                const bkashSendOtpButton =
+                    document.getElementById("bkashSendOtpButton");
+
+                const bkashConfirmButton =
+                    document.getElementById("bkashConfirmButton");
+
+                const bkashBackButton =
+                    document.getElementById("bkashBackButton");
+
+
+                /* =========================================================
+                   BKASH INPUTS
+                ========================================================= */
+
+                const bkashMobileNumber =
+                    document.getElementById("bkashMobileNumber");
+
+                const bkashPin =
+                    document.getElementById("bkashPin");
+
+                const bkashOtp =
+                    document.getElementById("bkashOtp");
+
+
+                /* =========================================================
+                   HIDDEN FORM FIELDS
+                ========================================================= */
+
+                const mobileNumberHidden =
+                    document.getElementById("mobileNumberHidden");
+
+                const transactionIdHidden =
+                    document.getElementById("transactionIdHidden");
+
+
+                /* =========================================================
+                   BKASH STEPS
+                ========================================================= */
+
+                const bkashLoginStep =
+                    document.getElementById("bkashLoginStep");
+
+                const bkashOtpStep =
+                    document.getElementById("bkashOtpStep");
+
+                const bkashSuccessStep =
+                    document.getElementById("bkashSuccessStep");
+
+
+                /* =========================================================
+                   OTP
+                ========================================================= */
+
+                const simulatedOtp =
+                    document.getElementById("simulatedOtp");
+
+                const simulatedOtpBox =
+                    document.getElementById("simulatedOtpBox");
+
+
+                /* =========================================================
+                   ERRORS
+                ========================================================= */
+
+                const bkashMobileError =
+                    document.getElementById("bkashMobileError");
+
+                const bkashPinError =
+                    document.getElementById("bkashPinError");
+
+                const bkashOtpError =
+                    document.getElementById("bkashOtpError");
+
+
+                /* =========================================================
+                   TRANSACTION ID
+                ========================================================= */
+
+                const bkashTransactionId =
+                    document.getElementById("bkashTransactionId");
+
+
+                /* =========================================================
+                   GENERATED OTP
+                ========================================================= */
+
+                let generatedOtp = null;
+
+
+                /* =========================================================
+                   OPEN MODAL
+                ========================================================= */
+
+                function openBkashModal() {
+
+                    if (!bkashModal) {
+                        return;
+                    }
+
+                    bkashModal.classList.add("show");
+
+                    showBkashLoginStep();
+                }
+
+
+                /* =========================================================
+                   CLOSE MODAL
+                ========================================================= */
+
+                function closeBkashModal() {
+
+                    if (!bkashModal) {
+                        return;
+                    }
+
+                    bkashModal.classList.remove("show");
+
+                    resetBkashModal();
+                }
+
+
+                /* =========================================================
+                   LOGIN STEP
+                ========================================================= */
+
+                function showBkashLoginStep() {
+
+                    if (bkashLoginStep) {
+                        bkashLoginStep.style.display = "block";
+                    }
+
+                    if (bkashOtpStep) {
+                        bkashOtpStep.style.display = "none";
+                    }
+
+                    if (bkashSuccessStep) {
+                        bkashSuccessStep.style.display = "none";
+                    }
+                }
+
+
+                /* =========================================================
+                   OTP STEP
+                ========================================================= */
+
+                function showBkashOtpStep() {
+
+                    if (bkashLoginStep) {
+                        bkashLoginStep.style.display = "none";
+                    }
+
+                    if (bkashOtpStep) {
+                        bkashOtpStep.style.display = "block";
+                    }
+
+                    if (bkashSuccessStep) {
+                        bkashSuccessStep.style.display = "none";
+                    }
+                }
+
+
+                /* =========================================================
+                   SUCCESS STEP
+                ========================================================= */
+
+                function showBkashSuccessStep() {
+
+                    if (bkashLoginStep) {
+                        bkashLoginStep.style.display = "none";
+                    }
+
+                    if (bkashOtpStep) {
+                        bkashOtpStep.style.display = "none";
+                    }
+
+                    if (bkashSuccessStep) {
+                        bkashSuccessStep.style.display = "block";
+                    }
+                }
+
+
+                /* =========================================================
+                   RESET BKASH
+                ========================================================= */
+
+                function resetBkashModal() {
+
+                    if (bkashMobileNumber) {
+                        bkashMobileNumber.value = "";
+                    }
+
+                    if (bkashPin) {
+                        bkashPin.value = "";
+                    }
+
+                    if (bkashOtp) {
+                        bkashOtp.value = "";
+                    }
+
+                    generatedOtp = null;
+
+
+                    if (mobileNumberHidden) {
+                        mobileNumberHidden.value = "";
+                    }
+
+                    if (transactionIdHidden) {
+                        transactionIdHidden.value = "";
+                    }
+
+
+                    if (bkashMobileError) {
+
+                        bkashMobileError.style.display = "none";
+
+                        bkashMobileError.textContent = "";
+                    }
+
+
+                    if (bkashPinError) {
+
+                        bkashPinError.style.display = "none";
+
+                        bkashPinError.textContent = "";
+                    }
+
+
+                    if (bkashOtpError) {
+
+                        bkashOtpError.style.display = "none";
+
+                        bkashOtpError.textContent = "";
+                    }
+
+
+                    if (simulatedOtpBox) {
+                        simulatedOtpBox.style.display = "none";
+                    }
+
+
+                    showBkashLoginStep();
+                }
+
+
+                /* =========================================================
+                   VALIDATE MOBILE
+                ========================================================= */
+
+                function validateBkashMobile() {
+
+                    if (!bkashMobileNumber) {
+                        return false;
+                    }
+
+                    const mobile =
+                        bkashMobileNumber.value.trim();
+
+                    const mobileRegex =
+                        /^01[3-9]\d{8}$/;
+
+
+                    if (!mobileRegex.test(mobile)) {
+
+                        if (bkashMobileError) {
+
+                            bkashMobileError.textContent =
+                                "Enter a valid 11 digit bKash mobile number.";
+
+                            bkashMobileError.style.display =
+                                "block";
+                        }
+
+                        return false;
+                    }
+
+
+                    if (bkashMobileError) {
+
+                        bkashMobileError.style.display =
+                            "none";
+
+                        bkashMobileError.textContent =
+                            "";
+                    }
+
+                    return true;
+                }
+
+
+                /* =========================================================
+                   VALIDATE PIN
+                ========================================================= */
+
+                function validateBkashPin() {
+
+                    if (!bkashPin) {
+                        return false;
+                    }
+
+                    const pin =
+                        bkashPin.value.trim();
+
+                    const pinRegex =
+                        /^\d{5}$/;
+
+
+                    if (!pinRegex.test(pin)) {
+
+                        if (bkashPinError) {
+
+                            bkashPinError.textContent =
+                                "PIN must contain exactly 5 digits.";
+
+                            bkashPinError.style.display =
+                                "block";
+                        }
+
+                        return false;
+                    }
+
+
+                    if (bkashPinError) {
+
+                        bkashPinError.style.display =
+                            "none";
+
+                        bkashPinError.textContent =
+                            "";
+                    }
+
+                    return true;
+                }
+
+
+                /* =========================================================
+                   SEND OTP
+                ========================================================= */
+
+                if (bkashSendOtpButton) {
+
+                    bkashSendOtpButton.addEventListener(
+                        "click",
+                        function() {
+
+                            const mobileValid =
+                                validateBkashMobile();
+
+                            const pinValid =
+                                validateBkashPin();
+
+
+                            if (!mobileValid || !pinValid) {
+                                return;
+                            }
+
+
+                            /*
+                             * Save mobile number.
+                             *
+                             * PIN is NEVER stored.
+                             */
+
+                            if (mobileNumberHidden) {
+
+                                mobileNumberHidden.value =
+                                    bkashMobileNumber.value.trim();
+                            }
+
+
+                            /*
+                             * Generate simulated OTP.
+                             */
+
+                            generatedOtp =
+                                Math.floor(
+                                    100000 +
+                                    Math.random() * 900000
+                                ).toString();
+
+
+                            /*
+                             * Display OTP.
+                             */
+
+                            if (simulatedOtp) {
+
+                                simulatedOtp.textContent =
+                                    generatedOtp;
+                            }
+
+
+                            if (simulatedOtpBox) {
+
+                                simulatedOtpBox.style.display =
+                                    "block";
+                            }
+
+
+                            /*
+                             * Move to OTP step.
+                             */
+
+                            showBkashOtpStep();
+
+                        }
+                    );
+                }
+
+
+                /* =========================================================
+                   CONFIRM OTP
+                ========================================================= */
+
+                if (bkashConfirmButton) {
+
+                    bkashConfirmButton.addEventListener(
+                        "click",
+                        function() {
+
+                            if (!bkashOtp) {
+                                return;
+                            }
+
+                            const enteredOtp =
+                                bkashOtp.value.trim();
+
+
+                            /*
+                             * Validate OTP format.
+                             */
+
+                            if (!/^\d{6}$/.test(enteredOtp)) {
+
+                                if (bkashOtpError) {
+
+                                    bkashOtpError.textContent =
+                                        "OTP must contain 6 digits.";
+
+                                    bkashOtpError.style.display =
+                                        "block";
+                                }
+
+                                return;
+                            }
+
+
+                            /*
+                             * Verify OTP.
+                             */
+
+                            if (enteredOtp !== generatedOtp) {
+
+                                if (bkashOtpError) {
+
+                                    bkashOtpError.textContent =
+                                        "Invalid OTP.";
+
+                                    bkashOtpError.style.display =
+                                        "block";
+                                }
+
+                                return;
+                            }
+
+
+                            /*
+                             * OTP successful.
+                             */
+
+                            if (bkashOtpError) {
+
+                                bkashOtpError.style.display =
+                                    "none";
+
+                                bkashOtpError.textContent =
+                                    "";
+                            }
+
+
+                            /*
+                             * Generate transaction ID.
+                             */
+
+                            const transactionId =
+                                "SIM-" +
+                                Date.now();
+
+
+                            /*
+                             * Save transaction ID.
+                             */
+
+                            if (transactionIdHidden) {
+
+                                transactionIdHidden.value =
+                                    transactionId;
+                            }
+
+
+                            /*
+                             * Display transaction ID.
+                             */
+
+                            if (bkashTransactionId) {
+
+                                bkashTransactionId.textContent =
+                                    transactionId;
+                            }
+
+
+                            /*
+                             * Show success.
+                             */
+
+                            showBkashSuccessStep();
+
+
+                            /*
+                             * Submit checkout form.
+                             */
+
+                            setTimeout(
+                                function() {
+
+                                    if (checkoutForm) {
+
+                                        checkoutForm.submit();
+                                    }
+
+                                },
+                                1200
+                            );
+
+                        }
+                    );
+                }
+
+
+                /* =========================================================
+                   BACK BUTTON
+                ========================================================= */
+
+                if (bkashBackButton) {
+
+                    bkashBackButton.addEventListener(
+                        "click",
+                        function() {
+
+                            showBkashLoginStep();
+
+                        }
+                    );
+                }
+
+
+                /* =========================================================
+                   PAYMENT RADIO BUTTONS
+                ========================================================= */
+
+                document
+                    .querySelectorAll(
+                        'input[name="PaymentType"]'
+                    )
+                    .forEach(
+                        function(radio) {
+
+                            radio.addEventListener(
+                                "change",
+                                function() {
+
+                                    if (this.value === "Bkash") {
+
+                                        if (codOption) {
+
+                                            codOption.classList.remove(
+                                                "active"
+                                            );
+                                        }
+
+
+                                        if (bkashOption) {
+
+                                            bkashOption.classList.add(
+                                                "active"
+                                            );
+                                        }
+
+
+                                        openBkashModal();
+
+                                    }
+
+                                    else {
+
+                                        if (bkashOption) {
+
+                                            bkashOption.classList.remove(
+                                                "active"
+                                            );
+                                        }
+
+
+                                        if (codOption) {
+
+                                            codOption.classList.add(
+                                                "active"
+                                            );
+                                        }
+
+
+                                        closeBkashModal();
+                                    }
+
+                                }
+                            );
+
+                        }
+                    );
+
+
+                /* =========================================================
+                   SET COD
+                ========================================================= */
+
+                function setCashOnDelivery() {
+
+                    const codRadio =
+                        document.querySelector(
+                            'input[name="PaymentType"][value="CashOnDelivery"]'
+                        );
+
+
+                    if (codRadio) {
+
+                        codRadio.checked =
+                            true;
+                    }
+
+
+                    if (bkashOption) {
+
+                        bkashOption.classList.remove(
+                            "active"
+                        );
+                    }
+
+
+                    if (codOption) {
+
+                        codOption.classList.add(
+                            "active"
+                        );
+                    }
+                }
+
+
+                /* =========================================================
+                   CLOSE BUTTON
+                ========================================================= */
+
+                if (bkashClose) {
+
+                    bkashClose.addEventListener(
+                        "click",
+                        function() {
+
+                            closeBkashModal();
+
+                            setCashOnDelivery();
+
+                        }
+                    );
+                }
+
+
+                /* =========================================================
+                   CANCEL BUTTON
+                ========================================================= */
+
+                if (bkashCancelButton) {
+
+                    bkashCancelButton.addEventListener(
+                        "click",
+                        function() {
+
+                            closeBkashModal();
+
+                            setCashOnDelivery();
+
+                        }
+                    );
+                }
+
+
+                /* =========================================================
+                   CLICK OUTSIDE MODAL
+                ========================================================= */
+
+                if (bkashModal) {
+
+                    bkashModal.addEventListener(
+                        "click",
+                        function(event) {
+
+                            if (event.target === bkashModal) {
+
+                                closeBkashModal();
+
+                                setCashOnDelivery();
+                            }
+
+                        }
+                    );
+                }
+
+
+                /* =========================================================
+                   FORM SUBMIT
+                ========================================================= */
+
+                if (checkoutForm) {
+
+                    checkoutForm.addEventListener(
+                        "submit",
+                        function(event) {
+
+                            const paymentType =
+                                document.querySelector(
+                                    'input[name="PaymentType"]:checked'
+                                )?.value;
+
+
+                            /* =================================================
+                               COD
+                            ================================================= */
+
+                            if (paymentType === "CashOnDelivery") {
+
+                                return;
+                            }
+
+
+                            /* =================================================
+                               BKASH
+                            ================================================= */
+
+                            if (paymentType === "Bkash") {
+
+                                /*
+                                 * User must complete simulated
+                                 * bKash payment first.
+                                 */
+
+                                if (
+                                    !mobileNumberHidden ||
+                                    !mobileNumberHidden.value ||
+                                    !transactionIdHidden ||
+                                    !transactionIdHidden.value
+                                ) {
+
+                                    event.preventDefault();
+
+                                    openBkashModal();
+
+                                    return;
+                                }
+                            }
+
+                        }
+                    );
+                }
+
+            });
+
+    </script>
+    
+
+
+</body>
+
+</html>

@@ -1,0 +1,508 @@
+﻿@{
+    Layout = "_Layout1";
+}
+
+@{
+    ViewData["Title"] = "Contact Us";
+}
+
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/buttons/3.1.2/css/buttons.bootstrap5.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+
+    <link rel="stylesheet"
+          href="~/sneat/assets/css/custom-datatables.css">
+}
+
+
+<br />
+<br />
+
+
+<!-- =======================================================
+     ADMIN MENU
+======================================================= -->
+
+<div class="container-fluid px-2">
+
+    <div class="row g-3 justify-content-center align-items-center">
+
+
+        <!-- HOME -->
+
+        <div class="col-6 col-md-4 col-xl-2">
+
+            <a class="admin-menu-item home h-100"
+               asp-area="Admin"
+               asp-controller="Home"
+               asp-action="Index">
+
+                <i class="bx bx-home-alt"></i>
+
+                <span>Home</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- CATEGORY -->
+
+        <div class="col-6 col-md-4 col-xl-2">
+
+            <a class="admin-menu-item category h-100"
+               asp-area="Admin"
+               asp-controller="Category"
+               asp-action="Index">
+
+                <i class="bx bx-category-alt"></i>
+
+                <span>Category</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- PRODUCT -->
+
+        <div class="col-6 col-md-4 col-xl-2">
+
+            <a class="admin-menu-item product h-100"
+               asp-area="Admin"
+               asp-controller="Product"
+               asp-action="Index">
+
+                <i class="bx bx-box"></i>
+
+                <span>Product</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- INVENTORY -->
+
+        <div class="col-6 col-md-4 col-xl-2">
+
+            <a class="admin-menu-item inventory h-100"
+               asp-area="Admin"
+               asp-controller="Inventory"
+               asp-action="Index">
+
+                <i class="bx bx-archive-in"></i>
+
+                <span>Inventory</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- ORDER -->
+
+        <div class="col-6 col-md-4 col-xl-2">
+
+            <a class="admin-menu-item order h-100"
+               asp-area="Admin"
+               asp-controller="Order"
+               asp-action="Index">
+
+                <i class="bx bx-cart"></i>
+
+                <span>Order</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- CONTACT -->
+
+        <div class="col-6 col-md-4 col-xl-2">
+
+            <a class="admin-menu-item contact h-100
+                @(ViewContext.RouteData.Values["controller"]?.ToString() == "Contact"
+                   ? "active"
+                   : "")"
+               asp-area="Admin"
+               asp-controller="Contact"
+               asp-action="Index">
+
+                <i class="bx bx-message-dots"></i>
+
+                <span>Contact Messages</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- Discount -->
+        <div class="col-6 col-md-4 col-xl-2">
+
+            <a class="admin-menu-item user h-100"
+               asp-area="Admin"
+               asp-controller="Discount"
+               asp-action="Index">
+
+                <i class="bx bx-group"></i>
+
+                <span>Discount Management</span>
+
+            </a>
+
+        </div>
+
+        <!-- User -->
+        <div class="col-6 col-md-4 col-xl-2">
+
+            <a class="admin-menu-item user h-100"
+               asp-area="Admin"
+               asp-controller="User"
+               asp-action="Index">
+
+                <i class="bx bx-group"></i>
+
+                <span>Users</span>
+
+            </a>
+
+        </div>
+
+
+       
+
+    </div>
+
+</div>
+
+
+<br />
+
+
+<!-- =======================================================
+     CONTACT TABLE
+======================================================= -->
+
+<div class="container-xxl flex-grow-1 container-p-y">
+
+    <div class="row">
+
+        <div class="col-12">
+
+            <partial name="_ResponsePartial" />
+
+
+            <div class="card">
+
+
+                <!-- ===================================================
+                     HEADER
+                ==================================================== -->
+
+                <div class="card-header border-bottom
+                    d-flex justify-content-between
+                    align-items-center">
+
+                    <h5 class="card-title mb-0">
+
+                        View Contact Messages
+
+                    </h5>
+
+                </div>
+
+
+                <!-- ===================================================
+                     SEARCH
+                ==================================================== -->
+
+                <div class="card-body pb-0">
+
+                    <div class="row g-3 mb-3">
+
+                        <div class="col-md-4">
+
+                            <label class="form-label">
+
+                                Search
+
+                            </label>
+
+
+                            <input type="text"
+                                   id="contactSearch"
+                                   class="form-control"
+                                   placeholder="Search name, email or message..." />
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="d-flex justify-content-end
+                        gap-2 mt-1 mb-3">
+
+
+                        <button id="searchButton"
+                                type="button"
+                                class="btn btn-primary">
+
+                            Search
+
+                        </button>
+
+
+                        <button id="resetButton"
+                                type="button"
+                                class="btn btn-outline-secondary">
+
+                            Reset
+
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- ===================================================
+                     TABLE
+                ==================================================== -->
+
+                <div class="card-body table-responsive pt-0">
+
+                    <table id="contact"
+                           class="table table-bordered
+                        table-hover w-100">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Name
+                                </th>
+
+                                <th>
+                                    Email
+                                </th>
+
+                                <th>
+                                    Message
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    <!-- =======================================================
+         DATATABLES
+    ======================================================== -->
+
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
+
+
+    <!-- =======================================================
+         BUTTONS
+    ======================================================== -->
+
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/dataTables.buttons.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.bootstrap5.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.html5.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.print.min.js"></script>
+
+
+    <!-- =======================================================
+         EXCEL / PDF
+    ======================================================== -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+
+    <!-- =======================================================
+         SELECT2
+    ======================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+    <script>
+
+        $(function() {
+
+
+            // =====================================================
+            // DATATABLE
+            // =====================================================
+
+            let table = $("#contact").DataTable({
+
+                processing: true,
+
+                serverSide: true,
+
+                responsive: true,
+
+                searching: false,
+
+                autoWidth: true,
+
+                pagingType: "simple_numbers",
+
+
+                ajax: {
+
+                    url: "/Admin/Contact/GetPagedContacts",
+
+                    type: "POST",
+
+                    contentType: "application/json",
+
+                    dataType: "json",
+
+
+                    data: function(d) {
+
+
+                        // ==========================================
+                        // CUSTOM SEARCH
+                        // ==========================================
+
+                        d.search.value =
+                            $("#contactSearch").val();
+
+
+                        return JSON.stringify(d);
+
+                    }
+
+                },
+
+
+                // =================================================
+                // COLUMNS
+                // =================================================
+
+                columnDefs: [
+
+                    {
+                        targets: 0,
+
+                        orderable: true
+                    },
+
+
+                    {
+                        targets: 1,
+
+                        orderable: true
+                    },
+
+
+                    {
+                        targets: 2,
+
+                        orderable: false
+                    },
+
+
+                    {
+                        targets: 3,
+
+                        orderable: true
+                    }
+
+                ]
+
+            });
+
+
+            // =====================================================
+            // SEARCH BUTTON
+            // =====================================================
+
+            $("#searchButton").click(function() {
+
+                table.ajax.reload(null, false);
+
+            });
+
+
+            // =====================================================
+            // ENTER KEY SEARCH
+            // =====================================================
+
+            $("#contactSearch").keypress(function(e) {
+
+                if (e.which === 13) {
+
+                    table.ajax.reload(null, false);
+
+                }
+
+            });
+
+
+            // =====================================================
+            // RESET
+            // =====================================================
+
+            $("#resetButton").click(function() {
+
+                $("#contactSearch").val("");
+
+                table.ajax.reload(null, false);
+
+            });
+
+        });
+
+    </script>
+}

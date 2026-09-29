@@ -1,0 +1,24 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Src/MaleFashion.Web/Dockerfile
+
+    image: malefashion.web
+
+    env_file:
+      - Src/MaleFashion.Web/web.env
+    environment:
+        ASPNETCORE_URLS: http://+:80
+        
+
+    volumes:
+      - malefashion-data:/app/Logs/
+
+    ports:
+      - "8000:80"
+
+    entrypoint: ["dotnet", "MaleFashion.Web.dll"]
+
+volumes:
+  malefashion-data:

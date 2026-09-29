@@ -1,0 +1,322 @@
+﻿@model MaleFashion.Web.Areas.Admin.Models.DiscountModel
+
+@{
+    Layout = "_Layout1";
+    ViewData["Title"] = "Create Discount";
+}
+
+@* @{
+    Layout = "_Layout1";
+    ViewData["Title"] = "Create Category";
+} *@
+
+@{
+    var response = TempData.Get<ResponseModel>(Constants.ResponseTempKey);
+}
+
+@if (response != null)
+{
+    <div class="alert alert-@(response.Type == ResponseTypes.Success ? "success" : "danger") alert-dismissible fade show"
+         role="alert">
+
+        @response.Message
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+        </button>
+
+    </div>
+}
+<div class="container-xxl flex-grow-1 container-p-y">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h4 class="fw-bold mb-1">
+                Create Discount
+            </h4>
+
+            <p class="text-muted mb-0">
+                Add a new discount
+            </p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="Discount"
+           asp-action="Index"
+           class="btn btn-secondary">
+
+            <i class="bx bx-arrow-back"></i>
+            Back
+
+        </a>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h5 class="mb-0">
+                Discount Information
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <form asp-area="Admin"
+                  asp-controller="Discount"
+                  asp-action="Create"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+
+                <!-- Validation Summary -->
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+
+                <div class="row">
+
+
+                    <!-- Discount Name -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="DiscountName"
+                               class="form-label">
+
+                            Discount Name
+
+                        </label>
+
+                        <input asp-for="DiscountName"
+                               class="form-control"
+                               placeholder="Example: Summer Sale" />
+
+                        <span asp-validation-for="DiscountName"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Discount Code -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="Code"
+                               class="form-label">
+
+                            Discount Code
+
+                        </label>
+
+                        <input asp-for="Code"
+                               class="form-control text-uppercase"
+                               placeholder="Example: SUMMER20" />
+
+                        <span asp-validation-for="Code"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Discount Amount -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="DiscountPercentage"
+                               class="form-label">
+
+                            Discount Percentage
+
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                ৳
+                            </span>
+
+                            <input asp-for="DiscountPercentage"
+                                   type="number"
+                                   step="1"
+                                   min="1"
+                                   class="form-control"
+                                   placeholder="1" />
+
+                        </div>
+
+                        <span asp-validation-for="DiscountPercentage"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label d-block">
+                            Status
+                        </label>
+
+                        <div class="form-check form-switch mt-2">
+
+                            <input asp-for="IsActive"
+                                   class="form-check-input"
+                                   type="checkbox" />
+
+                            <label asp-for="IsActive"
+                                   class="form-check-label">
+
+                                Active
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Start At -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="StartAt"
+                               class="form-label">
+
+                            Start At
+
+                        </label>
+
+                        <input asp-for="StartAt"
+                               type="datetime-local"
+                               class="form-control"
+                               value="@Model.StartAt.ToString("yyyy-MM-ddTHH:mm")" />
+
+                        <span asp-validation-for="StartAt"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                    <!-- End At -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="EndAt"
+                               class="form-label">
+
+                            End At
+
+                        </label>
+
+                        <input asp-for="EndAt"
+                               type="datetime-local"
+                               class="form-control"
+                               value="@Model.EndAt.ToString("yyyy-MM-ddTHH:mm")" />
+
+                        <span asp-validation-for="EndAt"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <hr />
+
+
+                <!-- Buttons -->
+
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a asp-area="Admin"
+                       asp-controller="Discount"
+                       asp-action="Index"
+                       class="btn btn-secondary">
+
+                        Cancel
+
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="bx bx-save"></i>
+
+                        Save Discount
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        $(document).ready(function() {
+
+            // Convert discount code to uppercase
+
+            $("#Code").on("input", function() {
+
+                $(this).val(
+                    $(this).val().toUpperCase()
+                );
+
+            });
+
+
+            // Validate dates before submit
+
+            $("form").on("submit", function(e) {
+
+                const startAt =
+                    $("#StartAt").val();
+
+                const endAt =
+                    $("#EndAt").val();
+
+
+                if (startAt &&
+                    endAt &&
+                    new Date(endAt) <= new Date(startAt)) {
+
+                    e.preventDefault();
+
+                    alert(
+                        "End date must be greater than Start date."
+                    );
+
+                }
+
+            });
+
+        });
+
+    </script>
+}

@@ -1,0 +1,158 @@
+﻿@using MaleFashion.Web.Areas.Admin.Models
+@using MaleFashion.Infrastructure.Extensions
+@using MaleFashion.Web.Codes
+
+@model CategoryModel
+
+@{
+    Layout = "_Layout1";
+    ViewData["Title"] = "Create Category";
+}
+
+@{
+    var response = TempData.Get<ResponseModel>(Constants.ResponseTempKey);
+}
+
+@if (response != null)
+{
+    <div class="alert alert-@(response.Type == ResponseTypes.Success ? "success" : "danger") alert-dismissible fade show"
+         role="alert">
+
+        @response.Message
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+        </button>
+
+    </div>
+}
+
+
+<div class="container-xxl flex-grow-1 container-p-y">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8 col-lg-6">
+
+            <div class="card">
+
+                <!-- Header -->
+                <div class="card-header">
+
+                    <h4 class="mb-0">
+                        Create Category
+                    </h4>
+
+                </div>
+
+
+                <!-- Body -->
+                <div class="card-body">
+
+                    <form asp-area="Admin"
+                          asp-controller="Category"
+                          asp-action="Create"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <!-- Validation Summary -->
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+
+                        <!-- Category Name -->
+                        <div class="mb-3">
+
+                            <label asp-for="CategoryName"
+                                   class="form-label">
+                                Category Name
+                            </label>
+
+                            <input asp-for="CategoryName"
+                                   class="form-control"
+                                   placeholder="Enter category name" />
+
+                            <span asp-validation-for="CategoryName"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+
+                        <!-- Is Active -->
+                        <div class="mb-4">
+
+                            <div class="form-check">
+
+                                <input asp-for="IsActive"
+                                       class="form-check-input" />
+
+                                <label asp-for="IsActive"
+                                       class="form-check-label">
+                                    Active
+                                </label>
+
+                            </div>
+
+                            <small class="text-muted">
+                                Active categories can be used for products.
+                            </small>
+
+                        </div>
+
+
+                        <!-- Buttons -->
+                        <div class="d-flex gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+
+                                <i class="bx bx-save me-1"></i>
+                                Save
+
+                            </button>
+
+
+                            <a asp-area="Admin"
+                               asp-controller="Category"
+                               asp-action="Index"
+                               class="btn btn-secondary">
+
+                                <i class="bx bx-arrow-back me-1"></i>
+                                Cancel
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        $(function() {
+
+            // Make Active checked by default
+            $("#IsActive").prop("checked", true);
+
+        });
+
+    </script>
+}

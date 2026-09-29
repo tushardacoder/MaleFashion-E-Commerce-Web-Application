@@ -1,0 +1,23 @@
+﻿@using MaleFashion.Web.ViewComponents
+@model CartSummaryDTO
+
+
+<a asp-area="Customer"
+   asp-controller="Home"
+   asp-action="Shoppingcart">
+
+    <img src="~/Malefashon/Assets/img/icon/cart.png"
+         alt="Cart">
+
+    <span id="offcanvasCartQuantity">
+        @Model.Quantity
+    </span>
+
+</a>
+
+<div class="price"
+     id="offcanvasCartTotal">
+
+    ৳@Model.Total.ToString("N2")
+
+</div>
