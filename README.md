@@ -1135,3 +1135,67 @@ MaleFashion applies a combination of architectural patterns, design patterns, fr
 | **Docker**                | Containerizes the application                                          | Deployment consistency             |
 | **Docker Compose**        | Coordinates container configuration and application setup              | Easier environment setup           |
 
+
+## 🧰 Technology Stack
+
+### Backend
+
+* **C#**
+* **ASP.NET Core MVC**
+* **Entity Framework Core**
+* **ASP.NET Core Identity**
+* **Clean Architecture**
+* **Domain-Driven Design (DDD)**
+* **CQRS**
+* **Cortex.Mediator**
+* **Mediator Design Pattern**
+* **Repository Pattern**
+* **Unit of Work Pattern**
+* **Dependency Injection**
+* **Mapster**
+
+### Database
+
+* **SQL Server**
+* **Entity Framework Core**
+* **LINQ**
+
+### Frontend
+
+* **HTML5**
+* **CSS3**
+* **JavaScript**
+* **Bootstrap**
+* **jQuery**
+* **DataTables**
+* **Razor Views**
+
+### Authentication & Security
+
+* **ASP.NET Core Identity**
+* **Role-Based Authorization**
+* **Google reCAPTCHA v3**
+* **Password Reset & Email Verification**
+
+### External Services
+
+* **SMTP / Email Service**
+* **Google reCAPTCHA v3**
+
+### Logging & Infrastructure
+
+* **Serilog**
+* **Docker**
+* **Docker Compose**
+
+### Testing
+
+* **NUnit**
+* **Moq**
+* **Shouldly**
+
+### Deployment
+
+* **SmartASP.NET**
+
+
