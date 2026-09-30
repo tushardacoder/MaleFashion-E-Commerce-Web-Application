@@ -210,6 +210,55 @@ Customers can:
 
 ## 📸 Application Screenshots
 
+### 🔐 Authentication & Account Management
+
+### 📝 Sign Up & Email Verification
+<div align="center">
+
+<img width="362" height="582" alt="MaleFashion Screenshot" src="https://github.com/user-attachments/assets/57630ddf-c9b3-4ae1-bd26-0cccdf946a7e" />
+
+<img width="867" height="600" alt="MaleFashion Screenshot" src="https://github.com/user-attachments/assets/f8db6860-6e73-4eeb-95d5-72764e528a68" />
+
+</div>
+
+
+### 🔑 Sign In
+
+<div align="center">
+
+<img width="553" height="662" alt="MaleFashion Screenshot" src="https://github.com/user-attachments/assets/713a975e-6b7e-48b7-a511-d21a77886299" />
+
+</div>
+
+ ### 🔒 Change Password
+
+<div align="center">
+
+<img width="551" height="661" alt="MaleFashion Screenshot" src="https://github.com/user-attachments/assets/d94f4e8d-2684-41e3-b7fc-7fe8a371bfca" />
+
+</div>
+
+### 🔐 Forgot & Reset Password
+
+Allows users to recover their account by requesting a password reset link through email and securely reset their password.
+
+<div align="center">
+
+<img width="545" height="518" alt="Forgot Password" src="https://github.com/user-attachments/assets/daae58ac-6a3d-436c-8a8e-e185df020a7b" />
+
+<img width="482" height="567" alt="Password Reset Email" src="https://github.com/user-attachments/assets/bbfbc41b-1155-4db1-8d39-838ba1e23d6c" />
+
+<img width="856" height="622" alt="Reset Password" src="https://github.com/user-attachments/assets/ea906082-67a2-434e-adf2-d501abe40073" />
+
+<img width="541" height="645" alt="Password Reset Confirmation" src="https://github.com/user-attachments/assets/c425abae-13cb-4256-838e-2096083bdf6a" />
+
+</div>
+
+
+
+
+
+
 ### 🏠 Storefront — Home Page
 
 
@@ -273,6 +322,49 @@ Customers can:
 <div align="center">
 <img width="1307" height="646" alt="MaleFashion Shopping Cart" src="https://github.com/user-attachments/assets/e0afdf86-7680-45fa-9b0c-e607c3f135c5" />
 </div>
+
+### 💳 Customer — Checkout
+
+<div align="center">
+
+<img width="787" height="302" alt="image" src="https://github.com/user-attachments/assets/bf2f0182-b95b-4d58-8f07-f2e8b6a7615c" />
+
+<img width="731" height="297" alt="image" src="https://github.com/user-attachments/assets/e5ec8282-0223-4f2c-9b7b-bd566a1537ba" />
+
+<img width="375" height="570" alt="Screenshot 2026-09-30 103300" src="https://github.com/user-attachments/assets/8829a6f1-2e8c-4c9c-bd53-ceedd5b3dc0b" />
+
+</div>
+
+
+### 📦 Customer — Place Order
+<div align="center">
+
+<img width="282" height="578" alt="Screenshot 2026-09-30 103521" src="https://github.com/user-attachments/assets/0ad42854-e5ab-4918-b736-ae29334383a8" />
+
+<img width="417" height="676" alt="Screenshot 2026-09-30 103616" src="https://github.com/user-attachments/assets/970f586c-47cd-4000-8561-432b9c4180cc" />
+
+</div>
+
+### 📦 Customer — View Orders
+
+<div align="center">
+
+<img width="1512" height="546" alt="Screenshot 2026-09-30 104916" src="https://github.com/user-attachments/assets/f613366f-cd64-44c5-b0b1-e24543d8cce4" />
+
+<img width="1533" height="462" alt="Screenshot 2026-09-30 105204" src="https://github.com/user-attachments/assets/d365cf67-74e6-419a-8be0-5fdf7dd9caee" />
+
+<img width="1496" height="681" alt="Screenshot 2026-09-30 105239" src="https://github.com/user-attachments/assets/e552937f-438e-433d-8986-545120a91602" />
+
+<img width="1506" height="440" alt="Screenshot 2026-09-30 105312" src="https://github.com/user-attachments/assets/9ccc4a8e-c79c-4a9c-91b4-4524778f96b7" />
+
+</div>
+
+
+
+
+
+
+
 
 
 
