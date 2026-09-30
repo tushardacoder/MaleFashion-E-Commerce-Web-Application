@@ -550,11 +550,11 @@ Provides detailed information about an individual order, including customer info
 MaleFashion follows **Clean Architecture** principles combined with concepts from **Domain-Driven Design (DDD)**.
 
 ```text
-                    ┌─────────────────────────┐
+                                      ┌─────────────────────────┐
                     │    MaleFashion.Web      │
                     │                         │
                     │ Controllers / Areas     │
-                    │ Views / Presentation     │
+                    │ Views / Presentation    │
                     └────────────┬────────────┘
                                  │
                                  ▼
@@ -573,18 +573,28 @@ MaleFashion follows **Clean Architecture** principles combined with concepts fro
                     │ Entities / Aggregates   │
                     │ Value Objects / Rules   │
                     │ Domain Contracts        │
-                    └────────────▲────────────┘
-                                 │
-                                 │ Implements
-                                 │
-                    ┌────────────┴────────────┐
-                    │ MaleFashion.Infrastructure │
+                    └─────────────────────────┘
+                                 
+                                 
+                               
+                                 
+                    ┌────────────────────────┐
+                    │MaleFashion.Infrastructure│
                     │                         │
                     │ EF Core / Repositories  │
                     │ Unit of Work / Identity │
                     │ Email Services          │
                     │ reCAPTCHA / Persistence │
                     └─────────────────────────┘
+
+   MaleFashion.Web ─────► MaleFashion.Application ─────► MaleFashion.Domain
+                              ▲
+                              │
+                              │ implements
+                              │
+                       MaleFashion.Infrastructure
+
+
 ## 🧱 Layer Responsibilities
 
 MaleFashion follows a **Clean Architecture** approach where each layer has a clearly defined responsibility.
@@ -1664,11 +1674,12 @@ MaleFashion
 │       ├── Controllers/
 │       ├── Views/
 │       └── wwwroot/
+|       └── Dockerfile
 │
 ├── tests/
 │   └── MaleFashion.Application.UnitTests/
 │
-├── Dockerfile
+│
 └── docker-compose.yml
 ```
 
