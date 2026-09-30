@@ -362,6 +362,133 @@ Allows users to recover their account by requesting a password reset link throug
 
 
 
+### 📊 Admin — Dashboard
+
+<div align="center">
+
+<img width="1484" height="549" alt="image" src="https://github.com/user-attachments/assets/a56da057-db5f-4ce1-8260-722a2de49c2d" />
+
+</div>
+
+
+### 👥 Admin — User Accounts & Access Control
+
+<div align="center">
+
+<img width="1421" height="557" alt="image" src="https://github.com/user-attachments/assets/12314d58-76fb-4b8b-86e6-896f8408ad2e" />
+
+</div>
+
+### 📂 Category Management & CRUD Operations
+
+<div align="center">
+
+<img width="1382" height="465" alt="Screenshot 2026-09-30 113240" src="https://github.com/user-attachments/assets/8ed39cab-f033-4633-becf-e422dce92c5d" />
+
+<img width="692" height="296" alt="Screenshot 2026-09-30 113302" src="https://github.com/user-attachments/assets/2e4979c3-ca85-4b70-8df1-bb151b50b27b" />
+
+<img width="1401" height="381" alt="Screenshot 2026-09-30 113347" src="https://github.com/user-attachments/assets/5fa085dc-7927-437a-9d58-0790f5a4eb9a" />
+
+<img width="557" height="216" alt="Screenshot 2026-09-30 113412" src="https://github.com/user-attachments/assets/d723d155-b30e-40d2-b615-2fe268010f20" />
+
+</div>
+
+
+### 🏷️ Product Management & Details
+
+## 🛍️ Product Management
+
+The **Product Management** module allows administrators to manage products, including creating, updating, viewing, and managing product information and variants.
+
+<div align="center">
+
+<img src="https://github.com/user-attachments/assets/2c0950f8-ce04-4fc8-8d11-bd17c251a1cb" width="90%" />
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/f5196b6b-b8dc-4531-8d5c-0cc416b50ca8" width="90%" />
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/09e20940-2005-4b86-ab62-b9f78b8c7141" width="90%" />
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/9015cdc4-2bef-475b-afbb-197800b89f2b" width="90%" />
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/5868ddfa-22bb-4a7b-82e6-542c2e818086" width="90%" />
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/cf215313-49b4-4f3b-9b61-b15d3e78edd7" width="90%" />
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/46629abe-0541-4d28-ace5-d0fb34cc69a0" width="90%" />
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/42936f03-bc49-44d0-825f-1ae78fbe4864" width="90%" />
+
+</div>
+
+---
+
+## 📦 Product Details
+
+The **Product Details** section provides detailed information about individual products, including product information, pricing, variants, sizes, colors, and other product-specific data.
+
+<div align="center">
+
+<img src="https://github.com/user-attachments/assets/a848445d-679b-4d69-81c2-63e5acecf102" width="90%" />
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/aa705f62-883e-4d62-b3dc-032ac72c665d" width="90%" />
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/5ee28956-e203-4d18-87b1-fa26cae465d7" width="90%" />
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/1e53264f-22be-4f9f-ac48-b2f24e9f99e6" width="90%" />
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/30411504-2c4b-469d-b7e5-d5d95fba6452" width="90%" />
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/e56fa004-450f-418f-8479-f5bf5a7d3be4" width="90%" />
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/95590dd1-83b6-4fa0-b2db-714f058259b5" width="90%" />
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
