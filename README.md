@@ -1726,9 +1726,10 @@ MaleFashion
               │                             Order
               │                               │
               └───────────────────────────────┘
-                                              │
-                                              ▼
-                                      Order Management
+              │                             
+              ▼                            
+       Order Management
+
 ```
 
 ---
