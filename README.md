@@ -471,6 +471,21 @@ The **Product Details** section provides detailed information about individual p
 </div>
 
 
+### 📦 Inventory Management & CRUD Operations
+
+<img width="1402" height="622" alt="Screenshot 2026-09-30 115401" src="https://github.com/user-attachments/assets/564daa4c-b176-462c-8dca-98c08f5b8408" />
+<img width="930" height="362" alt="Screenshot 2026-09-30 115424" src="https://github.com/user-attachments/assets/db73384a-df81-43d5-b388-33b6fc8e4a44" />
+<img width="932" height="340" alt="Screenshot 2026-09-30 115450" src="https://github.com/user-attachments/assets/e66ea74c-a2f6-4882-8b1e-796b46e29c06" />
+<img width="552" height="216" alt="Screenshot 2026-09-30 115335" src="https://github.com/user-attachments/assets/264d8e06-50b7-4082-a9e9-3037c0de1b61" />
+
+### 🏷️ Discount Management — CRUD Operations
+
+<img width="1392" height="357" alt="Screenshot 2026-09-30 115921" src="https://github.com/user-attachments/assets/c0d836f5-7d27-4845-85a4-73b573798cde" />
+<img width="1417" height="548" alt="Screenshot 2026-09-30 115951" src="https://github.com/user-attachments/assets/08f5702f-e7f0-45a5-9e2f-5c40fb39a4ec" />
+<img width="1438" height="530" alt="Screenshot 2026-09-30 120026" src="https://github.com/user-attachments/assets/ae41e3f5-0701-4516-a8e1-98309688e5b5" />
+<img width="563" height="212" alt="Screenshot 2026-09-30 120049" src="https://github.com/user-attachments/assets/2d2810ca-1e00-40f0-9b5e-0b965a433635" />
+
+
 
 
 
