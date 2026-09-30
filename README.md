@@ -210,9 +210,10 @@ Customers can:
 
 ## 📸 Application Screenshots
 
-### 🔐 Authentication & Account Management
+###### 🔐 Authentication & Account Management
 
 ### 📝 Sign Up & Email Verification
+
 <div align="center">
 
 <img width="362" height="582" alt="MaleFashion Screenshot" src="https://github.com/user-attachments/assets/57630ddf-c9b3-4ae1-bd26-0cccdf946a7e" />
@@ -224,13 +225,16 @@ Customers can:
 
 ### 🔑 Sign In
 
+
 <div align="center">
 
 <img width="553" height="662" alt="MaleFashion Screenshot" src="https://github.com/user-attachments/assets/713a975e-6b7e-48b7-a511-d21a77886299" />
 
 </div>
 
+
  ### 🔒 Change Password
+
 
 <div align="center">
 
@@ -238,7 +242,9 @@ Customers can:
 
 </div>
 
+
 ### 🔐 Forgot & Reset Password
+
 
 Allows users to recover their account by requesting a password reset link through email and securely reset their password.
 
@@ -264,7 +270,11 @@ Allows users to recover their account by requesting a password reset link throug
 
 ![MaleFashion Screenshot](https://github.com/user-attachments/assets/d273c52d-a754-4920-a992-18bfd5a31f7b)
 
+
+
 ### 🛍️ Storefront — Shop / Product Listing
+
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/abc62a65-3449-4b9e-b3fe-0df562f22059" alt="Screenshot 1">
 </p>
@@ -277,7 +287,11 @@ Allows users to recover their account by requesting a password reset link throug
   <img src="https://github.com/user-attachments/assets/19e5b67a-9288-40c5-92c0-7a1a23e3c7cf" alt="Screenshot 3">
 </p>
 
+
+
 ### 👕 Product — Product Details & Variants
+
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/d6e7ac3b-c699-480a-92c1-9202954e476f" alt="Screenshot 1">
 </p>
@@ -293,6 +307,7 @@ Allows users to recover their account by requesting a password reset link throug
 
 
 ### ❤️ Customer — Wishlist
+
 
 
 <p align="center">
@@ -319,11 +334,14 @@ Allows users to recover their account by requesting a password reset link throug
 
 ### 🛒 Customer — Shopping Cart
 
+
 <div align="center">
 <img width="1307" height="646" alt="MaleFashion Shopping Cart" src="https://github.com/user-attachments/assets/e0afdf86-7680-45fa-9b0c-e607c3f135c5" />
 </div>
 
+
 ### 💳 Customer — Checkout
+
 
 <div align="center">
 
@@ -336,7 +354,10 @@ Allows users to recover their account by requesting a password reset link throug
 </div>
 
 
+
 ### 📦 Customer — Place Order
+
+
 <div align="center">
 
 <img width="282" height="578" alt="Screenshot 2026-09-30 103521" src="https://github.com/user-attachments/assets/0ad42854-e5ab-4918-b736-ae29334383a8" />
@@ -345,7 +366,9 @@ Allows users to recover their account by requesting a password reset link throug
 
 </div>
 
+
 ### 📦 Customer — View Orders
+
 
 <div align="center">
 
@@ -362,7 +385,10 @@ Allows users to recover their account by requesting a password reset link throug
 
 
 
+
+
 ### 📊 Admin — Dashboard
+
 
 <div align="center">
 
@@ -371,7 +397,9 @@ Allows users to recover their account by requesting a password reset link throug
 </div>
 
 
+
 ### 👥 Admin — User Accounts & Access Control
+
 
 <div align="center">
 
@@ -379,7 +407,9 @@ Allows users to recover their account by requesting a password reset link throug
 
 </div>
 
+
 ### 📂 Category Management & CRUD Operations
+
 
 <div align="center">
 
@@ -397,6 +427,7 @@ Allows users to recover their account by requesting a password reset link throug
 ### 🏷️ Product Management & Details
 
 ## 🛍️ Product Management
+
 
 The **Product Management** module allows administrators to manage products, including creating, updating, viewing, and managing product information and variants.
 
@@ -436,7 +467,9 @@ The **Product Management** module allows administrators to manage products, incl
 
 ---
 
+
 ## 📦 Product Details
+
 
 The **Product Details** section provides detailed information about individual products, including product information, pricing, variants, sizes, colors, and other product-specific data.
 
@@ -473,12 +506,15 @@ The **Product Details** section provides detailed information about individual p
 
 ### 📦 Inventory Management & CRUD Operations
 
+
 <img width="1402" height="622" alt="Screenshot 2026-09-30 115401" src="https://github.com/user-attachments/assets/564daa4c-b176-462c-8dca-98c08f5b8408" />
 <img width="930" height="362" alt="Screenshot 2026-09-30 115424" src="https://github.com/user-attachments/assets/db73384a-df81-43d5-b388-33b6fc8e4a44" />
 <img width="932" height="340" alt="Screenshot 2026-09-30 115450" src="https://github.com/user-attachments/assets/e66ea74c-a2f6-4882-8b1e-796b46e29c06" />
 <img width="552" height="216" alt="Screenshot 2026-09-30 115335" src="https://github.com/user-attachments/assets/264d8e06-50b7-4082-a9e9-3037c0de1b61" />
 
+
 ### 🏷️ Discount Management — CRUD Operations
+
 
 <img width="1392" height="357" alt="Screenshot 2026-09-30 115921" src="https://github.com/user-attachments/assets/c0d836f5-7d27-4845-85a4-73b573798cde" />
 <img width="1417" height="548" alt="Screenshot 2026-09-30 115951" src="https://github.com/user-attachments/assets/08f5702f-e7f0-45a5-9e2f-5c40fb39a4ec" />
@@ -486,30 +522,25 @@ The **Product Details** section provides detailed information about individual p
 <img width="563" height="212" alt="Screenshot 2026-09-30 120049" src="https://github.com/user-attachments/assets/2d2810ca-1e00-40f0-9b5e-0b965a433635" />
 
 
+### 📋 Order Management — View & Details
 
 
+#### 📦 Order Overview
 
 
+Provides administrators with a centralized view of customer orders, including order status, customer information, payment status, and order date.
+
+<img width="900" alt="Order Management Overview" src="https://github.com/user-attachments/assets/83ea5719-ad43-4fae-9ca7-03cd867550ec" />
 
 
+#### 🔎 Order Details
 
 
+Provides detailed information about an individual order, including customer information, ordered products, quantities, pricing, payment details, and order information.
 
+<img width="900" alt="Order Details" src="https://github.com/user-attachments/assets/53de4b42-66ef-4a44-83a9-55ee7ea91385" />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<img width="900" alt="Order Details — Additional Information" src="https://github.com/user-attachments/assets/9c034869-8eab-4773-9dfb-13518e3231ca" />
 
 
 
