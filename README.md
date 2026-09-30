@@ -241,7 +241,11 @@ Customers can:
   <img src="https://github.com/user-attachments/assets/ff69c840-64a5-4328-ae51-4e7ed89091d4" alt="Screenshot 3">
 </p>
 
+
+
 ### ❤️ Customer — Wishlist
+
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/53d25e71-f3c4-4128-aa7b-091f650877fd" alt="Screenshot 1">
 </p>
@@ -261,6 +265,14 @@ Customers can:
 <p align="center">
   <img src="https://github.com/user-attachments/assets/b99095d8-f17f-47fa-9df6-4962e53130c4" alt="Screenshot 5">
 </p>
+
+
+
+### 🛒 Customer — Shopping Cart
+
+<div align="center">
+<img width="1307" height="646" alt="MaleFashion Shopping Cart" src="https://github.com/user-attachments/assets/e0afdf86-7680-45fa-9b0c-e607c3f135c5" />
+</div>
 
 
 
