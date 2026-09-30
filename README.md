@@ -550,7 +550,7 @@ Provides detailed information about an individual order, including customer info
 MaleFashion follows **Clean Architecture** principles combined with concepts from **Domain-Driven Design (DDD)**.
 
 ```text
-                                      ┌─────────────────────────┐
+                    ┌─────────────────────────┐
                     │    MaleFashion.Web      │
                     │                         │
                     │ Controllers / Areas     │
@@ -578,14 +578,14 @@ MaleFashion follows **Clean Architecture** principles combined with concepts fro
                                  
                                
                                  
-                    ┌────────────────────────┐
+                    ┌────────────────────────  ┐
                     │MaleFashion.Infrastructure│
-                    │                         │
-                    │ EF Core / Repositories  │
-                    │ Unit of Work / Identity │
-                    │ Email Services          │
-                    │ reCAPTCHA / Persistence │
-                    └─────────────────────────┘
+                    │                          │
+                    │ EF Core / Repositories   │
+                    │ Unit of Work / Identity  │
+                    │ Email Services           │
+                    │ reCAPTCHA / Persistence  │
+                    └───────────────────────── ┘
 
    MaleFashion.Web ─────► MaleFashion.Application ─────► MaleFashion.Domain
                               ▲
